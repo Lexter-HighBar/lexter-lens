@@ -17,7 +17,7 @@ export const ApiContextProvider = ({ children }: Props) => {
   const { getToken } = useAuth()
   const axios = Axios.create()
 
-  const API_URL = import.meta.env.VITE_API_URL || '/api'
+  const API_URL = import.meta.env.VITE_API_URL
 
   axios.defaults.baseURL = API_URL
 

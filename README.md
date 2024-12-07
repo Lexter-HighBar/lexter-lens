@@ -13,3 +13,12 @@
 # clerk
 
 https://clerk.com/docs/quickstarts/react
+
+# resources
+
+READ ONLY
+
+/lawyers
+/employers
+/job_offers
+/job_postings
