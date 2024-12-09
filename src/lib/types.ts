@@ -22,6 +22,7 @@ export type PaginatedResponse<T> = {
 
 // domain data
 
+// GET /lawyers Pagic
 export type Lawyer = {
   id: number
   first_name: string

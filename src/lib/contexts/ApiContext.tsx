@@ -1,6 +1,6 @@
 import { useAuth } from '@clerk/clerk-react'
 import Axios from 'axios'
-import React, { ReactNode, createContext, useEffect } from 'react'
+import { ReactNode, createContext } from 'react'
 
 export const ApiContext = createContext<{
   get: <T, S = T>(url: string, search?: Partial<S>) => Promise<T>
@@ -17,9 +17,7 @@ export const ApiContextProvider = ({ children }: Props) => {
   const { getToken } = useAuth()
   const axios = Axios.create()
 
-  const API_URL = import.meta.env.VITE_API_URL
-
-  axios.defaults.baseURL = API_URL
+  axios.defaults.baseURL = '/api'
 
   axios.interceptors.request.use(async (config) => {
     const token = await getToken()
