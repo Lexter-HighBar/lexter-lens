@@ -1,6 +1,6 @@
 import { useAuth } from '@clerk/clerk-react'
 import Axios from 'axios'
-import { ReactNode, createContext, useEffect } from 'react'
+import React, { ReactNode, createContext, useEffect } from 'react'
 
 export const ApiContext = createContext<{
   get: <T, S = T>(url: string, search?: Partial<S>) => Promise<T>
