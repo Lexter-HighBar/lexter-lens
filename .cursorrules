@@ -1,3 +1,5 @@
+source: https://highbar.notion.site/React-Dev-Handbook-15296734e9f080768790c218f35469fb
+
 # React Dev Handbook
 
 # Design Patterns
@@ -37,7 +39,50 @@ The benefit from this pattern is a unified api for common elements, and less ove
 when using multiple libraries, as shown in components like `Page.tsx` , we see that we combine Radix UI with Material’s styled components.
 We prefer the styling of material at the definition of a design system element, and then we can opt to customize it further with tailwind at implementation.
 
+## Prefer className prop over emotion style attributes
+
+| do                                                | do not                                 |
+| ------------------------------------------------- | -------------------------------------- |
+| try                                               | try not                                |
+| `className="flex flex-col gap-3 justify-between"` | `flex=”col” gap="3" justify="between"` |
+
 # Code Style
+
+## Atomic, immutable, guard statement thinking - for happier brains and quicker grok.
+
+when working within a function, opt to use guard statements to discard possibilities before getting to the main use of your code. for the love of god, avoid nesting truthy conditionals. Sometimes, this means less DRY code, but in most non-maintenance portions of the project, we are going to be throwing away a lot of the code, often, so do not over abstract, or try to solve things in a more complex way.
+
+### Good
+
+```tsx
+const createUrl = (path?: string | number) => {
+  if (!value) return `/api/data?format=csv`
+
+  return `/api/data/${path}?format=csv&records=all`
+}
+```
+
+### Bad
+
+```tsx
+const createUrl = (partial?: string | number) => {
+  let result = '/api'
+  let params = '?format=csv'
+
+  if (value) {
+    result += `${partial}`
+    params += '&records=all'
+  }
+
+  return (result += params)
+}
+```
+
+## Don’t DRY until it’s actually MOIST
+
+I don’t have an acronym for moist, just don’t dry up your code until you actually have to re-write something 3 or 4 times. Make sure that your solution is an actual pattern that can be implemented often without a ton of configuration.
+
+This means writing the same thing a few times, it means longer functions, but as mentioned above, your (and my) code will likely be deleted in short order and replaced with something newer and more fitting to the domain.
 
 ## Destructure props, contain hooks in a variable
 
