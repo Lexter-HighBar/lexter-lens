@@ -1,4 +1,4 @@
-import { ClerkProvider } from '@clerk/clerk-react'
+import { ClerkProvider } from '@clerk/clerk-react';
 import { RootRouter } from './RootRouter'
 import { Theme } from '@radix-ui/themes'
 import { ThemeProvider } from '@mui/material'

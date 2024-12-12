@@ -1,22 +1,30 @@
-import { SignIn, useAuth, UserButton } from '@clerk/clerk-react'
-import { Route, Routes } from 'react-router-dom'
-import { Flex, Grid, Spinner } from '@radix-ui/themes'
-import { Lawyers } from './pages/Lawyers'
-import { UnauthedDashboard } from './pages/UnauthedDashboard'
-import { Example } from './pages/Example'
-import { AppHeader } from './components/layout/AppHeader'
-import { Link } from './components/Link'
-import { Divider, Typography } from '@mui/material'
+import RequireAuth from './RequireAuth';
+import { SignIn, useAuth, UserButton } from '@clerk/clerk-react';
+import { Route, Routes } from 'react-router-dom';
+import { Flex, Grid, Spinner } from '@radix-ui/themes';
+import { Lawyers } from './pages/Lawyers';
+import { UnauthedDashboard } from './pages/UnauthedDashboard';
+import { Example } from './pages/Example';
+import { AppHeader } from './components/layout/AppHeader';
+import { Link } from './components/Link';
+import { Divider, Typography } from '@mui/material';
 
 export const RootRouter = () => {
-  const auth = useAuth()
+  const auth = useAuth();
 
   if (!auth.isLoaded)
     return (
       <Grid>
         <Spinner />
       </Grid>
-    )
+    );
+
+  if (auth.error)
+    return (
+      <Grid>
+        <Typography variant="h6">Authentication Error: {auth.error.message}</Typography>
+      </Grid>
+    );
 
   return auth.isSignedIn ? (
     <Grid>
@@ -30,7 +38,15 @@ export const RootRouter = () => {
       </AppHeader>
       <Divider />
       <Routes>
-        <Route path="/lawyers" element={<Lawyers />} />
+        <Route
+          path="/lawyers"
+          element={
+            <RequireAuth>
+              <Lawyers />
+            </RequireAuth>
+          }
+        />
+        <Route path="/sign-in" element={<SignIn />} />
         <Route path="/*" element={<>Dashboard</>} />
       </Routes>
     </Grid>
@@ -47,11 +63,11 @@ export const RootRouter = () => {
       </AppHeader>
       <Divider />
       <Routes>
-        <Route path="example" element={<Example />} />
+        <Route path="/example" element={<Example />} />
         <Route
           path="/sign-in"
           element={
-            <Grid width="100%" height="100%">
+            <Grid width="100%" height="100%" justifyContent="center" alignItems="center">
               <SignIn />
             </Grid>
           }
@@ -59,5 +75,5 @@ export const RootRouter = () => {
         <Route path="/*" element={<UnauthedDashboard />} />
       </Routes>
     </Grid>
-  )
-}
+  );
+};
