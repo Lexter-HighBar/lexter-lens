@@ -11,22 +11,25 @@ import { Divider, Typography } from '@mui/material';
 
 export const RootRouter = () => {
   const auth = useAuth();
+  console.log(auth);
 
-  if (!auth.isLoaded)
+  if (!auth.isLoaded) {
     return (
       <Grid>
         <Spinner />
       </Grid>
     );
+  }
 
-  if (auth.error)
+  if (!auth.isSignedIn) {
     return (
       <Grid>
-        <Typography variant="h6">Authentication Error: {auth.error.message}</Typography>
+        <Typography variant="h6">You are not signed in. Please sign in to access the application.</Typography>
       </Grid>
     );
+  }
 
-  return auth.isSignedIn ? (
+  return (
     <Grid>
       <AppHeader>
         <Flex gap="3" align="end">
@@ -48,31 +51,6 @@ export const RootRouter = () => {
         />
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/*" element={<>Dashboard</>} />
-      </Routes>
-    </Grid>
-  ) : (
-    <Grid>
-      <AppHeader>
-        <Flex gap="3" align="end">
-          <Link to="/">
-            <Typography variant="h5">Lexter Lens</Typography>
-          </Link>
-          <Link to="/example">Example</Link>
-        </Flex>
-        <Link to="/sign-in">Sign In</Link>
-      </AppHeader>
-      <Divider />
-      <Routes>
-        <Route path="/example" element={<Example />} />
-        <Route
-          path="/sign-in"
-          element={
-            <Grid width="100%" height="100%" justifyContent="center" alignItems="center">
-              <SignIn />
-            </Grid>
-          }
-        />
-        <Route path="/*" element={<UnauthedDashboard />} />
       </Routes>
     </Grid>
   );
