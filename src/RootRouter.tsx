@@ -1,4 +1,4 @@
-import RequireAuth from './RequireAuth';
+import RequireAuth from './components/RequireAuth';
 import { SignIn, useAuth, UserButton } from '@clerk/clerk-react';
 import { Route, Routes } from 'react-router-dom';
 import { Flex, Grid, Spinner } from '@radix-ui/themes';
