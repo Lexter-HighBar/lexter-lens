@@ -19,12 +19,14 @@ const Settings = () => <div>Settings Page</div>;
 export const RootRouter = () => {
   const auth = useAuth();
   if (!auth.isLoaded) {
+
     return (
       <Grid>
         <Spinner />
       </Grid>
     );
   }
+
 
   return auth.isSignedIn ? (
     <Grid>
@@ -47,6 +49,7 @@ export const RootRouter = () => {
         <Route path="/settings" element={<Settings />} />
         <Route path="/error" element={<ErrorPage />} />
         <Route path="*" element={<Navigate to="/error" replace />} />
+
       </Routes>
     </Grid>
   ) : (
@@ -71,3 +74,4 @@ export const RootRouter = () => {
     </Grid>
   );
 };
+
