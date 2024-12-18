@@ -5,8 +5,10 @@ import { Typography } from '@mui/material'
 export const UnauthedDashboard = () => {
   return (
     <Page>
-      <Typography>You must be signed in to view this page</Typography>
+      <Typography>Please sign in to view this page.</Typography>
       <Link to="/sign-in">Sign In</Link>
+      <Link to="/sign-up">Sign Up</Link>
+
     </Page>
   )
 }
