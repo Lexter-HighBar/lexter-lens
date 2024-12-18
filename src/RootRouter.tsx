@@ -1,5 +1,5 @@
 import RequireAuth from './components/RequireAuth';
-import { SignIn, useAuth, UserButton } from '@clerk/clerk-react';
+import { SignIn, SignUp, useAuth, UserButton } from '@clerk/clerk-react';
 import { Route, Routes } from 'react-router-dom';
 import { Flex, Grid, Spinner } from '@radix-ui/themes';
 import { Lawyers } from './pages/Lawyers';
@@ -53,6 +53,7 @@ export const RootRouter = () => {
           <Link to="/example">Example</Link>
         </Flex>
         <Link to="/sign-in">Sign In</Link>
+        <Link to="/sign-up">Sign Up</Link>
       </AppHeader>
       <Divider />
       <Routes>
@@ -61,6 +62,12 @@ export const RootRouter = () => {
           path="/sign-in"
           element={            
               <SignIn />
+          }
+        />
+        <Route
+          path="/sign-up"
+          element={            
+              <SignUp />
           }
         />
         <Route path="/*" element={<UnauthedDashboard />} />
