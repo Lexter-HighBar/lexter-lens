@@ -1,13 +1,14 @@
 import RequireAuth from './components/RequireAuth';
-import { SignIn, SignUp, useAuth, UserButton } from '@clerk/clerk-react';
+import { SignUp, useAuth, UserButton } from '@clerk/clerk-react';
 import { Route, Routes } from 'react-router-dom';
-import { Flex, Grid, Spinner } from '@radix-ui/themes';
+import {  Grid, Spinner } from '@radix-ui/themes';
 import { Lawyers } from './pages/Lawyers';
 import { UnauthedDashboard } from './pages/UnauthedDashboard';
 import { Example } from './pages/Example';
-import { AppHeader } from './components/layout/AppHeader';
-import { Link } from './components/Link';
-import { Divider, Typography } from '@mui/material';
+
+import { Divider} from '@mui/material';
+import ResponsiveAppBar from './components/layout/ResponsiveAppBar';
+import Signin from './pages/Sign-in';
 
 export const RootRouter = () => {
   const auth = useAuth();
@@ -21,47 +22,29 @@ export const RootRouter = () => {
 
   return auth.isSignedIn ? (
     <Grid>
-      <AppHeader>
-        <Flex gap="3" align="end">
-          <Typography variant="h5">Lexter Lens</Typography>
-          <Link to="/">Dashboard</Link>
-          <Link to="/lawyers">Lawyers</Link>
-        </Flex>
-        <UserButton />
-      </AppHeader>
+      <ResponsiveAppBar/>
+      
+     
       <Divider />
       <Routes>
-        <Route
-          path="/lawyers"
-          element={
-            <RequireAuth>
-              <Lawyers />
-            </RequireAuth>
-          }
+        <Route path="/lawyers"  element={<RequireAuth><Lawyers /></RequireAuth> }
         />
-        <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/*" element={<>Dashboard</>} />
+        <Route path="/sign-in" element={<Signin/>} />
+        <Route path="/*" element={<Example/>} />
       </Routes>
     </Grid>
   ) : (
     <Grid>
-      <AppHeader>
-        <Flex gap="3" align="end">
-          <Link to="/">
-            <Typography variant="h5">Lexter Lens</Typography>
-          </Link>
-          <Link to="/example">Example</Link>
-        </Flex>
-        <Link to="/sign-in">Sign In</Link>
-        <Link to="/sign-up">Sign Up</Link>
-      </AppHeader>
+      <ResponsiveAppBar>
+       <UserButton />
+      </ResponsiveAppBar>
       <Divider />
       <Routes>
         <Route path="/example" element={<Example />} />
         <Route
           path="/sign-in"
           element={            
-              <SignIn />
+              <Signin />
           }
         />
         <Route
