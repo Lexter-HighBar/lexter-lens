@@ -1,45 +1,37 @@
-import React from 'react';
+// External library imports
 import { Route, Routes } from 'react-router-dom';
+import { SignUp, useAuth, UserButton } from '@clerk/clerk-react';
+import { Grid, Spinner } from '@radix-ui/themes';
+import { Divider } from '@mui/material';
 
-import { Flex, Grid, Spinner } from '@radix-ui/themes';
-import { Divider, Typography } from '@mui/material';
-
-import { SignIn, SignUp, useAuth, UserButton } from '@clerk/clerk-react';
-
+// Component imports
+import ResponsiveAppBar from './components/layout/ResponsiveAppBar';
 import RequireAuth from './components/RequireAuth';
 import FirmSearch from './components/FirmSearch';
-import { AppHeader } from './components/layout/AppHeader';
-import { Link } from './components/Link';
 
+// Page imports
 import { Lawyers } from './pages/Lawyers';
 import { UnauthedDashboard } from './pages/UnauthedDashboard';
 import { Example } from './pages/Example';
+import Signin from './pages/Sign-in';
 
+// RootRouter Component
+export const RootRouter = () => {
+  const auth = useAuth(); // Access Clerk authentication state
+  console.log(auth);
 
-
-
-export const RootRouter: React.FC = () => {
-  const auth = useAuth();
-
-  if (!auth.isLoaded) {
+  // Show a loading spinner while authentication state is loading
+  if (!auth.isLoaded)
     return (
       <Grid>
         <Spinner />
       </Grid>
     );
-  }
 
   return auth.isSignedIn ? (
+    // Authenticated user view
     <Grid>
-      {/* App Header */}
-      <AppHeader>
-        <Flex gap="3" align="end">
-          <Typography variant="h5">Lexter Lens</Typography>
-          <Link to="/">Dashboard</Link>
-          <Link to="/lawyers">Lawyers</Link>
-        </Flex>
-        <UserButton />
-      </AppHeader>
+      <ResponsiveAppBar />
       <Divider />
 
       {/* FirmSearch Component */}
@@ -49,29 +41,25 @@ export const RootRouter: React.FC = () => {
 
       {/* Routes */}
       <Routes>
-        <Route
-          path="/lawyers"
+        {/* Protected routes requiring authentication */}
+        <Route 
+          path="/lawyers" 
           element={
             <RequireAuth>
               <Lawyers />
             </RequireAuth>
-          }
+          } 
         />
+        <Route path="/sign-in" element={<Signin />} />
+        <Route path="/*" element={<Example />} />
       </Routes>
     </Grid>
   ) : (
+    // Unauthenticated user view
     <Grid>
-      {/* App Header */}
-      <AppHeader>
-        <Flex gap="3" align="end">
-          <Link to="/">
-            <Typography variant="h5">Lexter Lens</Typography>
-          </Link>
-          <Link to="/example">Example</Link>
-        </Flex>
-        <Link to="/sign-in">Sign In</Link>
-        <Link to="/sign-up">Sign Up</Link>
-      </AppHeader>
+      <ResponsiveAppBar>
+        <UserButton />
+      </ResponsiveAppBar>
       <Divider />
 
       {/* FirmSearch Component */}
@@ -81,8 +69,9 @@ export const RootRouter: React.FC = () => {
 
       {/* Routes */}
       <Routes>
+        {/* Public routes accessible without authentication */}
         <Route path="/example" element={<Example />} />
-        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/sign-in" element={<Signin />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/*" element={<UnauthedDashboard />} />
       </Routes>
