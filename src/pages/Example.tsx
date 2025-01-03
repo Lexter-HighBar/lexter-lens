@@ -10,7 +10,7 @@ export const Example = () => {
       <Button
         variant="outlined"
         // use material sx to customize material components in place (for unique cases)
-        sx={{ py: 20 }}
+        sx={{ py: 2 }}
         onClick={() => alert('Button clicked!')}
       >
         Click Me
