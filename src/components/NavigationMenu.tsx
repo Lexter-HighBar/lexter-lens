@@ -2,11 +2,8 @@ import * as React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import {
   Box,
-
   Drawer,
-
   IconButton,
-  Menu,
   MenuItem,
   Typography,
 } from '@mui/material'
@@ -19,12 +16,14 @@ interface NavigationMenuProps {
 
 const NavigationMenu: React.FC<NavigationMenuProps> = ({ pages }) => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
-  const location = useLocation() // Get the current location
+  const location = useLocation() // Get the current location to highlight the active link
 
+  // Open the mobile navigation menu
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget)
   }
 
+  // Close the mobile navigation menu
   const handleCloseNavMenu = () => {
     setAnchorElNav(null)
   }
@@ -52,13 +51,9 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({ pages }) => {
         </IconButton>
         <Drawer
           id="menu-appbar"
-        
-         
-          anchor='right'
-         
+          anchor="right"
           open={Boolean(anchorElNav)}
           onClose={handleCloseNavMenu}
-         
         >
           {pages.map(({ label, path }) => (
             <MenuItem key={label} onClick={handleCloseNavMenu}>
@@ -96,7 +91,7 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({ pages }) => {
                     component="span"
                     sx={{
                       padding: '.5em',
-                      fontWeight: location.pathname === path ? '800' : '350', 
+                      fontWeight: location.pathname === path ? '800' : '350', // Highlight current page
                       color: 'primary.contrastText',
                       transition: 'color 0.3s ease',
                       '&:hover': {
