@@ -23,4 +23,3 @@ GET
 /employers
 /job_offers
 /job_postings
-1
