@@ -14,6 +14,7 @@ import { UserButton } from '@clerk/clerk-react'
 const pages = [
   { label: 'Example', path: '/example' },
   { label: 'Lawyers', path: '/lawyers' },
+  { label: 'Discussion', path: '/discussion' },
 ]
 
 interface ResponsiveAppBarProps {
