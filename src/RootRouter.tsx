@@ -7,13 +7,13 @@ import { Divider } from '@mui/material';
 // Component imports
 import ResponsiveAppBar from './components/layout/ResponsiveAppBar';
 import RequireAuth from './components/RequireAuth';
-import FirmSearch from './components/FirmSearch';
 
 // Page imports
 import { Lawyers } from './pages/Lawyers';
 import { UnauthedDashboard } from './pages/UnauthedDashboard';
 import { Example } from './pages/Example';
 import Signin from './pages/Sign-in';
+import Home from './pages/Home';
 
 // RootRouter Component
 export const RootRouter = () => {
@@ -34,15 +34,18 @@ export const RootRouter = () => {
       <ResponsiveAppBar />
       <Divider />
 
-      {/* FirmSearch Component */}
-      <div style={{ margin: '20px 0' }}>
-        <FirmSearch />
-      </div>
-
       {/* Routes */}
       <Routes>
-        {/* Protected routes requiring authentication */}
+        {/* Protected rotes requiring authentication */}
         <Route 
+          path="/" 
+          element={
+            <RequireAuth>
+              <Home />
+            </RequireAuth>
+          } 
+        />
+      <Route 
           path="/lawyers" 
           element={
             <RequireAuth>
@@ -62,12 +65,7 @@ export const RootRouter = () => {
       </ResponsiveAppBar>
       <Divider />
 
-      {/* FirmSearch Component */}
-      <div style={{ margin: '20px 0' }}>
-        <FirmSearch />
-      </div>
-
-      {/* Routes */}
+    {/* Routes */}
       <Routes>
         {/* Public routes accessible without authentication */}
         <Route path="/example" element={<Example />} />

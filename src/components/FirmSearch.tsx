@@ -1,26 +1,43 @@
 import React from "react";
-import { TextField, InputAdornment, IconButton } from "@mui/material";
+import { TextField, InputAdornment, IconButton, Typography, Box } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
 const FirmSearch: React.FC = () => {
   return (
-    <div style={{ margin: "20px", maxWidth: "400px" }}>
-      <h2>Firm Search</h2>
-      <TextField
-        fullWidth
+    <Box
+    sx={{
+        margin: "20px auto",
+        maxWidth: "100%",
+        width: "50vw",
+        textAlign: "center",
+    }}
+    >
+    
+    <Typography 
+        variant="h6" 
+        sx={{ marginBottom: "10px", fontWeight: "bold" }}
+    >
+        Search for Law Firms
+    </Typography>
+
+    {/* <TextField fullWidth label="Type the name of the law firm:" /> */}
+
+    <TextField
+        fullWidth={true}
         variant="outlined"
-        placeholder="Look up law firm here"
+        label="Type the name of the law firm here..."
         InputProps={{
-          endAdornment: (
+        endAdornment: (
             <InputAdornment position="end">
-              <IconButton>
+            <IconButton>
                 <SearchIcon />
-              </IconButton>
+            </IconButton>
             </InputAdornment>
-          ),
+        ),
         }}
-      />
-    </div>
+    />
+    
+    </Box>
   );
 };
 
