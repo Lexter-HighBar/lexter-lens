@@ -1,12 +1,15 @@
-import { Card } from "@radix-ui/themes"
 import { Page } from "../components/layout/Page"
+import FirmSearch from "../components/FirmSearch";
 
 
 const Home = () => {
   return (
     <Page>
-        <Card>Home</Card>
-        </Page>
+        {/* FirmSearch Component */}
+        <div style={{ margin: '20px 0' }}>
+            <FirmSearch />
+        </div>
+    </Page>
   )
 }
 

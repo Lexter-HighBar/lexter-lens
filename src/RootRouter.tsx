@@ -13,7 +13,11 @@ import { Lawyers } from './pages/Lawyers';
 import { UnauthedDashboard } from './pages/UnauthedDashboard';
 import { Example } from './pages/Example';
 import Signin from './pages/Sign-in';
+
+import Home from './pages/Home';
+
 import Discussion from './pages/Discussion';
+
 
 // RootRouter Component
 export const RootRouter = () => {
@@ -33,9 +37,19 @@ export const RootRouter = () => {
     <Grid>
       <ResponsiveAppBar />
       <Divider />
+
+      {/* Routes */}
       <Routes>
-        {/* Protected routes requiring authentication */}
+        {/* Protected rotes requiring authentication */}
         <Route 
+          path="/" 
+          element={
+            <RequireAuth>
+              <Home />
+            </RequireAuth>
+          } 
+        />
+      <Route 
           path="/lawyers" 
           element={
             <RequireAuth>
@@ -55,6 +69,8 @@ export const RootRouter = () => {
         <UserButton />
       </ResponsiveAppBar>
       <Divider />
+
+    {/* Routes */}
       <Routes>
         {/* Public routes accessible without authentication */}
         <Route path="/example" element={<Example />} />
