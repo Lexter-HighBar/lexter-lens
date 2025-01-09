@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 interface LogoImgProps {
   variant?: 'Dark' | 'Light'; 
-  Size? : string | number | undefined
+  Size? :  number 
 }
 
 export const LogoImg: React.FC<LogoImgProps> = ({ variant = 'Light' , Size = 25 }) => {

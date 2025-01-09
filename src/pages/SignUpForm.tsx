@@ -1,15 +1,30 @@
 import { useState, ChangeEvent } from 'react';
 import { useSignUp } from '@clerk/clerk-react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, IconButton, Box } from '@mui/material';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Button,
+  IconButton,
+  Box
+} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { LogoImg } from '../components/LogoImg';
+
+interface SignUpForm {
+  email: string;
+  name: string;
+  verificationCode?: string
+}
 
 // SignUpForm component for handling the multi-step sign-up process
 function SignUpForm() {
   const { signUp, setActive } = useSignUp(); // Clerk's sign-up hook
   const [open, setOpen] = useState<boolean>(true); // Dialog open state
   const [step, setStep] = useState<number>(1); // Current step in the sign-up process
-  const [formData, setFormData] = useState<{ email: string; name: string; verificationCode?: string }>({
+  const [formData, setFormData] = useState<SignUpForm>({
     email: '',
     name: '',
     verificationCode: '',
@@ -38,7 +53,6 @@ function SignUpForm() {
           password: (document.querySelector('input[name="password"]') as HTMLInputElement).value,
         });
         await signUp.prepareEmailAddressVerification();
-        console.log('Verification email sent');
         handleNextStep();
       }
     } catch (error) {
@@ -51,14 +65,11 @@ function SignUpForm() {
     if (signUp && formData.verificationCode) {
       try {
         const code = formData.verificationCode;
-         {
+        {
           await signUp.attemptEmailAddressVerification({ code });
         }
         if (signUp.status === 'complete') {
-          console.log('Email verified');
-          handleNextStep();
-        } else {
-          console.log('Email not verified yet');
+          handleNextStep()
         }
       } catch (error) {
         console.error('Error verifying email:', error);
@@ -69,7 +80,6 @@ function SignUpForm() {
   // Placeholder for additional steps
   const handleSubmitStep2 = async () => {
     try {
-      console.log('Name updated');
       handleNextStep();
     } catch (error) {
       console.error('Error during step 2:', error);
@@ -78,16 +88,13 @@ function SignUpForm() {
 
   // Completes the sign-up process and sets the active session
   const handleCompleteSignUp = async () => {
-    if (signUp && signUp.createdSessionId) {
+    if (signUp && signUp.createdSessionId)
       try {
         setActive({ session: signUp.createdSessionId });
-        console.log('User signed up and session created');
+        setOpen(false);
       } catch (error) {
         console.error('Error setting active session:', error);
       }
-    } else {
-      console.error('Sign-up object or session ID is not available');
-    }
   };
 
   // Advances to the next step
@@ -101,7 +108,7 @@ function SignUpForm() {
   };
 
   return (
-    <Dialog fullWidth={true} open={open} onClose={() => {}}>
+    <Dialog fullWidth={true} open={open} onClose={() => { }}>
       <Box component="section" sx={{ p: 4, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
         <LogoImg Size={60} variant="Dark" />
       </Box>
