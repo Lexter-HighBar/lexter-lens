@@ -6,9 +6,11 @@ import Toolbar from '@mui/material/Toolbar'
 import Container from '@mui/material/Container'
 
 import { LogoImg } from '../LogoImg'
-import NavigationMenu from '../NavigationMenu' 
+import NavigationMenu from '../NavigationMenu'
+import SearchBar from '../SearchBar'
 
 import { UserButton } from '@clerk/clerk-react'
+
 
 // Define the navigation menu items
 const pages = [
@@ -59,6 +61,10 @@ function ResponsiveAppBar({ children }: ResponsiveAppBarProps) {
             }}
           >
             <LogoImg />
+          </Box>
+          
+          <Box>
+            <SearchBar/>          
           </Box>
 
           {/* Display user button */}
