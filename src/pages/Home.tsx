@@ -5,7 +5,7 @@ import { Page } from "../components/layout/Page"
 const Home = () => {
   return (
     <Page>
-        <Card>Home</Card>
+        <Card></Card>
         </Page>
   )
 }
