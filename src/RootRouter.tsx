@@ -1,6 +1,6 @@
 // External library imports
 import { Route, Routes } from 'react-router-dom';
-import { SignUp, useAuth, UserButton } from '@clerk/clerk-react';
+import {  useAuth, UserButton } from '@clerk/clerk-react';
 import { Grid, Spinner } from '@radix-ui/themes';
 import { Divider } from '@mui/material';
 
@@ -13,10 +13,9 @@ import { Lawyers } from './pages/Lawyers';
 import { UnauthedDashboard } from './pages/UnauthedDashboard';
 import { Example } from './pages/Example';
 import Signin from './pages/Sign-in';
-
 import Home from './pages/Home';
-
 import Discussion from './pages/Discussion';
+import SignUpForm from './pages/SignUpForm';
 
 
 // RootRouter Component
@@ -69,13 +68,12 @@ export const RootRouter = () => {
         <UserButton />
       </ResponsiveAppBar>
       <Divider />
-
     {/* Routes */}
       <Routes>
         {/* Public routes accessible without authentication */}
         <Route path="/example" element={<Example />} />
         <Route path="/sign-in" element={<Signin />} />
-        <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/sign-up" element={<SignUpForm />} />
         <Route path="/*" element={<UnauthedDashboard />} />
       </Routes>
     </Grid>
