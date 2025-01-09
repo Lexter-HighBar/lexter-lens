@@ -13,7 +13,6 @@ import { Lawyers } from './pages/Lawyers';
 import { UnauthedDashboard } from './pages/UnauthedDashboard';
 import Home from './pages/Home';
 import Signin from './pages/Sign-in';
-import Home from './pages/Home';
 import Discussion from './pages/Discussion';
 import SignUpForm from './pages/SignUpForm';
 
