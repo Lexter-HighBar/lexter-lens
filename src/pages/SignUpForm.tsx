@@ -48,10 +48,10 @@ function SignUpForm() {
 
   // Handles email verification
   const handleVerifyEmail = async () => {
-    if (signUp) {
+    if (signUp && formData.verificationCode) {
       try {
         const code = formData.verificationCode;
-        if (code) {
+         {
           await signUp.attemptEmailAddressVerification({ code });
         }
         if (signUp.status === 'complete') {
