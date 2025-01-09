@@ -44,7 +44,7 @@ export const RootRouter = () => {
           } 
         />
         <Route path="/sign-in" element={<Signin />} />
-        <Route path="/" element={<Home />} />
+        <Route path="/*" element={<Home />} />
         <Route path="/discussion" element={<Discussion />} />
       </Routes>
     </Grid>
@@ -57,7 +57,6 @@ export const RootRouter = () => {
       <Divider />
       <Routes>
         {/* Public routes accessible without authentication */}
-        <Route path="/" element={<Home />} />
         <Route path="/sign-in" element={<Signin />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/*" element={<UnauthedDashboard />} />
