@@ -11,7 +11,7 @@ import RequireAuth from './components/RequireAuth';
 // Page imports
 import { Lawyers } from './pages/Lawyers';
 import { UnauthedDashboard } from './pages/UnauthedDashboard';
-import { Example } from './pages/Example';
+import Home from './pages/Home';
 import Signin from './pages/Sign-in';
 import Home from './pages/Home';
 import Discussion from './pages/Discussion';
@@ -57,7 +57,7 @@ export const RootRouter = () => {
           } 
         />
         <Route path="/sign-in" element={<Signin />} />
-        <Route path="/*" element={<Example />} />
+        <Route path="/*" element={<Home />} />
         <Route path="/discussion" element={<Discussion />} />
       </Routes>
     </Grid>
@@ -71,7 +71,6 @@ export const RootRouter = () => {
     {/* Routes */}
       <Routes>
         {/* Public routes accessible without authentication */}
-        <Route path="/example" element={<Example />} />
         <Route path="/sign-in" element={<Signin />} />
         <Route path="/sign-up" element={<SignUpForm />} />
         <Route path="/*" element={<UnauthedDashboard />} />
