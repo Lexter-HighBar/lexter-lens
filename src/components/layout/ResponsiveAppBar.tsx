@@ -12,7 +12,7 @@ import { UserButton } from '@clerk/clerk-react'
 
 // Define the navigation menu items
 const pages = [
-  { label: 'Example', path: '/example' },
+  { label: 'Home', path: '/' },
   { label: 'Lawyers', path: '/lawyers' },
   { label: 'Discussion', path: '/discussion' },
 ]
