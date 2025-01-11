@@ -9,6 +9,8 @@ import {
   IconButton,
   Box,
   Divider,
+  Link,
+  Typography,
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import { LogoImg } from './LogoImg'
@@ -144,9 +146,9 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
         )}
       </DialogContent>
       <DialogActions>
-        {step > 1 && <Button onClick={handlePreviousStep}>Step: {step-1}/3</Button>}
-        {step < 4 && <Button onClick={handleNextStep}>Next</Button>}
-        {step === 4 && <Button onClick={handleClose}>Complete Sign-Up</Button>}
+        {step > 1 && <Link onClick={handlePreviousStep} ><Typography sx={{fontWeight: 'light'}}>Step: {step-1}/3</Typography></Link>}
+        {step < 4 && <Button sx={{fontWeight: 'bold'}} onClick={handleNextStep}>Next</Button>}
+        {step === 4 && <Button  sx={{fontWeight: 'bold'}} onClick={handleClose}>Complete Sign-Up</Button>}
       </DialogActions>
     </Dialog>
   )
