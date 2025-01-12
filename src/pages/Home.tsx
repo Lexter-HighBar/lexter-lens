@@ -1,5 +1,5 @@
 import { Page } from "../components/layout/Page";
-import { Typography, Button, Card, Grid, Box } from "@mui/material";
+import { Typography, Button, Paper, Grid, Box } from "@mui/material";
 import { Link } from "react-router-dom";
 import FirmSearch from "../components/FirmSearch";
 
@@ -29,10 +29,10 @@ const Home = () => {
             See All Insights
           </Button>
         </Grid>
-        <Card sx={{ padding: 4, marginTop: 4, minHeight: '300px' }}>
+        <Paper sx={{ padding: 4, marginTop: 4, minHeight: '300px' }}>
           {/* Placeholder content for Relevant Insights */}
           <Typography>Placeholder for Relevant Insights content.</Typography>
-        </Card>
+        </Paper>
       </Box>
 
       {/* Trending Insights section */}
@@ -48,10 +48,10 @@ const Home = () => {
             See All Insights
           </Button>
         </Grid>
-        <Card sx={{ padding: 4, marginTop: 4, minHeight: '300px' }}>
+        <Paper sx={{ padding: 4, marginTop: 4, minHeight: '300px' }}>
           {/* Placeholder content for Trending Insights */}
           <Typography>Placeholder for Trending Insights content.</Typography>
-        </Card>
+        </Paper>
       </Box>
     </Page>
   );
