@@ -1,12 +1,18 @@
 import { Page } from "../components/layout/Page"
 
 
-const Home = () => {
+const Home: React.FC = () => {
+  const [isFirstSignIn, setIsFirstSignIn] = useState<boolean>(true);
+
+  const handleTestClick = () => {
+    setIsFirstSignIn(true);
+  };
+
   return (
     <Page>
-        
-    </Page>
-  )
-}
 
-export default Home
+    </Page>
+  );
+};
+
+export default Home;

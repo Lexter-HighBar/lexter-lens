@@ -7,8 +7,6 @@ export const UnauthedDashboard = () => {
     <Page>
       <Typography>Please sign in to view this page.</Typography>
       <Link to="/sign-in">Sign In</Link>
-      <Link to="/sign-up">Sign Up</Link>
-
-    </Page>
+      </Page>
   )
 }
