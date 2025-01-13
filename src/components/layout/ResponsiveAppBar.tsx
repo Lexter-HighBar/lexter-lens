@@ -6,8 +6,7 @@ import Toolbar from '@mui/material/Toolbar'
 import Container from '@mui/material/Container'
 
 import { LogoImg } from '../LogoImg'
-import NavigationMenu from '../NavigationMenu'
-import SearchBar from '../SearchBar'
+import NavigationMenu from '../NavigationMenu' 
 
 import { UserButton } from '@clerk/clerk-react'
 
@@ -27,16 +26,26 @@ function ResponsiveAppBar({ children }: ResponsiveAppBarProps) {
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
-        <Toolbar sx={{ justifyContent: 'flex-end', flexDirection: { xs: 'row', md: 'row' } }}>
+        <Toolbar sx={{ justifyContent: 'flex-end', flexDirection: { xs: 'row-reverse', md: 'row' } }}>
           {/* Display logo and navigation menu on medium and larger screens */}
           <Box
             sx={{
               flexGrow: 1,
               display: { xs: 'none', md: 'flex' },
-              alignItems: 'left',
+              alignItems: 'center',
             }}
           >
             <LogoImg />
+            <NavigationMenu pages={pages} />
+          </Box>
+
+          {/* Display navigation menu on small screens */}
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: 'flex', md: 'none' },
+            }}
+          >
             <NavigationMenu pages={pages} />
           </Box>
 
@@ -46,26 +55,10 @@ function ResponsiveAppBar({ children }: ResponsiveAppBarProps) {
               flexGrow: 1,
               display: { xs: 'flex', md: 'none' },
               alignItems: 'center',
-              justifyContent: 'flex-start', // Align logo to the left
+              flexDirection: 'row-reverse',
             }}
           >
             <LogoImg />
-          </Box>
-
-          {/* Display navigation menu (hamburger) on small screens */}
-          <Box
-            sx={{
-              flexGrow: 0,
-              display: { xs: 'flex', md: 'none' },
-              justifyContent: 'flex-end', // Align to the right
-              order: 2, // Ensure it is the last element
-            }}
-          >
-            <NavigationMenu pages={pages} />
-          </Box>
-
-          <Box sx={{ margin: '0 1.5em' }}>
-            <SearchBar />
           </Box>
 
           {/* Display user button */}
