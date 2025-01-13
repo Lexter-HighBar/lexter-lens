@@ -1,16 +1,27 @@
 import { Page } from "../components/layout/Page";
-import { Typography, Button, Paper, Grid, Box } from "@mui/material";
+import { Typography, 
+        Button, 
+        Paper, 
+        Grid, 
+        Box } from "@mui/material";
 import { Link } from "react-router-dom";
-import FirmSearch from "../components/FirmSearch";
+import FirstSigninFlow from "../components/FirstSigninFlow";
+import { useState } from "react";
 
-const Home = () => {
+
+const Home: React.FC = () => {
+  // State to track if it's the first sign-in
+  const [isFirstSignIn, setIsFirstSignIn] = useState<boolean>(true);
+
+  // Function to handle resetting first sign-in status
+  const handleTestClick = () => {
+    setIsFirstSignIn(true);
+  };
+
   return (
     <Page sx={{ minHeight: '100vh', height: 'auto' }}>
-      {/* FirmSearch Component at the top */}
-      <Box sx={{ margin: '20px auto', maxWidth: '985px', width: '90dvw' }}>
-        <FirmSearch />
-      </Box>
-
+    <FirstSigninFlow isFirstSignIn={isFirstSignIn} setIsFirstSignIn={setIsFirstSignIn} />
+    <Button onClick={handleTestClick}>Test</Button>
       {/* Welcome message */}
       <Typography variant="h4" gutterBottom>
         Welcome to Lexter Lens, we are so glad to have you here.
@@ -56,5 +67,6 @@ const Home = () => {
     </Page>
   );
 };
+
 
 export default Home;
