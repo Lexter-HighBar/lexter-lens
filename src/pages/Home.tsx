@@ -7,7 +7,7 @@ const Home = () => {
   return (
     <Page sx={{ minHeight: '100vh', height: 'auto' }}>
       {/* FirmSearch Component at the top */}
-      <Box sx={{ margin: '20px auto', maxWidth: '100%', width: '50vw' }}>
+      <Box sx={{ margin: '20px auto', maxWidth: '985px', width: '90dvw' }}>
         <FirmSearch />
       </Box>
 
@@ -17,7 +17,7 @@ const Home = () => {
       </Typography>
 
       {/* Relevant Insights section */}
-      <Box mb={4} sx={{ margin: '0 auto', maxWidth: '100%', width: '50vw' }}>
+      <Box sx={{ my: 4, maxWidth: '985px', width: '90dvw', margin: '0 auto' }}>
         <Grid container alignItems="center" justifyContent="space-between">
           <Typography variant="h5">Relevant Insights</Typography>
           <Button
@@ -36,7 +36,7 @@ const Home = () => {
       </Box>
 
       {/* Trending Insights section */}
-      <Box mb={4} sx={{ margin: '0 auto', maxWidth: '100%', width: '50vw' }}>
+      <Box sx={{ my: 4, maxWidth: '985px', width: '90dvw', margin: '0 auto' }}>
         <Grid container alignItems="center" justifyContent="space-between">
           <Typography variant="h5">Trending Insights</Typography>
           <Button
