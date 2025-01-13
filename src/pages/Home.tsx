@@ -1,7 +1,13 @@
-import { Button } from "@mui/material";
+import { Page } from "../components/layout/Page";
+import { Typography, 
+        Button, 
+        Paper, 
+        Grid, 
+        Box } from "@mui/material";
+import { Link } from "react-router-dom";
 import FirstSigninFlow from "../components/FirstSigninFlow";
-import { Page } from "../components/layout/Page"
 import { useState } from "react";
+
 
 const Home: React.FC = () => {
   // State to track if it's the first sign-in
@@ -11,12 +17,56 @@ const Home: React.FC = () => {
   const handleTestClick = () => {
     setIsFirstSignIn(true);
   };
+
   return (
-    <Page>
-      <FirstSigninFlow isFirstSignIn={isFirstSignIn} setIsFirstSignIn={setIsFirstSignIn} />
-      <Button onClick={handleTestClick}>Test</Button>
+    <Page sx={{ minHeight: '100vh', height: 'auto' }}>
+    <FirstSigninFlow isFirstSignIn={isFirstSignIn} setIsFirstSignIn={setIsFirstSignIn} />
+    <Button onClick={handleTestClick}>Test</Button>
+      {/* Welcome message */}
+      <Typography variant="h4" gutterBottom>
+        Welcome to Lexter Lens, we are so glad to have you here.
+      </Typography>
+
+      {/* Relevant Insights section */}
+      <Box sx={{ my: 4, maxWidth: '985px', width: '90dvw', margin: '0 auto' }}>
+        <Grid container alignItems="center" justifyContent="space-between">
+          <Typography variant="h5">Relevant Insights</Typography>
+          <Button
+            component={Link}
+            to="/discussion"
+            variant="outlined"
+            color="primary"
+          >
+            See All Insights
+          </Button>
+        </Grid>
+        <Paper sx={{ padding: 4, marginTop: 4, minHeight: '300px' }}>
+          {/* Placeholder content for Relevant Insights */}
+          <Typography>Placeholder for Relevant Insights content.</Typography>
+        </Paper>
+      </Box>
+
+      {/* Trending Insights section */}
+      <Box sx={{ my: 4, maxWidth: '985px', width: '90dvw', margin: '0 auto' }}>
+        <Grid container alignItems="center" justifyContent="space-between">
+          <Typography variant="h5">Trending Insights</Typography>
+          <Button
+            component={Link}
+            to="/discussion"
+            variant="outlined"
+            color="primary"
+          >
+            See All Insights
+          </Button>
+        </Grid>
+        <Paper sx={{ padding: 4, marginTop: 4, minHeight: '300px' }}>
+          {/* Placeholder content for Trending Insights */}
+          <Typography>Placeholder for Trending Insights content.</Typography>
+        </Paper>
+      </Box>
     </Page>
   );
 };
+
 
 export default Home;
