@@ -2,8 +2,8 @@ import { Page } from "../components/layout/Page";
 import { Typography, 
         Button, 
         Paper, 
-        Grid, 
         Box } from "@mui/material";
+import Grid from '@mui/material/Grid2';
 import { Link } from "react-router-dom";
 import FirstSigninFlow from "../components/FirstSigninFlow";
 import { useState } from "react";
