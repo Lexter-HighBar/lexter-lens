@@ -1,4 +1,7 @@
+import { Button } from "@mui/material";
+import FirstSigninFlow from "../components/FirstSigninFlow";
 import { Page } from "../components/layout/Page"
+import { useState } from "react";
 
 
 const Home: React.FC = () => {
@@ -12,7 +15,8 @@ const Home: React.FC = () => {
 
   return (
     <Page>
-
+      <FirstSigninFlow isFirstSignIn={isFirstSignIn} setIsFirstSignIn={setIsFirstSignIn} />
+      <Button onClick={handleTestClick}>Test</Button>
     </Page>
   );
 };
