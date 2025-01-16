@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Card,
   Typography,
@@ -61,28 +61,28 @@ export const Discussion = () => {
   ]);
 
   // State for the current filter type
-  const [filter, setFilter] = useState('newest');
+  const [filter, setFilter] = useState<string | null>('newest');
 
   // State for the currently selected tag filter
   const [selectedTag, setSelectedTag] = useState<string | null>('All');
 
   // State to manage the visibility of the post details dialog
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
   // State to store the currently selected post
   const [currentPost, setCurrentPost] = useState<Post | null>(null);
 
   // State to manage the content of a new comment
-  const [popupComment, setPopupComment] = useState('');
+  const [popupComment, setPopupComment] = useState<string | null>('');
 
   // State to manage the content of replies for each comment
-  const [replyInputs, setReplyInputs] = useState<{ [key: number]: string }>({});
+  const [replyInputs, setReplyInputs] = useState<{ [key: number]: boolean | string }>({});
 
   // State to manage the visibility of the "create post" dialog
-  const [isPostDialogOpen, setIsPostDialogOpen] = useState(false);
+  const [isPostDialogOpen, setIsPostDialogOpen] = useState<boolean>(false);
 
   // State to manage the content of a new post
-  const [newPostContent, setNewPostContent] = useState('');
+  const [newPostContent, setNewPostContent] = useState<string | null>('');
 
   // Function to filter posts by tag
   const handleTagFilter = (tag: string) => {
@@ -103,7 +103,7 @@ export const Discussion = () => {
 
   // Function to add a new comment to the current post
   const handleAddPopupComment = () => {
-    if (popupComment.trim() && currentPost) {
+    if (popupComment?.trim() && currentPost) {
       setPosts((prevPosts) =>
         prevPosts.map((post) =>
           post === currentPost
@@ -128,6 +128,7 @@ export const Discussion = () => {
 
   // Function to add a reply to a specific comment
   const handleAddReply = (commentIndex: number) => {
+    if (typeof replyInputs[commentIndex] === 'string')
     if (currentPost && replyInputs[commentIndex]?.trim()) {
       const newReply: Comment = {
         user: 'Anonymous',
@@ -171,7 +172,7 @@ export const Discussion = () => {
 
   // Function to add a new post to the discussion
   const handleAddNewPost = () => {
-    if (newPostContent.trim()) {
+    if (newPostContent?.trim()) {
       const newPost: Post = {
         user: 'Anonymous',
         date: new Date().toISOString(),
@@ -305,7 +306,8 @@ export const Discussion = () => {
                   onClick={() =>
                     setReplyInputs((prev) => ({
                       ...prev,
-                      [index]: prev[index] !== undefined ? undefined : '',
+                      // Toggle the boolean value for the corresponding comment index
+                      [index]: !prev[index],  // Simple and clear toggle
                     }))
                   }
                 >
