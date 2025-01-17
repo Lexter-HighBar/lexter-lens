@@ -23,12 +23,13 @@ const Home: React.FC = () => {
     <FirstSigninFlow isFirstSignIn={isFirstSignIn} setIsFirstSignIn={setIsFirstSignIn} />
     <Button onClick={handleTestClick}>Test</Button>
       {/* Welcome message */}
+      <Box>
       <Typography variant="h4" gutterBottom>
         Welcome to Lexter Lens, we are so glad to have you here.
       </Typography>
 
       {/* Relevant Insights section */}
-      <Box sx={{ my: 4, maxWidth: '985px', width: '90dvw', margin: '0 auto' }}>
+      <Box sx={{ my: '0', maxWidth: '985px', width: '90dvw', margin: 'auto' }}>
         <Grid container alignItems="center" justifyContent="space-between">
           <Typography variant="h5">Relevant Insights</Typography>
           <Button
@@ -63,6 +64,7 @@ const Home: React.FC = () => {
           {/* Placeholder content for Trending Insights */}
           <Typography>Placeholder for Trending Insights content.</Typography>
         </Paper>
+      </Box>
       </Box>
     </Page>
   );
