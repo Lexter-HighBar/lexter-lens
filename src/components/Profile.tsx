@@ -118,7 +118,6 @@ const UpdateUserName = () => {
               sx={{ maxWidth: '200px' }}
               label="Phone Number"
               value="(587) 203-2014"
-              onChange={(e) => setName(e.target.value)}
               margin="normal"
             />
           </Box>
