@@ -70,7 +70,7 @@ function ResponsiveAppBar({ children }: ResponsiveAppBarProps) {
 
           {/* Display user button */}
           <Box>
-            <UserButton />
+          <UserButton userProfileUrl="/profile" userProfileMode="navigation" />
           </Box>
         </Toolbar>
 

@@ -15,6 +15,7 @@ import Home from './pages/Home';
 import Signin from './pages/Sign-in';
 import Discussion from './pages/Discussion';
 import SignUpForm from './pages/SignUpForm';
+import ProfilePage from './components/Profile';
 
 
 // RootRouter Component
@@ -32,7 +33,7 @@ export const RootRouter = () => {
 
   return auth.isSignedIn ? (
     // Authenticated user view
-    <Grid>
+    <>
       <ResponsiveAppBar />
       <Divider />
 
@@ -58,11 +59,12 @@ export const RootRouter = () => {
         <Route path="/sign-in" element={<Signin />} />
         <Route path="/*" element={<Home />} />
         <Route path="/discussion" element={<Discussion />} />
+        <Route path="/profile*" element={<ProfilePage />} />
       </Routes>
-    </Grid>
+    </>
   ) : (
     // Unauthenticated user view
-    <Grid>
+    <>
       <ResponsiveAppBar>
         <UserButton />
       </ResponsiveAppBar>
@@ -73,7 +75,8 @@ export const RootRouter = () => {
         <Route path="/sign-in" element={<Signin />} />
         <Route path="/sign-up" element={<SignUpForm />} />
         <Route path="/*" element={<UnauthedDashboard />} />
+        
       </Routes>
-    </Grid>
+    </>
   );
 };
