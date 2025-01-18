@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react'
-import {
+import React, { useState, useEffect } from 'react'import {
   Dialog,
   DialogTitle,
   DialogContent,
@@ -12,7 +11,6 @@ import {
   Typography,
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
-
 import { LogoImg } from './LogoImg'
 import { useLawyer } from '../lib/contexts/LawyerContext'
 
@@ -27,6 +25,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
 }) => {
   const { email, firstName, userName, phone, handleUpdateUser, handleChange } =
     useLawyer()
+
   const [step, setStep] = useState<number>(1)
   const [formData, setFormData] = useState({
     email,
@@ -44,7 +43,6 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
   }, [email, firstName, userName, phone])
   console.log(formData)
   const handleClose = () => setIsFirstSignIn(false)
-
   const handleNextStep = () => setStep((prevStep) => prevStep + 1)
   const handlePreviousStep = () => setStep((prevStep) => prevStep - 1)
 
@@ -149,6 +147,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
           </Button>
         )}
         {step === 4 && (
+
           <Button sx={{ fontWeight: 'bold' }} onClick={() => {
             handleUpdateUser(); 
             handleClose(); 

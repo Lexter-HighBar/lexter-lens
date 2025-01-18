@@ -27,6 +27,7 @@ import {
   
   export const LawyerProvider = ({ children }: Props) => {
     const { user, isLoaded } = useUser();
+
     const [lawyerData, setLawyerData] = useState<LawyerContextType>({
       email: '', // set initial empty string to display something while loading
       firstName: '', // set initial empty string or some placeholder value
@@ -40,6 +41,7 @@ import {
   
     useEffect(() => {
       if (isLoaded && user) {
+
         const firstName = user.unsafeMetadata.firstName as string | undefined;
         const userName = user.unsafeMetadata.userName as string | undefined;
         const phone = user.unsafeMetadata.phone as string | undefined;
@@ -101,4 +103,3 @@ import {
     }
     return context;
   };
-  
