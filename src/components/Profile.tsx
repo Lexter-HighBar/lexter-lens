@@ -89,8 +89,8 @@ const UpdateUserName = () => {
               <RiEdit2Fill />
             </Box>
             <Grid>
-              <Typography variant="h6"> {formData.userName}</Typography>
-              <Typography variant="body2">{formData.email}</Typography>
+              <Typography variant="h6"> {userName}</Typography>
+              <Typography variant="body2">{email}</Typography>
             </Grid>
           </Grid>
         </Box>
