@@ -1,5 +1,4 @@
-import React, { useState, ChangeEvent, useEffect } from 'react'
-import {
+import React, { useState, useEffect } from 'react'import {
   Dialog,
   DialogTitle,
   DialogContent,
@@ -12,8 +11,6 @@ import {
   Typography,
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
-import { useUser } from '@clerk/clerk-react'
-
 import { LogoImg } from './LogoImg'
 import { useLawyer } from '../lib/contexts/LawyerContext'
 
@@ -26,8 +23,9 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
   isFirstSignIn,
   setIsFirstSignIn,
 }) => {
-  const { user } = useUser()
-  const { email, firstName, userName, phone } = useLawyer()
+  const { email, firstName, userName, phone, handleUpdateUser, handleChange } =
+    useLawyer()
+
   const [step, setStep] = useState<number>(1)
   const [formData, setFormData] = useState({
     email,
@@ -45,35 +43,8 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
   }, [email, firstName, userName, phone])
   console.log(formData)
   const handleClose = () => setIsFirstSignIn(false)
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }))
-  }
-
   const handleNextStep = () => setStep((prevStep) => prevStep + 1)
   const handlePreviousStep = () => setStep((prevStep) => prevStep - 1)
-
-  const handleUpdateUser = async () => {
-    if (user) {
-      try {
-        await user.update({
-          unsafeMetadata: {
-            ...user.unsafeMetadata,
-            firstName: formData.firstName,
-            userName: formData.userName,
-            phone: formData.phone,
-          },
-        })
-      } catch (error) {
-        console.error('Error updating user information:', error)
-      }
-      handleClose()
-    }
-  }
 
   return (
     <Dialog fullWidth open={isFirstSignIn} onClose={handleClose}>
@@ -176,7 +147,11 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
           </Button>
         )}
         {step === 4 && (
-          <Button sx={{ fontWeight: 'bold' }} onClick={handleUpdateUser}>
+
+          <Button sx={{ fontWeight: 'bold' }} onClick={() => {
+            handleUpdateUser(); 
+            handleClose(); 
+          }}>
             Complete Sign-Up
           </Button>
         )}
