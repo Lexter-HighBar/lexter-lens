@@ -12,53 +12,54 @@ import {
 import { useState, useEffect } from 'react'
 import Grid from '@mui/material/Grid2'
 import { RiEdit2Fill } from 'react-icons/ri'
+import { useLawyer } from '../lib/contexts/LawyerContext'
 
 const UpdateUserName = () => {
-  const { user } = useUser()
-  const [name, setName] = useState<string>('')
+  const { email, firstName, userName, phone } = useLawyer() // Getting data from context
   const [loading, setLoading] = useState<boolean>(false)
   const [openSnackbar, setOpenSnackbar] = useState<boolean>(false)
   const [snackbarMessage, setSnackbarMessage] = useState<string>('')
-  const [initialName, setInitialName] = useState<string>('')
-  const userEmail = user?.emailAddresses?.[0].emailAddress || 'Unknown'
-
-  // Load the initial name from user metadata when the user object is ready
+  const [formData, setFormData] = useState({
+    email,
+    firstName,
+    userName,
+    phone,
+  })
+  const { user } = useUser()
+  // Set initial data when user context changes
   useEffect(() => {
-    if (user && typeof user.unsafeMetadata?.name === 'string') {
-      setName(user.unsafeMetadata.name)
-      setInitialName(user.unsafeMetadata.name)
-    } else {
-      setName('')
-    }
-  }, [user])
+    setFormData({
+      email,
+      firstName: firstName || '',
+      userName: userName || '',
+      phone: phone || '',
+    })
+  }, [email, firstName, userName, phone])
 
   const handleUpdateName = async () => {
-    if (!name) {
+    if (!formData.userName) {
       setSnackbarMessage('Name cannot be empty')
-      // setSnackbarSeverity('error')
       setOpenSnackbar(true)
       return
     }
 
     setLoading(true)
-    if (user)
-      try {
+    try {
+      if (user)
         await user.update({
           unsafeMetadata: {
             ...user.unsafeMetadata,
-            name,
+            userName: formData.userName,
           },
         })
-        setSnackbarMessage('Name updated successfully')
-        // setSnackbarSeverity('success')
-      } catch (error) {
-        console.error('Error updating name:', error)
-        setSnackbarMessage('Failed to update name')
-        // setSnackbarSeverity('error')
-      } finally {
-        setLoading(false)
-        setOpenSnackbar(true)
-      }
+      setSnackbarMessage('Name updated successfully')
+    } catch (error) {
+      console.error('Error updating name:', error)
+      setSnackbarMessage('Failed to update name')
+    } finally {
+      setLoading(false)
+      setOpenSnackbar(true)
+    }
   }
 
   if (!user) {
@@ -88,8 +89,8 @@ const UpdateUserName = () => {
               <RiEdit2Fill />
             </Box>
             <Grid>
-              <Typography variant="h6"> {initialName}</Typography>
-              <Typography variant="body2">{userEmail}</Typography>
+              <Typography variant="h6"> {userName}</Typography>
+              <Typography variant="body2">{email}</Typography>
             </Grid>
           </Grid>
         </Box>
@@ -109,8 +110,10 @@ const UpdateUserName = () => {
               size="small"
               sx={{ maxWidth: '200px' }}
               label="User Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={formData.userName}
+              onChange={(e) =>
+                setFormData({ ...formData, userName: e.target.value })
+              }
               margin="normal"
             />
             <TextField
