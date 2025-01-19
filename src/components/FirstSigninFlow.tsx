@@ -48,7 +48,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
   const handlePreviousStep = () => setStep((prevStep) => prevStep - 1)
 
   return (
-    <Dialog fullWidth open={isFirstSignIn} onClose={handleClose}>
+    <Dialog fullWidth open={isFirstSignIn} onClose={handleClose} >
       <Box
         component="section"
         sx={{
@@ -57,9 +57,10 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
+          minHeight: '85px',
         }}
       >
-        <LogoImg variant="Dark" />
+        <LogoImg variant="Dark" Size={60}  />
       </Box>
       <DialogTitle
         sx={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}
@@ -84,7 +85,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
       >
         <CloseIcon />
       </IconButton>
-      <DialogContent>
+      <DialogContent sx={{ minHeight: '200px' }}>
         {step === 1 && (
           <>
             <Typography>Welcome, {firstName ? firstName : ''}</Typography>
