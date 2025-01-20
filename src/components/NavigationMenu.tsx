@@ -12,9 +12,10 @@ import { Flex } from '@radix-ui/themes'
 
 interface NavigationMenuProps {
   pages: { label: string; path: string }[]
+  children?: React.ReactNode // Allow rendering additional components (e.g., UserButton)
 }
 
-const NavigationMenu: React.FC<NavigationMenuProps> = ({ pages }) => {
+const NavigationMenu: React.FC<NavigationMenuProps> = ({ pages, children }) => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
   const location = useLocation() // Get the current location to highlight the active link
 
@@ -55,6 +56,12 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({ pages }) => {
           open={Boolean(anchorElNav)}
           onClose={handleCloseNavMenu}
         >
+          {/* Render UserButton as the top item */}
+          <Box sx={{ padding: '1rem', borderBottom: '1px solid #e0e0e0' }}>
+            {children}
+          </Box>
+
+          {/* Render navigation items */}
           {pages.map(({ label, path }) => (
             <MenuItem key={label} onClick={handleCloseNavMenu}>
               <Typography>
