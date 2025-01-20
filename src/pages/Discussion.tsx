@@ -250,7 +250,7 @@ export const Discussion = () => {
         }}
         onClick={handleOpenPostDialog}
       >
-        <Typography variant="body1" color="textSecondary">
+        <Typography variant="body1" color="textSecondary" >
           Click here to create a post...
         </Typography>
       </Paper>

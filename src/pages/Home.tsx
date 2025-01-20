@@ -18,9 +18,20 @@ const InsightsSection: React.FC<{ title: string; linkTo: string; placeholder: st
     <Box sx={{ my: 4, maxWidth: '985px', width: '90dvw', margin: '0 auto' }}>
       <Grid container alignItems="center" justifyContent="space-between">
         <Typography variant="h5">{title}</Typography>
-        <Button component={Link} to={linkTo} variant="outlined" color="primary">
-          See All Insights
-        </Button>
+        <Button
+  component={Link}
+  to={linkTo}
+  variant="outlined"
+  color="primary"
+  sx={{
+    ":hover": {
+      backgroundColor: "#1a1a1a", /* hover:blue */
+      color: "white",          /* word:white */
+    },
+  }}
+>
+  See All Insights
+</Button>
       </Grid>
       <Paper sx={{ padding: 4, marginTop: 4, minHeight: '300px' }}>
         <Typography>{placeholder}</Typography>
