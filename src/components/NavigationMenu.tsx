@@ -9,15 +9,17 @@ import {
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import { Flex } from '@radix-ui/themes'
+import { UserButton, useClerk } from '@clerk/clerk-react' // Import UserButton and Clerk hook
 
 interface NavigationMenuProps {
   pages: { label: string; path: string }[]
-  children?: React.ReactNode // Allow rendering additional components (e.g., UserButton)
 }
 
-const NavigationMenu: React.FC<NavigationMenuProps> = ({ pages, children }) => {
+const NavigationMenu: React.FC<NavigationMenuProps> = ({ pages }) => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
-  const location = useLocation() // Get the current location to highlight the active link
+  const location = useLocation()
+  const { signOut } = useClerk()
+  const userProfileUrl = "/profile"
 
   // Open the mobile navigation menu
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -56,12 +58,20 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({ pages, children }) => {
           open={Boolean(anchorElNav)}
           onClose={handleCloseNavMenu}
         >
-          {/* Render UserButton as the top item */}
-          <Box sx={{ padding: '1rem', borderBottom: '1px solid #e0e0e0' }}>
-            {children}
+          {/* User Avatar */}
+          <Box sx={{ padding: '1em', display: 'flex', justifyContent: 'center' }}>
+            <UserButton />
           </Box>
 
-          {/* Render navigation items */}
+          {/* User Options */}
+          <MenuItem onClick={() => { window.location.href = userProfileUrl }}>
+            <Typography>Manage Account</Typography>
+          </MenuItem>
+          <MenuItem onClick={() => signOut()}>
+            <Typography>Sign Out</Typography>
+          </MenuItem>
+
+          {/* Navigation Pages */}
           {pages.map(({ label, path }) => (
             <MenuItem key={label} onClick={handleCloseNavMenu}>
               <Typography>
@@ -70,7 +80,7 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({ pages, children }) => {
                   style={{
                     textDecoration: 'none',
                     color: 'inherit',
-                    fontWeight: location.pathname === path ? 'bold' : 'normal', // Highlight current page
+                    fontWeight: location.pathname === path ? 'bold' : 'normal',
                   }}
                 >
                   {label}
@@ -98,7 +108,7 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({ pages, children }) => {
                     component="span"
                     sx={{
                       padding: '.5em',
-                      fontWeight: location.pathname === path ? '800' : '350', // Highlight current page
+                      fontWeight: location.pathname === path ? '800' : '350',
                       color: 'primary.contrastText',
                       transition: 'color 0.3s ease',
                       '&:hover': {
