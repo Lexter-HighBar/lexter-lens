@@ -13,9 +13,10 @@ import { UserButton, useClerk } from '@clerk/clerk-react' // Import UserButton a
 
 interface NavigationMenuProps {
   pages: { label: string; path: string }[]
+  children?: React.ReactNode // Allow rendering additional components (e.g., UserButton)
 }
 
-const NavigationMenu: React.FC<NavigationMenuProps> = ({ pages }) => {
+const NavigationMenu: React.FC<NavigationMenuProps> = ({ pages, children }) => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
   const location = useLocation()
   const { signOut } = useClerk()
@@ -58,20 +59,12 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({ pages }) => {
           open={Boolean(anchorElNav)}
           onClose={handleCloseNavMenu}
         >
-          {/* User Avatar */}
-          <Box sx={{ padding: '1em', display: 'flex', justifyContent: 'center' }}>
-            <UserButton />
+          {/* Render UserButton as the top item */}
+          <Box sx={{ padding: '1rem', borderBottom: '1px solid #e0e0e0' }}>
+            {children}
           </Box>
 
-          {/* User Options */}
-          <MenuItem onClick={() => { window.location.href = userProfileUrl }}>
-            <Typography>Manage Account</Typography>
-          </MenuItem>
-          <MenuItem onClick={() => signOut()}>
-            <Typography>Sign Out</Typography>
-          </MenuItem>
-
-          {/* Navigation Pages */}
+          {/* Render navigation items */}
           {pages.map(({ label, path }) => (
             <MenuItem key={label} onClick={handleCloseNavMenu}>
               <Typography>
