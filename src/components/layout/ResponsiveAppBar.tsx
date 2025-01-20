@@ -61,10 +61,9 @@ function ResponsiveAppBar({ children }: ResponsiveAppBarProps) {
               order: 2, // Ensure it is the last element
             }}
           >
-            <NavigationMenu pages={pages}>
-              {/* Include the UserButton as a child of NavigationMenu */}
-              <UserButton userProfileUrl="/profile" userProfileMode="navigation" />
-            </NavigationMenu>
+            <NavigationMenu pages={pages} />
+            {/* Include the UserButton outside of NavigationMenu */}
+          
           </Box>
 
           <Box sx={{ margin: '0 1.5em' }}>
