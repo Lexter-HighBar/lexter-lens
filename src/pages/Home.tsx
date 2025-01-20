@@ -24,14 +24,17 @@ const InsightsSection: React.FC<{ title: string; linkTo: string; placeholder: st
   variant="outlined"
   color="primary"
   sx={{
+    backgroundColor: "#1d4171", 
+    color: "white",             
     ":hover": {
-      backgroundColor: "#1a1a1a", /* hover:blue */
-      color: "white",          /* word:white */
+      backgroundColor: "#1a1a1a", 
+      color: "white",             
     },
   }}
 >
   See All Insights
 </Button>
+
       </Grid>
       <Paper sx={{ padding: 4, marginTop: 4, minHeight: '300px' }}>
         <Typography>{placeholder}</Typography>
