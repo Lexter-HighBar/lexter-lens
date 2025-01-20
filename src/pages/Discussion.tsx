@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import {
-  Card,
+  Paper,
   Typography,
   TextField,
   Button,
@@ -239,7 +239,7 @@ export const Discussion = () => {
       </Stack>
       
       {/* Placeholder for creating a new post */}
-      <Card
+      <Paper
         sx={{
           width: '100%',
           padding: 2,
@@ -253,11 +253,11 @@ export const Discussion = () => {
         <Typography variant="body1" color="textSecondary">
           Click here to create a post...
         </Typography>
-      </Card>
+      </Paper>
       
       {/* List of filtered posts */}
       {filteredPosts.map((post, index) => (
-        <Card key={index} sx={{ width: '100%', padding: 2, marginBottom: 2 }}>
+        <Paper key={index} sx={{ width: '100%', padding: 2, marginBottom: 2 }}>
           <Typography variant="subtitle2" color="textSecondary">
             {post.user} • {new Date(post.date).toLocaleString()}
           </Typography>
@@ -275,7 +275,7 @@ export const Discussion = () => {
             </IconButton>
             <IconButton>👍 {post.likes} Likes</IconButton>
           </div>
-        </Card>
+        </Paper>
       ))}
       
       {/* Dialog to show post details and comments */}
@@ -292,7 +292,7 @@ export const Discussion = () => {
             Comments
           </Typography>
           {currentPost?.comments.map((comment, index) => (
-            <Card key={index} sx={{ padding: 2, marginBottom: 1 }}>
+            <Paper key={index} sx={{ padding: 2, marginBottom: 1 }}>
               <Typography variant="subtitle2">{comment.user}</Typography>
               <Typography variant="body2" color="textSecondary">
                 {new Date(comment.date).toLocaleString()}
@@ -361,7 +361,7 @@ export const Discussion = () => {
               {comment.replies && comment.replies.length > 0 && (
                 <div style={{ marginTop: 10, paddingLeft: 16, borderLeft: '2px solid #e0e0e0' }}>
                   {comment.replies.map((reply, replyIndex) => (
-                    <Card key={replyIndex} sx={{ padding: 1, marginBottom: 1, backgroundColor: '#f9f9f9' }}>
+                    <Paper key={replyIndex} sx={{ padding: 1, marginBottom: 1, backgroundColor: '#f9f9f9' }}>
                       <Typography variant="subtitle2">{reply.user}</Typography>
                       <Typography variant="body2" color="textSecondary">
                         {new Date(reply.date).toLocaleString()}
@@ -370,11 +370,11 @@ export const Discussion = () => {
                       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
                         <IconButton size="small">👍 Like</IconButton>
                       </div>
-                    </Card>
+                    </Paper>
                   ))}
                 </div>
               )}
-            </Card>
+            </Paper>
           ))}
           <Typography variant="h6" sx={{ marginTop: 2 }}>
             Add a Comment
