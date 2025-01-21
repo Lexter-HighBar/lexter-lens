@@ -1,19 +1,20 @@
 import { useState } from 'react';
 import {
-  Paper,
-  Typography,
-  TextField,
   Button,
   Chip,
-  Select,
-  MenuItem,
-  FormControl,
-  Stack,
-  IconButton,
   Dialog,
-  DialogTitle,
-  DialogContent,
   DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormControl,
+  IconButton,
+  MenuItem,
+  Paper,
+  Select,
+  Stack,
+  TextField,
+  Typography,
+
 } from '@mui/material';
 import { Page } from '../components/layout/Page';
 
@@ -103,23 +104,42 @@ export const Discussion = () => {
 
   // Function to add a new comment to the current post
   const handleAddPopupComment = () => {
-    if (popupComment?.trim() && currentPost) {
-      setPosts((prevPosts) =>
-        prevPosts.map((post) =>
-          post === currentPost
-            ? {
-                ...post,
-                comments: [
-                  ...post.comments,
-                  { user: 'Anonymous', date: new Date().toISOString(), content: popupComment, replies: [] },
-                ],
-              }
-            : post
-        )
-      );
-      handleCloseDialog();
+    // Check if the comment is empty
+    if (!popupComment?.trim()) {
+      console.error('Comment cannot be empty');
+      return;
     }
+  
+    // Check if a post is selected
+    if (!currentPost) {
+      console.error('No post selected');
+      return;
+    }
+  
+    // Update posts state by adding the new comment to the selected post
+    setPosts((prevPosts) =>
+      prevPosts.map((post) =>
+        post === currentPost // Check if this is the selected post
+          ? {
+              ...post, // Keep other post properties unchanged
+              comments: [
+                ...post.comments, // Retain existing comments
+                {
+                  user: 'Anonymous', // Default username
+                  date: new Date().toISOString(), // Current timestamp
+                  content: popupComment, // New comment content
+                  replies: [], // Initialize with an empty replies array
+                },
+              ],
+            }
+          : post // Keep other posts unchanged
+      )
+    );
+  
+    // Clear the popup comment input or close the dialog after adding the comment
+    handleCloseDialog();
   };
+  
 
   // Function to handle changes to the reply input
   const handleReplyChange = (index: number, value: string) => {
