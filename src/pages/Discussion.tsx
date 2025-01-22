@@ -1,19 +1,19 @@
 import { useState } from 'react';
 import {
-  Card,
-  Typography,
-  TextField,
   Button,
   Chip,
-  Select,
-  MenuItem,
-  FormControl,
-  Stack,
-  IconButton,
   Dialog,
-  DialogTitle,
-  DialogContent,
   DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormControl,
+  IconButton,
+  MenuItem,
+  Paper,
+  Select,
+  Stack,
+  TextField,
+  Typography,
 } from '@mui/material';
 import { Page } from '../components/layout/Page';
 
@@ -103,23 +103,43 @@ export const Discussion = () => {
 
   // Function to add a new comment to the current post
   const handleAddPopupComment = () => {
-    if (popupComment?.trim() && currentPost) {
-      setPosts((prevPosts) =>
-        prevPosts.map((post) =>
-          post === currentPost
-            ? {
-                ...post,
-                comments: [
-                  ...post.comments,
-                  { user: 'Anonymous', date: new Date().toISOString(), content: popupComment, replies: [] },
-                ],
-              }
-            : post
-        )
-      );
-      handleCloseDialog();
+
+    // Check if the comment is empty
+    if (!popupComment?.trim()) {
+      console.error('Comment cannot be empty');
+      return;
     }
+  
+    // Check if a post is selected
+    if (!currentPost) {
+      console.error('No post selected');
+      return;
+    }
+  
+    // Update posts state by adding the new comment to the selected post
+    setPosts((prevPosts) =>
+      prevPosts.map((post) =>
+        post === currentPost // Check if this is the selected post
+          ? {
+              ...post, // Keep other post properties unchanged
+              comments: [
+                ...post.comments, // Retain existing comments
+                {
+                  user: 'Anonymous', // Default username
+                  date: new Date().toISOString(), // Current timestamp
+                  content: popupComment, // New comment content
+                  replies: [], // Initialize with an empty replies array
+                },
+              ],
+            }
+          : post // Keep other posts unchanged
+      )
+    );
+  
+    // Clear the popup comment input or close the dialog after adding the comment
+    handleCloseDialog();
   };
+  
 
   // Function to handle changes to the reply input
   const handleReplyChange = (index: number, value: string) => {
@@ -239,7 +259,7 @@ export const Discussion = () => {
       </Stack>
       
       {/* Placeholder for creating a new post */}
-      <Card
+      <Paper
         sx={{
           width: '100%',
           padding: 2,
@@ -250,14 +270,14 @@ export const Discussion = () => {
         }}
         onClick={handleOpenPostDialog}
       >
-        <Typography variant="body1" color="textSecondary">
+        <Typography variant="body1" color="textSecondary" >
           Click here to create a post...
         </Typography>
-      </Card>
+      </Paper>
       
       {/* List of filtered posts */}
       {filteredPosts.map((post, index) => (
-        <Card key={index} sx={{ width: '100%', padding: 2, marginBottom: 2 }}>
+        <Paper key={index} sx={{ width: '100%', padding: 2, marginBottom: 2 }}>
           <Typography variant="subtitle2" color="textSecondary">
             {post.user} • {new Date(post.date).toLocaleString()}
           </Typography>
@@ -275,7 +295,7 @@ export const Discussion = () => {
             </IconButton>
             <IconButton>👍 {post.likes} Likes</IconButton>
           </div>
-        </Card>
+        </Paper>
       ))}
       
       {/* Dialog to show post details and comments */}
@@ -292,7 +312,7 @@ export const Discussion = () => {
             Comments
           </Typography>
           {currentPost?.comments.map((comment, index) => (
-            <Card key={index} sx={{ padding: 2, marginBottom: 1 }}>
+            <Paper key={index} sx={{ padding: 2, marginBottom: 1 }}>
               <Typography variant="subtitle2">{comment.user}</Typography>
               <Typography variant="body2" color="textSecondary">
                 {new Date(comment.date).toLocaleString()}
@@ -361,7 +381,7 @@ export const Discussion = () => {
               {comment.replies && comment.replies.length > 0 && (
                 <div style={{ marginTop: 10, paddingLeft: 16, borderLeft: '2px solid #e0e0e0' }}>
                   {comment.replies.map((reply, replyIndex) => (
-                    <Card key={replyIndex} sx={{ padding: 1, marginBottom: 1, backgroundColor: '#f9f9f9' }}>
+                    <Paper key={replyIndex} sx={{ padding: 1, marginBottom: 1, backgroundColor: '#f9f9f9' }}>
                       <Typography variant="subtitle2">{reply.user}</Typography>
                       <Typography variant="body2" color="textSecondary">
                         {new Date(reply.date).toLocaleString()}
@@ -370,11 +390,11 @@ export const Discussion = () => {
                       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
                         <IconButton size="small">👍 Like</IconButton>
                       </div>
-                    </Card>
+                    </Paper>
                   ))}
                 </div>
               )}
-            </Card>
+            </Paper>
           ))}
           <Typography variant="h6" sx={{ marginTop: 2 }}>
             Add a Comment
