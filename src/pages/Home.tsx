@@ -95,7 +95,7 @@ const Home: React.FC = () => {
       <Typography variant="h4" gutterBottom>
         Welcome to Lexter Lens, we are so glad to have you here.
       </Typography>
-      </B
+      </Box>
       {/* Insights sections */}
 
       <Box sx={{ mb: 4 }} />
