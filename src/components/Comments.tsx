@@ -1,45 +1,17 @@
-import { useContext, useState, useEffect } from 'react';
-import { UserDataApiContext } from '../lib/contexts/UserDataApiContext'; // Import the new context
+import { useState } from 'react';
+import { useComments } from '../hooks/useComments';
 
-type Comment = {
-  _id: string;
-  Username: string;
-  Comment: string;
-  createdAt: string;
-  updatedAt: string;
-};
+
 
 const Comments = () => {
-  const api = useContext(UserDataApiContext); // Use the new context
-  const [comments, setComments] = useState<Comment[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<Error | null>(null);
-  const [fetchTriggered, setFetchTriggered] = useState<boolean>(false); // Track if fetch is triggered
+  const { comments, loading, error } = useComments(); //the custom hook
+  const [fetchTriggered, setFetchTriggered] = useState<boolean>(false); // Testing: track manual fetch
 
-  // Function to fetch comments manually
-  const fetchComments = async () => {
-    if (api) {
-      setLoading(true); // Set loading to true when fetching starts
-      try {
-        const data = await api.get<Comment[]>('/userdata'); // Make request to the proxy
-        console.log('Fetched data:', data); // Debugging the fetched data
-        setComments(data);
-      } catch (err) {
-        setError(err as Error);
-        console.error('Error fetching comments:', err); // Debugging the error
-      } finally {
-        setLoading(false); // Set loading to false once done
-      }
-    }
+  fetchTriggered
+
+  const fetchComments = () => {
+    setFetchTriggered(true);
   };
-  
-
-  // Automatically fetch comments on component mount if not triggered manually
-  useEffect(() => {
-    if (!fetchTriggered) {
-      fetchComments(); // Fetch comments initially if not manually triggered
-    }
-  }, [api, fetchTriggered]);
 
   if (loading) return <div>Loading comments...</div>;
   if (error) return <div>Error: {error.message}</div>;
@@ -47,15 +19,10 @@ const Comments = () => {
   return (
     <div>
       <h3>Comments</h3>
-      <button onClick={() => { setFetchTriggered(true); fetchComments(); }}>
-        Fetch Comments
-      </button>
-
-      {/* Optional: Debugging output */}
-      <pre>{JSON.stringify({ comments, loading, error }, null, 2)}</pre>
+      <button onClick={fetchComments}>Fetch Comments</button>
 
       <ul>
-        {comments.length > 0 ? (
+        {Array.isArray(comments) && comments.length > 0 ? (
           comments.map((comment) => (
             <li key={comment._id}>
               <strong>{comment.Username}</strong>: {comment.Comment}

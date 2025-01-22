@@ -1,9 +1,8 @@
-// UserDataApiContext.tsx
 import { createContext, ReactNode } from 'react';
 import Axios from 'axios';
 import { useAuth } from '@clerk/clerk-react';
 
-export const UserDataApiContext = createContext<{
+export const UserdataApiContext = createContext<{
   get: <T, S = T>(url: string, search?: Partial<S>) => Promise<T>;
   post: <T>(url: string, body?: any) => Promise<T>;
   patch: <T>(url: string, body?: any) => Promise<T>;
@@ -51,8 +50,8 @@ export const UserDataApiProvider = ({ children }: Props) => {
   }
 
   return (
-    <UserDataApiContext.Provider value={{ get, post, patch, destroy }}>
+    <UserdataApiContext.Provider value={{ get, post, patch, destroy }}>
       {children}
-    </UserDataApiContext.Provider>
+    </UserdataApiContext.Provider>
   );
 };

@@ -5,7 +5,7 @@ import { ThemeProvider } from '@mui/material'
 import { theme } from './lib/theme'
 import { ApiContextProvider } from './lib/contexts/ApiContext'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { UserDataApiProvider } from './lib/contexts/UserDataApiContext';
+import { UserDataApiProvider } from './lib/contexts/UserdataApiContext';
 
 // Import your Publishable Key
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY

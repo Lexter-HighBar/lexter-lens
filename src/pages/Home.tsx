@@ -4,6 +4,8 @@ import Grid from "@mui/material/Grid2";
 import { Link } from "react-router-dom";
 import FirstSigninFlow from "../components/FirstSigninFlow";
 import { useState } from "react";
+import Comments from "../components/Comments";
+
 
 // Shared InsightsSection component
 const InsightsSection: React.FC<{ title: string; linkTo: string; placeholder: string }> = ({
@@ -25,6 +27,7 @@ const InsightsSection: React.FC<{ title: string; linkTo: string; placeholder: st
         },
       }}
     >
+    
       {/* Grid layout for title and button alignment */}
       <Grid container alignItems="center" justifyContent="space-between">
         <Typography variant="h5">{title}</Typography>
@@ -77,21 +80,13 @@ const Home: React.FC = () => {
   // State to track first sign-in status
   const [isFirstSignIn, setIsFirstSignIn] = useState<boolean>(true);
 
-  // Function to reset first sign-in state
-  const handleTestClick = () => {
-    setIsFirstSignIn(true);
-  };
-
   return (
     <Page sx={{ minHeight: "100vh", height: "auto" }}>
       {/* First sign-in flow */}
       <FirstSigninFlow isFirstSignIn={isFirstSignIn} setIsFirstSignIn={setIsFirstSignIn} />
       
-      {/* Test button */}
-      <Button onClick={handleTestClick}>Test</Button>
-
       {/* Welcome message */}
-      <Box>
+      <Box> <Comments/> Testing purpose
       <Typography variant="h4" gutterBottom>
         Welcome to Lexter Lens, we are so glad to have you here.
       </Typography>
@@ -103,7 +98,7 @@ const Home: React.FC = () => {
         title="Relevant Insights"
         linkTo="/discussion"
         placeholder="Placeholder for Relevant Insights content."
-      />
+      /> 
       <Box sx={{ mb: 4 }} />
       <InsightsSection
         title="Trending Insights"
