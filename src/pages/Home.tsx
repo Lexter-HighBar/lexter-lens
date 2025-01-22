@@ -97,13 +97,13 @@ const Home: React.FC = () => {
 
       {/* Insights sections */}
 
-      <Box sx={{ mb: "1cm" }} />
+      <Box sx={{ mb: 4 }} />
       <InsightsSection
         title="Relevant Insights"
         linkTo="/discussion"
         placeholder="Placeholder for Relevant Insights content."
       />
-      <Box sx={{ mb: "1cm" }} />
+      <Box sx={{ mb: 4 }} />
       <InsightsSection
         title="Trending Insights"
         linkTo="/discussion"
