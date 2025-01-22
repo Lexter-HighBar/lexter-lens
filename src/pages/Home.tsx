@@ -14,7 +14,7 @@ const InsightsSection: React.FC<{ title: string; linkTo: string; placeholder: st
   return (
     <Box
       sx={{
-        my: 4, // Vertical margin
+        my: "4", // Vertical margin
         maxWidth: "985px", // Maximum width of the section
         width: "90%", // Responsive width relative to the parent container
         margin: "0 auto", // Center horizontally
@@ -91,21 +91,26 @@ const Home: React.FC = () => {
       <Button onClick={handleTestClick}>Test</Button>
 
       {/* Welcome message */}
+      <Box>
       <Typography variant="h4" gutterBottom>
         Welcome to Lexter Lens, we are so glad to have you here.
       </Typography>
-
+      </Box>
       {/* Insights sections */}
+
+      <Box sx={{ mb: 4 }} />
       <InsightsSection
         title="Relevant Insights"
         linkTo="/discussion"
         placeholder="Placeholder for Relevant Insights content."
       />
+      <Box sx={{ mb: 4 }} />
       <InsightsSection
         title="Trending Insights"
         linkTo="/discussion"
         placeholder="Placeholder for Trending Insights content."
       />
+
     </Page>
   );
 };

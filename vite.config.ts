@@ -7,10 +7,14 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target:
-          'https://rails-server-staging-dl6kl.ondigitalocean.app/external',
+        target: 'https://rails-server-staging-dl6kl.ondigitalocean.app/external',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+      '/userdata': {
+        target: 'https://lens-server-staging-te9hf.ondigitalocean.app/api',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/userdata/, '/comments'),
       },
     },
   },

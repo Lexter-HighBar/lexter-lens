@@ -14,7 +14,6 @@ import {
   Stack,
   TextField,
   Typography,
-
 } from '@mui/material';
 import { Page } from '../components/layout/Page';
 
@@ -104,6 +103,7 @@ export const Discussion = () => {
 
   // Function to add a new comment to the current post
   const handleAddPopupComment = () => {
+
     // Check if the comment is empty
     if (!popupComment?.trim()) {
       console.error('Comment cannot be empty');

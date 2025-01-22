@@ -8,8 +8,6 @@ export const Lawyers = () => {
   if (lawyers.isFetching) return <div>Loading...</div>
   if (lawyers.error) return <div>Error</div>
 
-  console.log(lawyers.data)
-
   return (
     <Grid>
       {lawyers.data?.items.map((lawyer) => (
