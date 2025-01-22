@@ -91,10 +91,11 @@ const Home: React.FC = () => {
       <Button onClick={handleTestClick}>Test</Button>
 
       {/* Welcome message */}
+      <Box>
       <Typography variant="h4" gutterBottom>
         Welcome to Lexter Lens, we are so glad to have you here.
       </Typography>
-
+      </B
       {/* Insights sections */}
 
       <Box sx={{ mb: 4 }} />
@@ -109,6 +110,7 @@ const Home: React.FC = () => {
         linkTo="/discussion"
         placeholder="Placeholder for Trending Insights content."
       />
+
     </Page>
   );
 };

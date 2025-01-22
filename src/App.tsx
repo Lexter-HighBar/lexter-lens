@@ -5,6 +5,7 @@ import { ThemeProvider } from '@mui/material'
 import { theme } from './lib/theme'
 import { ApiContextProvider } from './lib/contexts/ApiContext'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { LawyerProvider } from './lib/contexts/LawyerContext';
 
 // Import your Publishable Key
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
@@ -25,11 +26,13 @@ function App() {
     >
       <QueryClientProvider client={queryClient}>
         <ApiContextProvider>
+          <LawyerProvider>
           <ThemeProvider theme={theme}>
             <Theme radius="large" accentColor="blue">
               <RootRouter />
             </Theme>
           </ThemeProvider>
+          </LawyerProvider>
         </ApiContextProvider>
       </QueryClientProvider>
     </ClerkProvider>

@@ -62,15 +62,17 @@ function ResponsiveAppBar({ children }: ResponsiveAppBarProps) {
             }}
           >
             <NavigationMenu pages={pages} />
+            {/* Include the UserButton outside of NavigationMenu */}
+          
           </Box>
 
           <Box sx={{ margin: '0 1.5em' }}>
             <SearchBar />
           </Box>
 
-          {/* Display user button */}
-          <Box>
-            <UserButton />
+          {/* Display user button on medium and larger screens */}
+          <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+            <UserButton userProfileUrl="/profile" userProfileMode="navigation" />
           </Box>
         </Toolbar>
 

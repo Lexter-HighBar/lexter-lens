@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Dialog,
   DialogTitle,
@@ -8,18 +8,12 @@ import {
   Button,
   IconButton,
   Box,
-  Divider,
   Link,
   Typography,
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import { LogoImg } from './LogoImg'
-
-interface SignUpForm {
-  email: string
-  name: string
-  verificationCode?: string
-}
+import { useLawyer } from '../lib/contexts/LawyerContext'
 
 interface FirstSigninFlowProps {
   isFirstSignIn: boolean
@@ -30,35 +24,31 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
   isFirstSignIn,
   setIsFirstSignIn,
 }) => {
+  const { email, firstName, userName, phone, handleUpdateUser, handleChange } =
+    useLawyer()
+
   const [step, setStep] = useState<number>(1)
-  const [formData, setFormData] = useState<SignUpForm>({
-    email: '',
-    name: '',
-    verificationCode: '',
+  const [formData, setFormData] = useState({
+    email,
+    firstName,
+    userName,
+    phone,
   })
-
-  const handleClose = () => {
-    setIsFirstSignIn(false)
-  }
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }))
-  }
-
-  const handleNextStep = () => {
-    setStep((prevStep) => prevStep + 1)
-  }
-
-  const handlePreviousStep = () => {
-    setStep((prevStep) => prevStep - 1)
-  }
+  useEffect(() => {
+    setFormData({
+      email,
+      firstName: firstName || '',
+      userName: userName || '',
+      phone: phone || '',
+    })
+  }, [email, firstName, userName, phone])
+  console.log(formData)
+  const handleClose = () => setIsFirstSignIn(false)
+  const handleNextStep = () => setStep((prevStep) => prevStep + 1)
+  const handlePreviousStep = () => setStep((prevStep) => prevStep - 1)
 
   return (
-    <Dialog fullWidth open={isFirstSignIn} onClose={handleClose}>
+    <Dialog fullWidth open={isFirstSignIn} onClose={handleClose} >
       <Box
         component="section"
         sx={{
@@ -67,22 +57,21 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
+          minHeight: '85px',
         }}
       >
-        <LogoImg Size={60} variant="Dark" />
+        <LogoImg variant="Dark" Size={60}  />
       </Box>
       <DialogTitle
         sx={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}
       >
-        {`${
-          step === 1
-            ? 'Lexter Lens Quickstart'
-            : step === 2
-              ? `Let's Make Lexter Lens Relevant to You`
-              : step === 3
-                ? 'Make the Legal World More Transparent'
-                : 'Completed'
-        }`}
+        {step === 1
+          ? 'Lexter Lens Quickstart'
+          : step === 2
+            ? `Let's Make Lexter Lens Relevant to You`
+            : step === 3
+              ? 'Make the Legal World More Transparent'
+              : 'Completed'}
       </DialogTitle>
       <IconButton
         aria-label="close"
@@ -96,39 +85,41 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
       >
         <CloseIcon />
       </IconButton>
-      <DialogContent>
+      <DialogContent sx={{ minHeight: '200px' }}>
         {step === 1 && (
           <>
-            <p>
-              {' '}
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
+            <Typography>Welcome, {firstName ? firstName : ''}</Typography>
+            <Typography>Create a first name and a user name:</Typography>
+            <TextField
+              fullWidth
+              margin="normal"
+              name="firstName"
+              label="First Name"
+              value={formData.firstName}
+              onChange={handleChange}
+            />
+            <TextField
+              fullWidth
+              margin="normal"
+              name="userName"
+              label="User Name"
+              value={formData.userName}
+              onChange={handleChange}
+            />
           </>
         )}
         {step === 2 && (
           <>
-            <p>
+            <Typography>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
+            </Typography>
             <TextField
               fullWidth
               margin="normal"
-              type="text"
-              name="verificationCode"
-              label="Verification Code"
-              value={formData.verificationCode}
-              onChange={handleChange}
-            />
-            <Divider />
-              <TextField
-              fullWidth
-              margin="normal"
-              type="text"
-              name="verificationCode"
-              label="Verification Code"
-              value={formData.verificationCode}
+              name="phone"
+              label="Phone"
+              value={formData.phone}
               onChange={handleChange}
             />
           </>
@@ -137,18 +128,35 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
           <TextField
             fullWidth
             margin="normal"
-            type="text"
-            name="name"
-            label="Full Name"
-            value={formData.name}
+            name="firstName"
+            label="First Name"
+            value={formData.firstName}
             onChange={handleChange}
           />
         )}
       </DialogContent>
       <DialogActions>
-        {step > 1 && <Link onClick={handlePreviousStep} ><Typography sx={{fontWeight: 'light'}}>Step: {step-1}/3</Typography></Link>}
-        {step < 4 && <Button sx={{fontWeight: 'bold'}} onClick={handleNextStep}>Next</Button>}
-        {step === 4 && <Button  sx={{fontWeight: 'bold'}} onClick={handleClose}>Complete Sign-Up</Button>}
+        {step > 1 && (
+          <Link onClick={handlePreviousStep}>
+            <Typography sx={{ fontWeight: 'light' }}>
+              Step: {step - 1}/3
+            </Typography>
+          </Link>
+        )}
+        {step < 4 && (
+          <Button sx={{ fontWeight: 'bold' }} onClick={handleNextStep}>
+            Next
+          </Button>
+        )}
+        {step === 4 && (
+
+          <Button sx={{ fontWeight: 'bold' }} onClick={() => {
+            handleUpdateUser(); 
+            handleClose(); 
+          }}>
+            Complete Sign-Up
+          </Button>
+        )}
       </DialogActions>
     </Dialog>
   )
