@@ -13,7 +13,7 @@ type Props = {
 const PostList = ({  openDialog }: Props) => {
   // Fetch questions using the custom hook
   const { questions, loading, error } = useQuestions();
-console.log(questions)
+console.log(questions , loading, error)
   if (loading) {
     return <p>Loading questions...</p>;
   }

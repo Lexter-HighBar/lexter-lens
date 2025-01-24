@@ -24,7 +24,7 @@ import Comments from '../components/Comments'
 // Discussion page component
 export const Discussion = () => {
   // State to manage all posts
-  const { questions } = useQuestions()
+  const { questions  } = useQuestions()
   const [posts, setPosts] = useState<Post[]>([])
 
 
@@ -157,7 +157,7 @@ export const Discussion = () => {
       {/* List of filtered posts */}
       <Comments />
       <PostList
-        posts={questions as Question[]}
+        posts={questions }
         filter={filter}
         selectedTag={selectedTag}
         openDialog={handleOpenDialog}
