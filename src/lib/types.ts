@@ -54,3 +54,20 @@ export type JobOffer = {
   created_at: string
   updated_at: string
 }
+
+// GET comments endpoint
+
+export type Comment = {
+  _id: string;
+  Username: string;
+  Comment: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+ 
+export type UseCommentsParams = {
+  id?: string;
+} ;
+
+
