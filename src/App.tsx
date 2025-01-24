@@ -8,7 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { UserDataApiProvider } from './lib/contexts/UserdataApiContext';
 import { LawyerProvider } from './lib/contexts/LawyerContext';
 
-// Import your Publishable Key
+// Import Publishable Key
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
 if (!PUBLISHABLE_KEY) {
@@ -27,9 +27,11 @@ function App() {
     >
       <QueryClientProvider client={queryClient}>
         <ApiContextProvider>
+
         <LawyerProvider>
           <UserDataApiProvider>
             <LawyerProvider>
+
           <ThemeProvider theme={theme}>
             <Theme radius="large" accentColor="blue">
               <RootRouter />
@@ -38,6 +40,7 @@ function App() {
           </LawyerProvider>
           </UserDataApiProvider>
           </LawyerProvider>
+
         </ApiContextProvider>
       </QueryClientProvider>
     </ClerkProvider>
