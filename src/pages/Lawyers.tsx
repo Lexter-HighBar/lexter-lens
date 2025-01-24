@@ -3,12 +3,10 @@ import { useLawyers } from '../hooks/useLawyers'
 
 export const Lawyers = () => {
   // todo: manage pagination through state, or search params
-  const lawyers = useLawyers({ page: 1, count: 40 })
+  const lawyers = useLawyers({ page: 1, count: 20 })
 
   if (lawyers.isFetching) return <div>Loading...</div>
   if (lawyers.error) return <div>Error</div>
-
-  console.log(lawyers.data)
 
   return (
     <Grid>
