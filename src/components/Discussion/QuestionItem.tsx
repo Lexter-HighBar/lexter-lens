@@ -10,10 +10,10 @@ interface Props {
 
 const questionItem = ({ post, openDialog }: Props) => (
   <>
-    <Box maxWidth={750} width={'90%'} m={1} p={2} border={1} borderRadius={2} borderColor={'#D3D3D3'} key={post.question_id}>
+    <Box maxWidth={750} width={'90%'} m={1} p={2} border={1} borderRadius={2} borderColor={'grey.200'} key={post.question_id}>
       <Typography mt={2} variant="h6">{post.content}</Typography>
       <Grid2 mt='1' gap='1'>
-      <Box mt={2} border={1} borderColor="grey.300" borderRadius={2} p={2}>
+      <Box bgcolor='grey.200' mt={2} border={1} borderColor="grey.400" borderRadius={2} p={2}>
         <Typography variant="body1">{post.content}</Typography>
       </Box>
       <Box mt={2} mb={2} >
