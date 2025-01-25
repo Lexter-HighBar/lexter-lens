@@ -86,7 +86,7 @@ const Home: React.FC = () => {
       <FirstSigninFlow isFirstSignIn={isFirstSignIn} setIsFirstSignIn={setIsFirstSignIn} />
       
       {/* Welcome message */}
-      <Box> <Comments/> Testing purpose
+      <Box>
       <Typography variant="h4" gutterBottom>
         Welcome to Lexter Lens, we are so glad to have you here.
       </Typography>
