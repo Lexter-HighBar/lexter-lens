@@ -7,7 +7,7 @@ import {
   Button,
   DialogActions,
 } from '@mui/material';
-import {  Question } from '../lib/types';
+import {  Question } from '../../lib/types';
 
 
 

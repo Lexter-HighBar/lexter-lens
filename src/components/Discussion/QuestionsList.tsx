@@ -1,6 +1,6 @@
-import PostItem from './PostItem';
-import { useQuestions } from '../hooks/useQuestions';
-import { Question } from '../lib/types';
+import PostItem from './QuestionItem';
+import { useQuestions } from '../../hooks/useQuestions';
+import { Question } from '../../lib/types';
 
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
   openDialog: (post: Question) => void
 }
 
-const PostList = ({  openDialog }: Props) => {
+const QuestionList = ({  openDialog }: Props) => {
   // Fetch questions using the custom hook
   const { questions, loading, error } = useQuestions();
 
@@ -32,4 +32,4 @@ const PostList = ({  openDialog }: Props) => {
   );
 };
 
-export default PostList;
+export default QuestionList;

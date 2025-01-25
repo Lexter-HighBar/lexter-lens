@@ -1,5 +1,5 @@
 import { Typography, Chip, Box, Link, Grid2 } from '@mui/material'
-import { Question } from '../lib/types'
+import { Question } from '../../lib/types'
 import { Flex } from '@radix-ui/themes'
 
 interface Props {

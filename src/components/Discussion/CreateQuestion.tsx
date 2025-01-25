@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useQuestions } from '../hooks/useQuestions'
+import { useQuestions } from '../../hooks/useQuestions'
 import {
   TextField,
   Button,

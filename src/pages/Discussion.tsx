@@ -1,12 +1,12 @@
 import { useState } from 'react'
 
 import { Page } from '../components/layout/Page'
-import PostDialog from '../components/PostDialog'
-import PostList from '../components/PostList'
+import PostDialog from '../components/Discussion/QuestionDialog'
+import QuestionList from '../components/Discussion/QuestionsList'
 import { Post, Question } from '../lib/types'
 import { useQuestions } from '../hooks/useQuestions'
 
-import CreateQuestion from '../components/CreatePost'
+import CreateQuestion from '../components/Discussion/CreateQuestion'
 
 // Discussion page component
 export const Discussion = () => {
@@ -67,7 +67,7 @@ export const Discussion = () => {
     >
       {/* Dialog to create a new post */}
       <CreateQuestion />
-      <PostList
+      <QuestionList
         posts={questions as Question[]}
         filter={''}
         selectedTag={''}
