@@ -14,12 +14,6 @@ export const Discussion = () => {
   const { questions } = useQuestions()
   const [posts, setPosts] = useState<Post[]>([])
 
-  // State for the current filter type
-  const [filter, setFilter] = useState<string>('All')
-
-  // State for the currently selected tag filter
-  const [selectedTag, setSelectedTag] = useState<string | null>('All')
-
   // State to manage the visibility of the post details dialog
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false)
 
@@ -28,11 +22,6 @@ export const Discussion = () => {
 
   // State to manage the content of a new post
   const [newPostContent, setNewPostContent] = useState<string | null>('')
-
-  // Function to filter posts by tag
-  const handleTagFilter = (tag: string) => {
-    setSelectedTag(tag === selectedTag ? null : tag)
-  }
 
   // Function to open the dialog for a specific post
   const handleOpenDialog = (question: Question) => {
@@ -76,13 +65,12 @@ export const Discussion = () => {
         overflowX: 'hidden',
       }}
     >
-     
       {/* Dialog to create a new post */}
       <CreateQuestion />
       <PostList
         posts={questions as Question[]}
-        filter={filter}
-        selectedTag={selectedTag}
+        filter={''}
+        selectedTag={''}
         openDialog={handleOpenDialog}
       />
       {/* Dialog to show/api/comments post details and comments */}

@@ -9,10 +9,9 @@ import {
   DialogActions,
   Typography,
 } from '@mui/material'
-import { v4 as uuidv4 } from 'uuid' 
-import { Flex, IconButton } from '@radix-ui/themes'
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-
+import { v4 as uuidv4 } from 'uuid'
+import { Flex } from '@radix-ui/themes'
+import AddCircleIcon from '@mui/icons-material/AddCircle'
 
 const CreateQuestion = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -25,7 +24,7 @@ const CreateQuestion = () => {
   const api = useQuestions() // Access API context
 
   const handleCreateQuestion = async () => {
-    const {  content, tags } = newQuestion
+    const { content, tags } = newQuestion
 
     if (!content.trim() || !content.trim()) {
       setError('Title and content are required.')
@@ -58,11 +57,10 @@ const CreateQuestion = () => {
 
   return (
     <>
-    <Flex gap='1' align="center">
-     
-      <Button onClick={() => setIsDialogOpen(true)} >
-      <AddCircleIcon/> Ask a question
-      </Button>
+      <Flex gap="1" align="center">
+        <Button onClick={() => setIsDialogOpen(true)}>
+          <AddCircleIcon /> Ask a question
+        </Button>
       </Flex>
       <Dialog
         open={isDialogOpen}
@@ -71,7 +69,6 @@ const CreateQuestion = () => {
       >
         <DialogTitle>Create a New Question</DialogTitle>
         <DialogContent>
-      
           <TextField
             fullWidth
             margin="normal"
