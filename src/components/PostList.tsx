@@ -13,7 +13,7 @@ type Props = {
 const PostList = ({  openDialog }: Props) => {
   // Fetch questions using the custom hook
   const { questions, loading, error } = useQuestions();
-console.log(questions , loading, error)
+
   if (loading) {
     return <p>Loading questions...</p>;
   }
@@ -25,11 +25,9 @@ console.log(questions , loading, error)
 
   return (
     <>
-    awdawdawd
-    {questions && Array.isArray(questions) && questions.length > 0 && (
-      <PostItem post={questions[0]} openDialog={openDialog} key={questions[0]._id} />
-    )}
-    awdawda
+      {Array.isArray(questions) && questions.map((question) => (
+        <PostItem key={question.question_id} post={question} openDialog={openDialog}  />
+      ))}
     </>
   );
 };

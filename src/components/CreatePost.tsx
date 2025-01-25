@@ -1,69 +1,110 @@
-import { Paper, Typography, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button } from '@mui/material';
-import { Post } from '../lib/types';
-import { useState } from 'react';
+import { useState } from 'react'
+import { useQuestions } from '../hooks/useQuestions'
+import {
+  TextField,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Typography,
+} from '@mui/material'
+import { v4 as uuidv4 } from 'uuid' 
+import { Flex, IconButton } from '@radix-ui/themes'
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
-type Props = {
-  posts: Post[];
-  setPosts: React.Dispatch<React.SetStateAction<Post[]>>;
-};
 
-const CreatePost = ({ posts, setPosts }: Props) => {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [newPostContent, setNewPostContent] = useState<string>('');
+const CreateQuestion = () => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [newQuestion, setNewQuestion] = useState({
+    content: '',
+    tags: '',
+  })
+  const [error, setError] = useState<string | null>(null)
 
-  const handleCreatePost = () => {
-    if (newPostContent.trim()) {
-      const newPost: Post = {
-        user: 'Anonymous',
-        date: new Date().toISOString(),
-        title: 'New Post',
-        content: newPostContent,
-        tags: ['General'],
-        likes: 0,
-        comments: [],
-      };
-      setPosts([newPost, ...posts]);
-      setIsDialogOpen(false);
-      setNewPostContent('');
+  const api = useQuestions() // Access API context
+
+  const handleCreateQuestion = async () => {
+    const {  content, tags } = newQuestion
+
+    if (!content.trim() || !content.trim()) {
+      setError('Title and content are required.')
+      return
     }
-  };
+
+    try {
+      if (!api) {
+        throw new Error('API is not available')
+      }
+
+      // Create the new question object
+      const questionPayload = {
+        question_id: uuidv4(), // Generate a unique ID for the question
+        content,
+        owner_id: 'user123', // To be Replace with actual owner_id form user context Clerk
+        tags: tags.split(',').map((tag) => tag.trim()), // Convert comma-separated tags to an array
+      }
+
+      // Send the new question to the API
+      await api.createQuestion.mutateAsync(questionPayload)
+
+      setIsDialogOpen(false)
+      setNewQuestion({ content: '', tags: '' })
+      setError(null) // Clear any errors
+    } catch (err: any) {
+      setError(err.message || 'Failed to create the question.')
+    }
+  }
 
   return (
     <>
-      <Paper
-        sx={{
-          width: '100%',
-          padding: 2,
-          marginBottom: 2,
-          textAlign: 'center',
-          cursor: 'pointer',
-          backgroundColor: '#f5f5f5',
-        }}
-        onClick={() => setIsDialogOpen(true)}
+    <Flex gap='1' align="center">
+     
+      <Button onClick={() => setIsDialogOpen(true)} >
+      <AddCircleIcon/> Ask a question
+      </Button>
+      </Flex>
+      <Dialog
+        open={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        fullWidth
       >
-        <Typography variant="body1" color="textSecondary">
-          Click here to create a post...
-        </Typography>
-      </Paper>
-      <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)} fullWidth>
-        <DialogTitle>Create a New Post</DialogTitle>
+        <DialogTitle>Create a New Question</DialogTitle>
         <DialogContent>
+      
           <TextField
             fullWidth
+            margin="normal"
+            label="Content"
             multiline
             rows={4}
-            placeholder="What's on your mind?"
-            value={newPostContent}
-            onChange={(e) => setNewPostContent(e.target.value)}
+            value={newQuestion.content}
+            onChange={(e) =>
+              setNewQuestion({ ...newQuestion, content: e.target.value })
+            }
           />
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Tags (comma-separated)"
+            value={newQuestion.tags}
+            onChange={(e) =>
+              setNewQuestion({ ...newQuestion, tags: e.target.value })
+            }
+          />
+          {error && (
+            <Typography variant="body2" color="error" sx={{ marginTop: 1 }}>
+              {error}
+            </Typography>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setIsDialogOpen(false)}>Cancel</Button>
-          <Button onClick={handleCreatePost}>Post</Button>
+          <Button onClick={handleCreateQuestion}>Post</Button>
         </DialogActions>
       </Dialog>
     </>
-  );
-};
+  )
+}
 
-export default CreatePost;
+export default CreateQuestion

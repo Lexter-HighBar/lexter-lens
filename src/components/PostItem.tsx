@@ -1,26 +1,33 @@
-import { Paper, Typography, IconButton } from '@mui/material';
-import { Question } from '../lib/types';
+import { Paper, Typography, Button, Chip, Box, Link, Grid2 } from '@mui/material'
+import { Question } from '../lib/types'
+import { Flex } from '@radix-ui/themes'
 
 interface Props {
-  post: Question;
-  openDialog: (post: Question) => void;
-  key : string;
+  post: Question
+  openDialog: (post: Question) => void
+  key: string
 }
 
-
 const PostItem = ({ post, openDialog }: Props) => (
-  <Paper sx={{ width: '100%', padding: 2, marginBottom: 2 }}>
-    <Typography variant="subtitle2" color="textSecondary">
-      {post.content}
-    </Typography>
-    <Typography variant="h6" sx={{ marginTop: 1 }}>
-      {post.title} and {post.content}
-    </Typography>
-   
-    <IconButton
-      onClick={() => openDialog(post)}
-      sx={{ position: 'absolute', right: 8, bottom: 8 }}/>
-  </Paper>
-);
+  <>
+    <Box maxWidth={750} width={'90%'} m={1} p={2} border={1} borderRadius={2} borderColor={'#D3D3D3'} key={post.question_id}>
+      <Typography mt={2} variant="h6">{post.content}</Typography>
+      <Grid2 mt='1' gap='1'>
+      <Box mt={2} border={1} borderColor="grey.300" borderRadius={2} p={2}>
+        <Typography variant="body1">{post.content}</Typography>
+      </Box>
+      <Box mt={2} mb={2} >
+        <Link underline='hover'  alignContent="end"  onClick={() => openDialog(post)}> Add comment</Link>
+      </Box>
+      </Grid2>
 
-export default PostItem;
+    <Flex>
+      {post.tags.map((tag, index) => (
+        <Chip key={index} label={tag} color="primary" />
+      ))}
+    </Flex>
+    </Box>
+  </>
+)
+
+export default PostItem

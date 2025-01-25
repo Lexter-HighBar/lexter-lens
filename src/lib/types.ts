@@ -93,11 +93,8 @@ export type UseCommentsParams = {
 } ;
 
 export type Question = {
-
-  _id: string;
-
-  title: string;
+  question_id: string;
+  owner_id: string;
   content: string;
-  tags: string[];
-
+  tags: Array<string>;
 };

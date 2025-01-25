@@ -1,24 +1,21 @@
-import { useQuery } from '@tanstack/react-query';
-import { useUserContext } from '../lib/hooks/UserContext';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { UserdataApiContext } from '../lib/contexts/UserdataApiContext';
+import { useContext } from 'react';
+import { Question } from '../lib/types';
 
-// Define types for Questions
-export interface Question {
-  _id: string;
-  title: string;
-  content: string;
-  tags: string[];
-}
 
 export interface UseQuestionsParams {
   id?: string; // Optional ID to fetch a specific question
   tag?: string; // Optional tag to filter questions
 }
 
+// Custom hook to fetch questions
 export const useQuestions = (params: UseQuestionsParams | null = {}) => {
   const { id, tag } = params || {};
-  const api = useUserContext();
+  const queryClient = useQueryClient();
+  const api = useContext(UserdataApiContext);
 
-  // Define the query function based on whether an ID or tag is provided
+  // Fetch Questions
   const { data, isLoading, error } = useQuery<Question | Question[]>({
     queryKey: id ? ['question', id] : tag ? ['questions', tag] : ['questions'], // Dynamic key for caching
     queryFn: () => {
@@ -39,9 +36,61 @@ export const useQuestions = (params: UseQuestionsParams | null = {}) => {
     },
   });
 
+  // Create a new question
+  interface CreateQuestionVariables extends Omit<Question, '_id'> {}
+
+  interface CreateQuestionContext {}
+
+  const createQuestion = useMutation<Question, Error, CreateQuestionVariables, CreateQuestionContext>(
+    {
+      mutationFn: (newQuestion: CreateQuestionVariables) => {
+        if (!api) {
+          return Promise.reject(new Error('API is not available'));
+        }
+        return api.post<Question>('/questions', newQuestion);
+      },
+      onSuccess: () => {
+        // Refetch questions after creating a new one
+        queryClient.invalidateQueries({ queryKey: ['questions'] });
+      },
+    }
+  );
+
+  // Update an existing question
+  const updateQuestion = useMutation<Question, Error, Question>({
+    mutationFn: (updatedQuestion: Question) => {
+      if (!api) {
+        return Promise.reject(new Error('API is not available'));
+      }
+      return api.patch<Question>(`/questions/${updatedQuestion.question_id}`, updatedQuestion);
+    },
+    onSuccess: (data) => {
+      // Refetch specific question or all questions if necessary
+      queryClient.invalidateQueries({ queryKey: ['questions'] });
+      queryClient.invalidateQueries({ queryKey: ['question', data.question_id] });
+    },
+  });
+
+  // Delete a question
+  const deleteQuestion = useMutation<void, Error, string>({
+    mutationFn: (questionId: string) => {
+      if (!api) {
+        return Promise.reject(new Error('API is not available'));
+      }
+      return api.destroy(`/questions/${questionId}`);
+    },
+    onSuccess: () => {
+      // Refetch questions after deleting
+      queryClient.invalidateQueries({ queryKey: ['questions'] });
+    },
+  });
+
   return {
     questions: data || (id ? null : []),
     loading: isLoading,
     error: error,
+    createQuestion,
+    updateQuestion,
+    deleteQuestion,
   };
 };
