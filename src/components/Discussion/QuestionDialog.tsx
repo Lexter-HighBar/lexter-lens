@@ -19,7 +19,7 @@ type Props = {
   onSubmit: (updatedPost: { comment: string}) => void; // Callback for submitting the post
 };
 
-const PostDialog = ({ isOpen, onClose, currentQuestion, isEditing, onSubmit }: Props) => {
+const QuestionDialog = ({ isOpen, onClose, currentQuestion, isEditing, onSubmit }: Props) => {
   const [comment, setComment] = useState<string>(currentQuestion?.content || '');
   
 
@@ -61,4 +61,4 @@ const PostDialog = ({ isOpen, onClose, currentQuestion, isEditing, onSubmit }: P
   );
 };
 
-export default PostDialog;
+export default QuestionDialog;

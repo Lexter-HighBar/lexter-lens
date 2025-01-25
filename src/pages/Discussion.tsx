@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import { Page } from '../components/layout/Page'
-import PostDialog from '../components/Discussion/QuestionDialog'
+import QuestionDialog from '../components/Discussion/QuestionDialog'
 import QuestionList from '../components/Discussion/QuestionsList'
 import { Post, Question } from '../lib/types'
 import { useQuestions } from '../hooks/useQuestions'
@@ -75,7 +75,7 @@ export const Discussion = () => {
       />
       {/* Dialog to show/api/comments post details and comments */}
 
-      <PostDialog
+      <QuestionDialog
         isOpen={isDialogOpen}
         onClose={handleCloseDialog}
         isEditing={false}

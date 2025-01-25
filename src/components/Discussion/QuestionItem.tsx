@@ -8,7 +8,7 @@ interface Props {
   key: string
 }
 
-const PostItem = ({ post, openDialog }: Props) => (
+const questionItem = ({ post, openDialog }: Props) => (
   <>
     <Box maxWidth={750} width={'90%'} m={1} p={2} border={1} borderRadius={2} borderColor={'#D3D3D3'} key={post.question_id}>
       <Typography mt={2} variant="h6">{post.content}</Typography>
@@ -30,4 +30,4 @@ const PostItem = ({ post, openDialog }: Props) => (
   </>
 )
 
-export default PostItem
+export default questionItem

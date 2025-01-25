@@ -1,4 +1,4 @@
-import PostItem from './QuestionItem';
+import QuestionItem from './QuestionItem';
 import { useQuestions } from '../../hooks/useQuestions';
 import { Question } from '../../lib/types';
 
@@ -26,7 +26,7 @@ const QuestionList = ({  openDialog }: Props) => {
   return (
     <>
       {Array.isArray(questions) && questions.map((question) => (
-        <PostItem key={question.question_id} post={question} openDialog={openDialog}  />
+        <QuestionItem key={question.question_id} post={question} openDialog={openDialog}  />
       ))}
     </>
   );
