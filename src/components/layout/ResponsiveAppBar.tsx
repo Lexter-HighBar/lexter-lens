@@ -14,7 +14,6 @@ import { UserButton } from '@clerk/clerk-react'
 // Define the navigation menu items
 const pages = [
   { label: 'Home', path: '/' },
-  { label: 'Lawyers', path: '/lawyers' },
   { label: 'Discussion', path: '/discussion' },
 ]
 
@@ -25,7 +24,7 @@ interface ResponsiveAppBarProps {
 // ResponsiveAppBar component
 function ResponsiveAppBar({ children }: ResponsiveAppBarProps) {
   return (
-    <AppBar position="static">
+    <AppBar position="sticky">
       <Container maxWidth="xl">
         <Toolbar sx={{ justifyContent: 'flex-end', flexDirection: { xs: 'row', md: 'row' } }}>
           {/* Display logo and navigation menu on medium and larger screens */}
