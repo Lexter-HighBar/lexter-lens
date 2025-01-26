@@ -56,36 +56,21 @@ export type JobOffer = {
 }
 
 export type Post = {
-
   id: string;
-
-  user: string;
-
+ user: string;
   date: string;
-
   title: string;
-
   content: string;
-
   tags: string[];
-
   likes: number;
-
   comments: Comment[];
-
 };
 export type Comment = {
-
   _id: string;
-
   ownerId: string;
-
   parentId: string;
-
   content: string;
-
   tags: Array<string>;
-
 };
 
 export type UseCommentsParams = {
