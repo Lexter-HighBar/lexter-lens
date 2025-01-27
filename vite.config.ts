@@ -12,12 +12,12 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
       '/userdata/comments': {
-        target: 'http://localhost:3000/api',
+        target: 'https://lexter-server.onrender.com/api',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/userdata\/comments/, '/comments'),
       },
       '/userdata/questions': {
-        target: 'http://localhost:3000/api',
+        target: 'https://lexter-server.onrender.com/api',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/userdata\/questions/, '/questions'),
       },
