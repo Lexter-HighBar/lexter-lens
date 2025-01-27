@@ -9,7 +9,7 @@ import { useMediaQuery } from '@mui/material';
 
 export default function SearchBar() {
   const [open, setOpen] = useState(false);
-  const isMobile = useMediaQuery('(max-width:600px)'); // Detect screens 600px wide or smaller
+  const isMobile = useMediaQuery('(max-width:600px)'); 
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -19,34 +19,26 @@ export default function SearchBar() {
       {/* Search Button */}
       {isMobile ? (
         <IconButton
-          type="button"
-          sx={{
-            width: 48,
-            height: 48,
-            borderRadius: '50%',
-            backgroundColor: 'white',
-            '&:hover': { backgroundColor: 'secondary.main' },
-          }}
+        
           aria-label="search"
           onClick={handleOpen} // Open modal on click
         >
-          <SearchIcon />
+          <SearchIcon sx={{ color:'white'}} />
         </IconButton>
       ) : (
         <Paper
-          component="button"
           sx={{
-            p: '2px 4px',
+            height: 35,
             display: 'flex',
             alignItems: 'center',
-            width: 200,
+            width: 125,
             borderRadius: '16px',
-            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+            boxShadow: 'none',
           }}
           onClick={handleOpen} // Open modal on click
         >
           <InputBase
-            sx={{ ml: 1, flex: 1 }}
+            sx={{ ml: 3}}
             placeholder="Search..."
             inputProps={{ 'aria-label': 'search' }}
             readOnly // Make input read only so the modal is used for typing
@@ -58,31 +50,31 @@ export default function SearchBar() {
       )}
 
       {/* Search Modal */}
-      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
+      <Dialog open={open} onClose={handleClose}  fullWidth maxWidth="sm">
         <DialogContent
           sx={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            padding: '16px',
+            padding: '20px',
             overflow: 'hidden',
+            height: '400px',
           }}
         >
           {/* Search Input in Modal */}
           <Paper
-            component="form"
+           
             sx={{
-              p: '2px 4px',
               display: 'flex',
               alignItems: 'center',
               width: '100%',
               maxWidth: '100%', 
-              borderRadius: '16px',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+              boxShadow: 'none',
+              border: '1px solid grey',
             }}
           >
             <InputBase
-              sx={{ ml: 1, flex: 1 }}
+              sx={{ ml: 3, flex: 1 }}
               placeholder="Search..."
               inputProps={{ 'aria-label': 'search' }}
             />
