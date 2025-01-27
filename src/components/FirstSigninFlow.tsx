@@ -14,6 +14,8 @@ import {
 import CloseIcon from '@mui/icons-material/Close'
 import { LogoImg } from './LogoImg'
 import { useLawyer } from '../lib/contexts/LawyerContext'
+import Checkbox from '@mui/material/Checkbox';
+
 
 interface FirstSigninFlowProps {
   isFirstSignIn: boolean
@@ -106,6 +108,8 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
               value={formData.userName}
               onChange={handleChange}
             />
+             
+             <Checkbox/>Privacy on Lexter
           </>
         )}
         {step === 2 && (
