@@ -38,7 +38,8 @@ const Home: React.FC = () => {
         title="Relevant Insights"
         linkTo="/discussion"
         placeholder="Placeholder for Relevant Insights content."
-      />
+      /> 
+
       <Box sx={{ mb: 4 }} />
       <InsightsSection
         title="Trending Insights"

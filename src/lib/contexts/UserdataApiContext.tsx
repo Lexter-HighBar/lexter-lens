@@ -17,13 +17,14 @@ export const UserDataApiProvider = ({ children }: Props) => {
   const { getToken } = useAuth();
   const axios = Axios.create();
 
-  // Base URL for userdata API
+  // Base URL for userdata AP
   axios.defaults.baseURL = import.meta.env.VITE_API_URL || '/userdata';
 
   axios.interceptors.request.use(async (config) => {
     const token = await getToken();
     config.headers['Content-Type'] = 'application/json';
-    if (token) config.headers.Authorization = `Bearer ${token}`;
+
+  if (token) config.headers.Authorization = `Bearer ${token}`;
     return config;
   });
 
@@ -55,3 +56,4 @@ export const UserDataApiProvider = ({ children }: Props) => {
     </UserdataApiContext.Provider>
   );
 };
+
