@@ -26,8 +26,8 @@ const CreateQuestion = () => {
   const handleCreateQuestion = async () => {
     const { content, tags } = newQuestion
 
-    if (!content.trim() || !content.trim()) {
-      setError('Title and content are required.')
+    if (!content.trim() || !tags.trim()) {
+      setError('Tags and content are required.')
       return
     }
 
