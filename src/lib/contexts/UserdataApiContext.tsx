@@ -17,8 +17,8 @@ export const UserDataApiProvider = ({ children }: Props) => {
   const { getToken } = useAuth();
   const axios = Axios.create();
 
-  // Base URL for userdata AP
-  axios.defaults.baseURL = import.meta.env.VITE_API_URL || '/userdata';
+  // Base URL for userdata API
+  axios.defaults.baseURL =  '/userdata';
 
   axios.interceptors.request.use(async (config) => {
     const token = await getToken();
