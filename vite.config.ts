@@ -11,12 +11,17 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
-      '/userdata': {
-        target: 'https://lens-server-staging-te9hf.ondigitalocean.app/api',
+      '/userdata/comments': {
+        target: 'https://lexter-server.onrender.com/api',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/userdata/, '/comments'),
+        rewrite: (path) => path.replace(/^\/userdata\/comments/, '/comments'),
       },
-    }
+      '/userdata/questions': {
+        target: 'https://lexter-server.onrender.com/api',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/userdata\/questions/, '/questions'),
+      },
+    },
   },
   build: {
     rollupOptions: {

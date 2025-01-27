@@ -55,19 +55,31 @@ export type JobOffer = {
   updated_at: string
 }
 
-// GET comments endpoint
-
+export type Post = {
+  id: string;
+ user: string;
+  date: string;
+  title: string;
+  content: string;
+  tags: string[];
+  likes: number;
+  comments: Comment[];
+};
 export type Comment = {
   _id: string;
-  Username: string;
-  Comment: string;
-  createdAt: string;
-  updatedAt: string;
+  ownerId: string;
+  parentId: string;
+  content: string;
+  tags: Array<string>;
 };
 
- 
 export type UseCommentsParams = {
   id?: string;
 } ;
 
-
+export type Question = {
+  question_id: string;
+  owner_id: string;
+  content: string;
+  tags: Array<string>;
+};
