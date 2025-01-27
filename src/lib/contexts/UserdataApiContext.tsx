@@ -18,7 +18,8 @@ export const UserDataApiProvider = ({ children }: Props) => {
   const axios = Axios.create();
 
   // Base URL for userdata API
-  axios.defaults.baseURL =  '/userdata';
+  axios.defaults.baseURL =  'https://lexter-server.onrender.com/api'; //To be replaced after adding .env with the next line 
+ // axios.defaults.baseURL = import.meta.env.VITE_EXPRES_API_URL || '/userdata';
 
   axios.interceptors.request.use(async (config) => {
     const token = await getToken();
