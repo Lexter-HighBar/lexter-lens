@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -10,49 +10,69 @@ import {
   Link,
   TextField,
   Typography,
-
-} from '@mui/material'
-import CloseIcon from '@mui/icons-material/Close'
-import { LogoImg } from './LogoImg'
-import { useLawyer } from '../lib/contexts/LawyerContext'
-import Checkbox from '@mui/material/Checkbox';
-
-
+  Tooltip,
+  Checkbox,
+  Chip,
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import { LogoImg } from './LogoImg';
+import { useLawyer } from '../lib/contexts/LawyerContext';
 
 interface FirstSigninFlowProps {
-  isFirstSignIn: boolean
-  setIsFirstSignIn: (value: boolean) => void
+  isFirstSignIn: boolean;
+  setIsFirstSignIn: (value: boolean) => void;
 }
 
 const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
   isFirstSignIn,
   setIsFirstSignIn,
 }) => {
-  const { email, firstName, userName, phone, handleUpdateUser, handleChange } =
-    useLawyer()
+  const { email, firstName, userName, phone, handleUpdateUser, handleChange } = useLawyer();
 
-  const [step, setStep] = useState<number>(1)
+  const [step, setStep] = useState<number>(1);
   const [formData, setFormData] = useState({
     email,
     firstName,
     userName,
     phone,
-  })
+  });
+
+  const [tags, setTags] = useState({
+    Cities: ['Toronto', 'Vancouver'],
+    Expertise: ['Corporate Law', 'Real Estate'],
+    Industries: ['Technology', 'Healthcare'],
+    'Firm Offices': ['Downtown', 'Uptown'],
+  });
+
+  const handleTagRemove = (category: string, tag: string) => {
+    setTags((prev) => ({
+      ...prev,
+      [category]: prev[category].filter((t) => t !== tag),
+    }));
+  };
+
+  const handleTagAdd = (category: string, newTag: string) => {
+    setTags((prev) => ({
+      ...prev,
+      [category]: [...prev[category], newTag],
+    }));
+  };
+
   useEffect(() => {
     setFormData({
       email,
       firstName: firstName || '',
       userName: userName || '',
       phone: phone || '',
-    })
-  }, [email, firstName, userName, phone])
-  console.log(formData)
-  const handleClose = () => setIsFirstSignIn(false)
-  const handleNextStep = () => setStep((prevStep) => prevStep + 1)
-  const handlePreviousStep = () => setStep((prevStep) => prevStep - 1)
+    });
+  }, [email, firstName, userName, phone]);
+
+  const handleClose = () => setIsFirstSignIn(false);
+  const handleNextStep = () => setStep((prevStep) => prevStep + 1);
+  const handlePreviousStep = () => setStep((prevStep) => prevStep - 1);
 
   return (
-    <Dialog fullWidth open={isFirstSignIn} onClose={handleClose} >
+    <Dialog fullWidth open={isFirstSignIn} onClose={handleClose}>
       <Box
         component="section"
         sx={{
@@ -64,7 +84,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
           minHeight: '85px',
         }}
       >
-        <LogoImg variant="Dark" Size={60}  />
+        <LogoImg variant="Dark" Size={60} />
       </Box>
       <DialogTitle
         sx={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}
@@ -72,10 +92,10 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
         {step === 1
           ? 'Lexter Lens Quickstart'
           : step === 2
-            ? `Let's Make Lexter Lens Relevant to You`
-            : step === 3
-              ? 'Make the Legal World More Transparent'
-              : 'Completed'}
+          ? `Let's Make Lexter Lens Relevant to You`
+          : step === 3
+          ? 'Make the Legal World More Transparent'
+          : 'Completed'}
       </DialogTitle>
       <IconButton
         aria-label="close"
@@ -110,30 +130,49 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
               value={formData.userName}
               onChange={handleChange}
             />
-             
-             <Typography>Privacy Policies</Typography>
-             <ul>
-             <li>Bullet point 1</li>
-             <li>Bullet point 2</li>
-             <li>Bullet point 3</li>
-             </ul>
-             <Checkbox/>I Accept the Privacy policies
+            <Typography>Privacy Policies</Typography>
+            <ul>
+              <li>Bullet point 1</li>
+              <li>Bullet point 2</li>
+              <li>Bullet point 3</li>
+            </ul>
+            <Checkbox /> I Accept the Privacy Policies
           </>
         )}
         {step === 2 && (
           <>
-            <Typography>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </Typography>
-            <TextField
-              fullWidth
-              margin="normal"
-              name="phone"
-              label="Phone"
-              value={formData.phone}
-              onChange={handleChange}
-            />
+            <Typography>Suggested Tags</Typography>
+            <Tooltip title="Authority Tags help identify the expertise, location, and industry of a legal professional.">
+              <Button variant="text">Learn More</Button>
+            </Tooltip>
+
+            {Object.entries(tags).map(([category, tagList]) => (
+              <Box key={category} sx={{ mb: 3 }}>
+                <Typography variant="h6">{category}</Typography>
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 2 }}>
+                  {tagList.map((tag, index) => (
+                    <Chip
+                      key={index}
+                      label={tag}
+                      onDelete={() => handleTagRemove(category, tag)}
+                    />
+                  ))}
+                </Box>
+                <TextField
+                  placeholder={`Add ${category.toLowerCase()}...`}
+                  fullWidth
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      const newTag = (e.target as HTMLInputElement).value.trim();
+                      if (newTag) {
+                        handleTagAdd(category, newTag);
+                        (e.target as HTMLInputElement).value = '';
+                      }
+                    }
+                  }}
+                />
+              </Box>
+            ))}
           </>
         )}
         {step === 3 && (
@@ -161,17 +200,19 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
           </Button>
         )}
         {step === 4 && (
-
-          <Button sx={{ fontWeight: 'bold' }} onClick={() => {
-            handleUpdateUser(); 
-            handleClose(); 
-          }}>
+          <Button
+            sx={{ fontWeight: 'bold' }}
+            onClick={() => {
+              handleUpdateUser();
+              handleClose();
+            }}
+          >
             Complete Sign-Up
           </Button>
         )}
       </DialogActions>
     </Dialog>
-  )
-}
+  );
+};
 
-export default FirstSigninFlow
+export default FirstSigninFlow;
