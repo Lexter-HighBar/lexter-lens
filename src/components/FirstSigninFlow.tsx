@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from 'react'
 import {
+  Box,
+  Button,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-  TextField,
-  Button,
   IconButton,
-  Box,
   Link,
+  TextField,
   Typography,
+
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import { LogoImg } from './LogoImg'
 import { useLawyer } from '../lib/contexts/LawyerContext'
+import Checkbox from '@mui/material/Checkbox';
+
+
 
 interface FirstSigninFlowProps {
   isFirstSignIn: boolean
@@ -106,6 +110,14 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
               value={formData.userName}
               onChange={handleChange}
             />
+             
+             <Typography>Privacy Policies</Typography>
+             <ul>
+             <li>Bullet point 1</li>
+             <li>Bullet point 2</li>
+             <li>Bullet point 3</li>
+             </ul>
+             <Checkbox/>I Accept the Privacy policies
           </>
         )}
         {step === 2 && (
