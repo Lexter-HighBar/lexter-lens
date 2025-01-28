@@ -6,7 +6,6 @@ import FirstSigninFlow from "../components/FirstSigninFlow";
 import { useState } from "react";
 
 
-
 // Shared InsightsSection component
 const InsightsSection: React.FC<{ title: string; linkTo: string; placeholder: string }> = ({
   title, // Section title
