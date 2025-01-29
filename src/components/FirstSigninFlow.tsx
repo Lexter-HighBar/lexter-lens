@@ -136,19 +136,26 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
               <li>Bullet point 2</li>
               <li>Bullet point 3</li>
             </ul>
-            
+            <Checkbox /> I Accept the Privacy Policies
           </>
         )}
         {step === 2 && (
           <>
-            <Typography>Suggested Tags</Typography>
+            <Typography variant="body1" sx={{ fontWeight: 'medium', mb: 1 }}>
+              Authority Tags
+            </Typography>
+            <Typography variant="body1" sx={{ fontWeight: 'medium', mb: 1 }}>
+              Suggested Tags
+            </Typography>
             <Tooltip title="Authority Tags help identify the expertise, location, and industry of a legal professional.">
               <Button variant="text">Learn More</Button>
             </Tooltip>
 
             {Object.entries(tags).map(([category, tagList]) => (
               <Box key={category} sx={{ mb: 3 }}>
-                <Typography variant="h6">{category}</Typography>
+                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                  {category}
+                </Typography>
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 2 }}>
                   {tagList.map((tag, index) => (
                     <Chip
@@ -216,3 +223,4 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
 };
 
 export default FirstSigninFlow;
+
