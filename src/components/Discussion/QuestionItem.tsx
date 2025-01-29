@@ -1,33 +1,55 @@
-import { Typography, Chip, Box, Link, Grid2 } from '@mui/material'
+import { Typography, Chip, Box, Grid2 } from '@mui/material'
 import { Question } from '../../lib/types'
 import { Flex } from '@radix-ui/themes'
+import { formatCreatedOnDate } from '../../services/formatCreatedOnDate'
+import CommentList from './CommentList'
 
 interface Props {
-  post: Question
-  openDialog: (post: Question) => void
-  key: string
+  question: Question
+  onAddComment: () => void
 }
 
-const questionItem = ({ post, openDialog }: Props) => (
-  <>
-    <Box maxWidth={750} width={'90%'} m={1} p={2} border={1} borderRadius={2} borderColor={'grey.200'} key={post.question_id}>
-      <Typography mt={2} variant="h6">{post.content}</Typography>
-      <Grid2 mt='1' gap='1'>
-      <Box bgcolor='grey.200' mt={2} border={1} borderColor="grey.400" borderRadius={2} p={2}>
-        <Typography variant="body1">{post.content}</Typography>
-      </Box>
-      <Box mt={2} mb={2} >
-        <Link underline='hover'  alignContent="end"  onClick={() => openDialog(post)}> Add comment</Link>
-      </Box>
-      </Grid2>
+const QuestionItem = ({ question }: Props) => {
+  const formattedDate = formatCreatedOnDate(new Date(question.createdOn))
 
-    <Flex>
-      {post.tags.map((tag, index) => (
-        <Chip key={index} label={tag} color="primary" />
-      ))}
-    </Flex>
-    </Box>
-  </>
-)
+  return (
+    <>
+      <Box
+        maxWidth={750}
+        width={'80%'}
+        m={1}
+        p={2}
+        border={1}
+        borderRadius={2}
+        borderColor={'grey.300'}
+        key={question.QuestionId}
+      >
+        <Box display="flex" flexDirection="row" alignItems="center" gap={1}>
+          {' '}
+          <img
+            src={question?.profilePicture || ''}
+            alt="Profile Picture"
+            style={{ width: '50px', height: 'auto', borderRadius: '50%' }}
+          />
+          <Box>
+            <Typography variant="h6"> {question.userName}</Typography>
+            <Typography variant="body2">{`${formattedDate}`}</Typography>
+          </Box>
+        </Box>
+        <Typography mt={2} variant="h6">
+          {question.content}
+        </Typography>
+        <Grid2 mt="1" gap="1">
+          <CommentList question={question} />
+        </Grid2>
+        <Flex>
+          {question.tags.map((tag, index) => (
+            <Chip key={index} label={tag} color="primary" />
+          ))}
+        </Flex>
+      </Box>
+    </>
+  )
+}
 
-export default questionItem
+export default QuestionItem

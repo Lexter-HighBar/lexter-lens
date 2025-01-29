@@ -14,7 +14,7 @@ import {
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import { LogoImg } from './LogoImg'
-import { useLawyer } from '../lib/contexts/LawyerContext'
+import { useLawyer } from '../lib/contexts/ClerkContext'
 import Checkbox from '@mui/material/Checkbox';
 
 

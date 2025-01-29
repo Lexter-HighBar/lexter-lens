@@ -55,22 +55,15 @@ export type JobOffer = {
   updated_at: string
 }
 
-export type Post = {
-  id: string;
- user: string;
-  date: string;
-  title: string;
-  content: string;
-  tags: string[];
-  likes: number;
-  comments: Comment[];
-};
 export type Comment = {
   _id: string;
   ownerId: string;
+  createdOn: string;
+  userName: string;
   parentId: string;
   content: string;
   tags: Array<string>;
+  profilePicture: string;
 };
 
 export type UseCommentsParams = {
@@ -78,8 +71,11 @@ export type UseCommentsParams = {
 } ;
 
 export type Question = {
-  question_id: string;
-  owner_id: string;
+  QuestionId: string;
+  ownerId: string;
+  userName: string;
+  profilePicture: string;
+  createdOn: string;
   content: string;
   tags: Array<string>;
 };
