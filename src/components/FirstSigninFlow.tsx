@@ -23,19 +23,31 @@ interface FirstSigninFlowProps {
   setIsFirstSignIn: (value: boolean) => void;
 }
 
+// Main component for the first sign-in flow
 const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
   isFirstSignIn,
   setIsFirstSignIn,
 }) => {
   const { email, firstName, userName, phone, handleUpdateUser, handleChange } = useLawyer();
 
-  const [step, setStep] = useState<number>(1);
+  const [step, setStep] = useState<number>(1); // State to track the current step
   const [formData, setFormData] = useState({
     email,
     firstName,
     userName,
     phone,
   });
+
+  const defaultAuthorityTags = [
+    'Calgary',
+    'Corporate & Commercial Law',
+    'Litigation',
+    'BDP - Calgary',
+    'Ogilvie - Calgary',
+    'Oil and Gas'
+  ];
+
+  const [selectedDefaultTags, setSelectedDefaultTags] = useState<string[]>([]); // State for selected tags
 
   const [tags, setTags] = useState({
     Cities: ['Toronto', 'Vancouver'],
@@ -44,6 +56,16 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
     'Firm Offices': ['Downtown', 'Uptown'],
   });
 
+  // Handle tag selection
+  const handleDefaultTagClick = (tag: string) => {
+    setSelectedDefaultTags(prev => 
+      prev.includes(tag) 
+        ? prev.filter(t => t !== tag)
+        : [...prev, tag]
+    );
+  };
+
+  // Remove a tag from a specific category
   const handleTagRemove = (category: string, tag: string) => {
     setTags((prev) => ({
       ...prev,
@@ -51,6 +73,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
     }));
   };
 
+  // Add a new tag to a specific category
   const handleTagAdd = (category: string, newTag: string) => {
     setTags((prev) => ({
       ...prev,
@@ -58,6 +81,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
     }));
   };
 
+  // Update formData whenever these dependencies change
   useEffect(() => {
     setFormData({
       email,
@@ -67,9 +91,9 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
     });
   }, [email, firstName, userName, phone]);
 
-  const handleClose = () => setIsFirstSignIn(false);
-  const handleNextStep = () => setStep((prevStep) => prevStep + 1);
-  const handlePreviousStep = () => setStep((prevStep) => prevStep - 1);
+  const handleClose = () => setIsFirstSignIn(false); // Close dialog
+  const handleNextStep = () => setStep((prevStep) => prevStep + 1); // Go to the next step
+  const handlePreviousStep = () => setStep((prevStep) => prevStep - 1); // Go to the previous step
 
   return (
     <Dialog fullWidth open={isFirstSignIn} onClose={handleClose}>
@@ -84,7 +108,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
           minHeight: '85px',
         }}
       >
-        <LogoImg variant="Dark" Size={60} />
+        <LogoImg variant="Dark" Size={60} /> {/* Display logo */}
       </Box>
       <DialogTitle
         sx={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}
@@ -92,7 +116,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
         {step === 1
           ? 'Lexter Lens Quickstart'
           : step === 2
-          ? `Let's Make Lexter Lens Relevant to You`
+          ? "Let's Make Lexter Lens Relevant to You"
           : step === 3
           ? 'Make the Legal World More Transparent'
           : 'Completed'}
@@ -107,7 +131,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
           color: (theme) => theme.palette.grey[500],
         }}
       >
-        <CloseIcon />
+        <CloseIcon /> {/* Close button */}
       </IconButton>
       <DialogContent sx={{ minHeight: '200px' }}>
         {step === 1 && (
@@ -136,24 +160,48 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
               <li>Bullet point 2</li>
               <li>Bullet point 3</li>
             </ul>
-            <Checkbox /> I Accept the Privacy Policies
           </>
         )}
         {step === 2 && (
           <>
-            <Typography variant="body1" sx={{ fontWeight: 'medium', mb: 1 }}>
-              Authority Tags
-            </Typography>
-            <Typography variant="body1" sx={{ fontWeight: 'medium', mb: 1 }}>
-              Suggested Tags
-            </Typography>
-            <Tooltip title="Authority Tags help identify the expertise, location, and industry of a legal professional.">
-              <Button variant="text">Learn More</Button>
-            </Tooltip>
-
+            <Box sx={{ mb: 3 }}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                <Typography variant="body1" sx={{ fontWeight: 'medium' }}>
+                  Authority Tags
+                </Typography>
+                <Tooltip title="Authority Tags help identify the expertise, location, and industry of a legal professional.">
+                  <Button variant="text" sx={{ color: 'primary.main' }}>LEARN MORE</Button>
+                </Tooltip>
+              </Box>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                {defaultAuthorityTags.map((tag) => (
+                  <Chip
+                    key={tag}
+                    label={tag}
+                    onClick={() => handleDefaultTagClick(tag)}
+                    sx={{
+                      backgroundColor: selectedDefaultTags.includes(tag) ? 'primary.main' : 'grey.200',
+                      color: selectedDefaultTags.includes(tag) ? 'white' : 'text.primary',
+                      '&:hover': {
+                        backgroundColor: selectedDefaultTags.includes(tag) ? 'primary.dark' : 'grey.300',
+                      },
+                    }}
+                  />
+                ))}
+              </Box>
+            </Box>
+            
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+              <Typography variant="body1" sx={{ fontWeight: 'medium' }}>
+                Suggested Tags
+              </Typography>
+              <Tooltip title="Suggested Tags provide additional context about your professional profile.">
+                <Button variant="text" sx={{ color: 'primary.main' }}>LEARN MORE</Button>
+              </Tooltip>
+            </Box>
             {Object.entries(tags).map(([category, tagList]) => (
               <Box key={category} sx={{ mb: 3 }}>
-                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>
                   {category}
                 </Typography>
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 2 }}>
@@ -222,5 +270,4 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
   );
 };
 
-export default FirstSigninFlow;
-
+export default FirstSigninFlow; // Export the component for use in other parts of the application
