@@ -136,7 +136,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
               <li>Bullet point 2</li>
               <li>Bullet point 3</li>
             </ul>
-            <Checkbox /> I Accept the Privacy Policies
+            
           </>
         )}
         {step === 2 && (
