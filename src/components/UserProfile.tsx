@@ -13,7 +13,7 @@ import {
 import { useState, useEffect } from 'react';
 import Grid from '@mui/material/Grid2';
 import { RiEdit2Fill } from 'react-icons/ri';
-import { useLawyer } from '../lib/contexts/LawyerContext';
+import { useTags } from '../hooks/useTags';
 
 const firms = ['Firm A', 'Firm B', 'Firm C']; // Example firms
 const cities = ['City A', 'City B', 'City C']; // Example cities
@@ -22,6 +22,7 @@ const expertiseOptions = ['Option 1', 'Option 2', 'Option 3']; // Example expert
 
 const UserProfile = () => {
   const { email, firstName, userName, phone } = useLawyer(); // Getting data from context
+  const { tags, error} = useTags();
   const [loading, setLoading] = useState<boolean>(false);
   const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
   const [snackbarMessage, setSnackbarMessage] = useState<string>('');
