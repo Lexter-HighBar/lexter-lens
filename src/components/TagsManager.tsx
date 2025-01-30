@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { Box, Typography, Tooltip, Button, TextField, Chip } from '@mui/material';
 interface TagsManagerProps {
   defaultTags: string[];
