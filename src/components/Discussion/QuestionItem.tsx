@@ -16,7 +16,7 @@ const QuestionItem = ({ question }: Props) => {
     <>
       <Box
         maxWidth={750}
-        width={'80%'}
+        width={'89%'}
         m={1}
         p={2}
         border={1}
@@ -39,14 +39,17 @@ const QuestionItem = ({ question }: Props) => {
         <Typography mt={2} variant="h6">
           {question.content}
         </Typography>
-        <Grid2 mt="1" gap="1">
-          <CommentList question={question} />
-        </Grid2>
-        <Flex>
+        <Grid2>
+          <Box mt={2}>
+        <Flex >
           {question.tags.map((tag, index) => (
             <Chip key={index} label={tag} color="primary" />
           ))}
         </Flex>
+        </Box>
+          <CommentList question={question} />
+        </Grid2>
+       
       </Box>
     </>
   )

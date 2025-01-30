@@ -59,16 +59,19 @@ const CommentList = ({ question }: Props) => {
           onClick={() => handleOpenDialog(question)}
         >
           <Box display={'flex'} gap={1}>
-            <AddCommentIcon /> <Typography> Add comment</Typography>
+            <AddCommentIcon /> <Typography>comment</Typography>
           </Box>
         </Link>
         <Link underline="hover" onClick={toggleComments}>
-          {showComments ? 'Hide' : 'Show all comments'} (
+          {showComments ? 'Hide' : 'all comments'} (
           {questionComments.length})
         </Link>
       </Box>
       {showComments && (
-        <Box mt={2} display={'flex'} flexDirection="column" gap={1}>
+        <Box maxHeight={500}  mt={2} display={'flex'} flexDirection="column" gap={1}
+        sx={{overflowY:'scroll',
+          scrollbarWidth: 'thin',
+                }}>
           {questionComments.map((comment) => (
             <Box
               sx={{ backgroundColor: 'grey.100' }}
