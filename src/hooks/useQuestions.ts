@@ -47,7 +47,9 @@ export const useQuestions = (params: UseQuestionsParams | null = {}) => {
         if (!api) {
           return Promise.reject(new Error('API is not available'));
         }
-        return api.post<Question>('/questions', newQuestion);
+        console.log('newQuestion:', newQuestion);
+        return api.post<Question>('/questions', newQuestion) ;
+        
       },
       onSuccess: () => {
         // Refetch questions after creating a new one
@@ -62,12 +64,12 @@ export const useQuestions = (params: UseQuestionsParams | null = {}) => {
       if (!api) {
         return Promise.reject(new Error('API is not available'));
       }
-      return api.patch<Question>(`/questions/${updatedQuestion.question_id}`, updatedQuestion);
+      return api.patch<Question>(`/questions/${updatedQuestion.QuestionId}`, updatedQuestion);
     },
     onSuccess: (data) => {
       // Refetch specific question or all questions if necessary
       queryClient.invalidateQueries({ queryKey: ['questions'] });
-      queryClient.invalidateQueries({ queryKey: ['question', data.question_id] });
+      queryClient.invalidateQueries({ queryKey: ['question', data.QuestionId] });
     },
   });
 
