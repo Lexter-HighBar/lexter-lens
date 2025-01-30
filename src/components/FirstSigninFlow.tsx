@@ -11,26 +11,24 @@ import {
   TextField,
   Typography,
   Tooltip,
-  Checkbox,
-  Chip,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { LogoImg } from './LogoImg';
 import { useLawyer } from '../lib/contexts/LawyerContext';
+import TagChip from './TagChip'; // 導入 TagChip 組件
 
 interface FirstSigninFlowProps {
   isFirstSignIn: boolean;
   setIsFirstSignIn: (value: boolean) => void;
 }
 
-// Main component for the first sign-in flow
 const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
   isFirstSignIn,
   setIsFirstSignIn,
 }) => {
   const { email, firstName, userName, phone, handleUpdateUser, handleChange } = useLawyer();
 
-  const [step, setStep] = useState<number>(1); // State to track the current step
+  const [step, setStep] = useState<number>(1);
   const [formData, setFormData] = useState({
     email,
     firstName,
@@ -47,7 +45,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
     'Oil and Gas'
   ];
 
-  const [selectedDefaultTags, setSelectedDefaultTags] = useState<string[]>([]); // State for selected tags
+  const [selectedDefaultTags, setSelectedDefaultTags] = useState<string[]>([]);
 
   const [tags, setTags] = useState({
     Cities: ['Toronto', 'Vancouver'],
@@ -56,7 +54,6 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
     'Firm Offices': ['Downtown', 'Uptown'],
   });
 
-  // Handle tag selection
   const handleDefaultTagClick = (tag: string) => {
     setSelectedDefaultTags(prev => 
       prev.includes(tag) 
@@ -65,7 +62,6 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
     );
   };
 
-  // Remove a tag from a specific category
   const handleTagRemove = (category: string, tag: string) => {
     setTags((prev) => ({
       ...prev,
@@ -73,7 +69,6 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
     }));
   };
 
-  // Add a new tag to a specific category
   const handleTagAdd = (category: string, newTag: string) => {
     setTags((prev) => ({
       ...prev,
@@ -81,7 +76,6 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
     }));
   };
 
-  // Update formData whenever these dependencies change
   useEffect(() => {
     setFormData({
       email,
@@ -91,9 +85,9 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
     });
   }, [email, firstName, userName, phone]);
 
-  const handleClose = () => setIsFirstSignIn(false); // Close dialog
-  const handleNextStep = () => setStep((prevStep) => prevStep + 1); // Go to the next step
-  const handlePreviousStep = () => setStep((prevStep) => prevStep - 1); // Go to the previous step
+  const handleClose = () => setIsFirstSignIn(false);
+  const handleNextStep = () => setStep((prevStep) => prevStep + 1);
+  const handlePreviousStep = () => setStep((prevStep) => prevStep - 1);
 
   return (
     <Dialog fullWidth open={isFirstSignIn} onClose={handleClose}>
@@ -108,7 +102,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
           minHeight: '85px',
         }}
       >
-        <LogoImg variant="Dark" Size={60} /> {/* Display logo */}
+        <LogoImg variant="Dark" Size={60} />
       </Box>
       <DialogTitle
         sx={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}
@@ -131,7 +125,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
           color: (theme) => theme.palette.grey[500],
         }}
       >
-        <CloseIcon /> {/* Close button */}
+        <CloseIcon />
       </IconButton>
       <DialogContent sx={{ minHeight: '200px' }}>
         {step === 1 && (
@@ -175,17 +169,11 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
               </Box>
               <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
                 {defaultAuthorityTags.map((tag) => (
-                  <Chip
+                  <TagChip
                     key={tag}
                     label={tag}
-                    onClick={() => handleDefaultTagClick(tag)}
-                    sx={{
-                      backgroundColor: selectedDefaultTags.includes(tag) ? 'primary.main' : 'grey.200',
-                      color: selectedDefaultTags.includes(tag) ? 'white' : 'text.primary',
-                      '&:hover': {
-                        backgroundColor: selectedDefaultTags.includes(tag) ? 'primary.dark' : 'grey.300',
-                      },
-                    }}
+                    isSelected={selectedDefaultTags.includes(tag)}
+                    onTagClick={() => handleDefaultTagClick(tag)}
                   />
                 ))}
               </Box>
@@ -206,7 +194,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
                 </Typography>
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 2 }}>
                   {tagList.map((tag, index) => (
-                    <Chip
+                    <TagChip
                       key={index}
                       label={tag}
                       onDelete={() => handleTagRemove(category, tag)}
@@ -270,4 +258,4 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
   );
 };
 
-export default FirstSigninFlow; // Export the component for use in other parts of the application
+export default FirstSigninFlow;
