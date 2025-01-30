@@ -12,8 +12,7 @@ import {
 import { useState, useEffect } from 'react'
 import Grid from '@mui/material/Grid2'
 import { RiEdit2Fill } from 'react-icons/ri'
-import { useLawyer } from '../lib/contexts/LawyerContext'
-
+import { useLawyer } from '../lib/contexts/ClerkContext'
 const UpdateUserName = () => {
   const { email, firstName, userName, phone } = useLawyer() // Getting data from context
   const [loading, setLoading] = useState<boolean>(false)

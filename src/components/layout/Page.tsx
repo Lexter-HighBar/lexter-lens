@@ -5,10 +5,9 @@ export const Page = styled(Flex)({
   flexDirection: 'column',
   alignItems: 'center',
   height: '100vh',
-  width: '90%',  //
+  width: '100%',  //
   maxWidth: '1200px',
   margin: '0 auto',
-  padding: 20,
-  marginTop:60,//
-  boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+  marginTop:10,
+ 
 });

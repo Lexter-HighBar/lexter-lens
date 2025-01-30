@@ -8,25 +8,38 @@ import {
   DialogContent,
   DialogActions,
   Typography,
+  IconButton,
+  InputBase,
+  Divider,
+  Box,
 } from '@mui/material'
 import { v4 as uuidv4 } from 'uuid'
 import { Flex } from '@radix-ui/themes'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
+import { useUser } from '@clerk/clerk-react'
+import { Question } from '../../lib/types'
 
 const CreateQuestion = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [newQuestion, setNewQuestion] = useState({
+  const [newQuestion, setNewQuestion] = useState<Question>({
+    QuestionId: '',
+    ownerId: '',
+    userName: '',
+    profilePicture: '',
+    createdOn: '',
     content: '',
-    tags: '',
+    tags: [],
   })
   const [error, setError] = useState<string | null>(null)
 
   const api = useQuestions() // Access API context
+  const { user } = useUser()
+  console.log('user', user)
 
   const handleCreateQuestion = async () => {
     const { content, tags } = newQuestion
 
-    if (!content.trim() || !tags.trim()) {
+    if (!content.trim() || tags.length === 0) {
       setError('Tags and content are required.')
       return
     }
@@ -37,18 +50,33 @@ const CreateQuestion = () => {
       }
 
       // Create the new question object
-      const questionPayload = {
-        question_id: uuidv4(), // Generate a unique ID for the question
-        content,
-        owner_id: 'user123', // To be Replace with actual owner_id form user context Clerk
-        tags: tags.split(',').map((tag) => tag.trim()), // Convert comma-separated tags to an array
+      const questionPayload: Question = {
+        QuestionId: uuidv4(),
+        ownerId: user?.id || '',
+        userName:
+          typeof user?.unsafeMetadata.userName === 'string'
+            ? user.unsafeMetadata.userName
+            : '',
+        profilePicture: typeof user?.imageUrl === 'string' ? user.imageUrl : '',
+        createdOn: new Date().toISOString(),
+        content: content,
+        tags: tags.map((tag: string) => tag.trim()), // Ensure tags are trimmed
       }
 
       // Send the new question to the API
+
       await api.createQuestion.mutateAsync(questionPayload)
 
       setIsDialogOpen(false)
-      setNewQuestion({ content: '', tags: '' })
+      setNewQuestion({
+        QuestionId: '',
+        ownerId: '',
+        content: '',
+        tags: [],
+        createdOn: '',
+        userName: '',
+        profilePicture: '',
+      })
       setError(null) // Clear any errors
     } catch (err: any) {
       setError(err.message || 'Failed to create the question.')
@@ -58,9 +86,33 @@ const CreateQuestion = () => {
   return (
     <>
       <Flex gap="1" align="center">
-        <Button onClick={() => setIsDialogOpen(true)}>
-          <AddCircleIcon /> Ask a question
-        </Button>
+        <Box sx={{ width: '80vw', maxWidth: '750px' }}>
+          <Box
+            onClick={() => setIsDialogOpen(true)}
+            component="form"
+            sx={{
+              p: '2px 4px',
+              display: 'flex',
+              alignItems: 'center',
+              border: '1px solid #ced4da',
+              borderRadius: 4,
+            }}
+          >
+            <IconButton
+              color="primary"
+              sx={{ p: '10px' }}
+              aria-label="directions"
+            >
+              <AddCircleIcon />
+              <Divider sx={{ height: 30, mx: 2 }} orientation="vertical" />
+            </IconButton>
+            <InputBase
+              fullWidth
+              placeholder="Question in mind ...?"
+              inputProps={{ 'aria-label': 'Question in mind ...?' }}
+            />
+          </Box>
+        </Box>
       </Flex>
       <Dialog
         open={isDialogOpen}
@@ -86,7 +138,10 @@ const CreateQuestion = () => {
             label="Tags (comma-separated)"
             value={newQuestion.tags}
             onChange={(e) =>
-              setNewQuestion({ ...newQuestion, tags: e.target.value })
+              setNewQuestion({
+                ...newQuestion,
+                tags: e.target.value.split(',').map((tag) => tag.trim()),
+              })
             }
           />
           {error && (
