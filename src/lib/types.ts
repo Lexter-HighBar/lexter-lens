@@ -65,6 +65,7 @@ export type Post = {
   likes: number;
   comments: Comment[];
 };
+
 export type Comment = {
   _id: string;
   ownerId: string;
@@ -80,7 +81,6 @@ export type UseCommentsParams = {
 export type UseTagsParams = {
   id?: string;
 };
-
 
 export type Question = {
   question_id: string;

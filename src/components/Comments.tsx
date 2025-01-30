@@ -6,7 +6,7 @@ import { useComments } from '../hooks/useComments';
 const Comments = () => {
   const { comments, loading, error } = useComments(); //the custom hook
   const [fetchTriggered, setFetchTriggered] = useState<boolean>(false); // Testing: track manual fetch
-
+console.log(comments)
   fetchTriggered
 
   const fetchComments = () => {
@@ -25,7 +25,7 @@ const Comments = () => {
         {Array.isArray(comments) && comments.length > 0 ? (
           comments.map((comment) => (
             <li key={comment._id}>
-              <strong>{comment.Username}</strong>: {comment.Comment}
+              <strong>{comment.content}</strong>: {comment.parentId}
             </li>
           ))
         ) : (
