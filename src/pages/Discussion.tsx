@@ -19,7 +19,7 @@ export const Discussion = () => {
       }}
     >
       {/* Dialog to create a new question */}
-      <Box sx={{minWidth: '90vw' }}>
+      <Box style={{ minWidth: '90vw' }}> 
       <CreateQuestion  />
       </Box>
       <QuestionsList questions={questions as Question[]} />
