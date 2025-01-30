@@ -13,6 +13,7 @@ import {
 import { useState, useEffect } from 'react';
 import Grid from '@mui/material/Grid2';
 import { RiEdit2Fill } from 'react-icons/ri';
+import { useLawyers } from '../hooks/useLawyers';
 import { useTags } from '../hooks/useTags';
 
 const firms = ['Firm A', 'Firm B', 'Firm C']; // Example firms
@@ -21,42 +22,42 @@ const provinces = ['Province A', 'Province B', 'Province C']; // Example provinc
 const expertiseOptions = ['Option 1', 'Option 2', 'Option 3']; // Example expertise options
 
 const UserProfile = () => {
-  const { email, firstName, userName, phone } = useLawyer(); // Getting data from context
-  const { tags, error} = useTags();
+  const { first_name, last_name } = useLawyers(); // Getting data from context
+  const { tags, error } = useTags();
   const [loading, setLoading] = useState<boolean>(false);
   const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
   const [snackbarMessage, setSnackbarMessage] = useState<string>('');
+  const { user } = useUser();
+
   const [formData, setFormData] = useState({
-    email,
-    firstName,
-    userName,
-    phone,
+    email: '',
+    firstName: first_name || '',
+    lastName: last_name || '',
     firm: '',
     city: '',
     province: '',
     country: 'Canada',
     expertise: '',
   });
-  const { user } = useUser();
 
-  // Set initial data when user context changes
   useEffect(() => {
-    setFormData({
-      email,
-      firstName: firstName || '',
-      userName: userName || '',
-      phone: phone || '',
-      firm: '',
-      city: '',
-      province: '',
-      country: 'Canada',
-      expertise: '',
-    });
-  }, [email, firstName, userName, phone]);
+    if (user) {
+      setFormData({
+        email: user.primaryEmailAddress?.emailAddress || '',
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        firm: '',
+        city: '',
+        province: '',
+        country: 'Canada',
+        expertise: '',
+      });
+    }
+  }, [user]);
 
   const handleUpdateName = async () => {
-    if (!formData.userName) {
-      setSnackbarMessage('Name cannot be empty');
+    if (!formData.firstName || !formData.lastName) {
+      setSnackbarMessage('First name and last name cannot be empty');
       setOpenSnackbar(true);
       return;
     }
@@ -65,16 +66,15 @@ const UserProfile = () => {
     try {
       if (user) {
         await user.update({
-          unsafeMetadata: {
-            ...user.unsafeMetadata,
-            userName: formData.userName,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
           },
-        });
+        );
         setSnackbarMessage('Profile updated successfully');
       }
     } catch (error) {
-      console.error('Error updating name:', error);
-      setSnackbarMessage('Failed to update name');
+      console.error('Error updating profile:', error);
+      setSnackbarMessage('Failed to update profile');
     } finally {
       setLoading(false);
       setOpenSnackbar(true);
@@ -108,7 +108,9 @@ const UserProfile = () => {
               <RiEdit2Fill />
             </Box>
             <Grid>
-              <Typography variant="h6">{formData.userName}</Typography>
+              <Typography variant="h6">
+                {formData.firstName} {formData.lastName}
+              </Typography>
               <Typography variant="body2">{formData.email}</Typography>
             </Grid>
           </Grid>
@@ -127,10 +129,19 @@ const UserProfile = () => {
           >
             <TextField
               size="small"
-              label="User Name"
-              value={formData.userName}
+              label="First Name"
+              value={formData.firstName}
               onChange={(e) =>
-                setFormData({ ...formData, userName: e.target.value })
+                setFormData({ ...formData, firstName: e.target.value })
+              }
+              margin="normal"
+            />
+            <TextField
+              size="small"
+              label="Last Name"
+              value={formData.lastName}
+              onChange={(e) =>
+                setFormData({ ...formData, lastName: e.target.value })
               }
               margin="normal"
             />
