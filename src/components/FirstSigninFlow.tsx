@@ -10,12 +10,12 @@ import {
   Link,
   TextField,
   Typography,
-  Tooltip,
+  Checkbox,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { LogoImg } from './LogoImg';
 import { useLawyer } from '../lib/contexts/LawyerContext';
-import TagChip from './TagChip'; // 導入 TagChip 組件
+import TagsManager from './TagsManager'; // Import the new TagsManager component
 
 interface FirstSigninFlowProps {
   isFirstSignIn: boolean;
@@ -42,7 +42,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
     'Litigation',
     'BDP - Calgary',
     'Ogilvie - Calgary',
-    'Oil and Gas'
+    'Oil and Gas',
   ];
 
   const [selectedDefaultTags, setSelectedDefaultTags] = useState<string[]>([]);
@@ -55,10 +55,8 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
   });
 
   const handleDefaultTagClick = (tag: string) => {
-    setSelectedDefaultTags(prev => 
-      prev.includes(tag) 
-        ? prev.filter(t => t !== tag)
-        : [...prev, tag]
+    setSelectedDefaultTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
     );
   };
 
@@ -156,68 +154,18 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
             </ul>
           </>
         )}
+
         {step === 2 && (
-          <>
-            <Box sx={{ mb: 3 }}>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                <Typography variant="body1" sx={{ fontWeight: 'medium' }}>
-                  Authority Tags
-                </Typography>
-                <Tooltip title="Authority Tags help identify the expertise, location, and industry of a legal professional.">
-                  <Button variant="text" sx={{ color: 'primary.main' }}>LEARN MORE</Button>
-                </Tooltip>
-              </Box>
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                {defaultAuthorityTags.map((tag) => (
-                  <TagChip
-                    key={tag}
-                    label={tag}
-                    isSelected={selectedDefaultTags.includes(tag)}
-                    onTagClick={() => handleDefaultTagClick(tag)}
-                  />
-                ))}
-              </Box>
-            </Box>
-            
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-              <Typography variant="body1" sx={{ fontWeight: 'medium' }}>
-                Suggested Tags
-              </Typography>
-              <Tooltip title="Suggested Tags provide additional context about your professional profile.">
-                <Button variant="text" sx={{ color: 'primary.main' }}>LEARN MORE</Button>
-              </Tooltip>
-            </Box>
-            {Object.entries(tags).map(([category, tagList]) => (
-              <Box key={category} sx={{ mb: 3 }}>
-                <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>
-                  {category}
-                </Typography>
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 2 }}>
-                  {tagList.map((tag, index) => (
-                    <TagChip
-                      key={index}
-                      label={tag}
-                      onDelete={() => handleTagRemove(category, tag)}
-                    />
-                  ))}
-                </Box>
-                <TextField
-                  placeholder={`Add ${category.toLowerCase()}...`}
-                  fullWidth
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      const newTag = (e.target as HTMLInputElement).value.trim();
-                      if (newTag) {
-                        handleTagAdd(category, newTag);
-                        (e.target as HTMLInputElement).value = '';
-                      }
-                    }
-                  }}
-                />
-              </Box>
-            ))}
-          </>
+          <TagsManager
+            defaultTags={defaultAuthorityTags}
+            selectedDefaultTags={selectedDefaultTags}
+            onDefaultTagClick={handleDefaultTagClick}
+            tags={tags}
+            onTagRemove={handleTagRemove}
+            onTagAdd={handleTagAdd}
+          />
         )}
+
         {step === 3 && (
           <TextField
             fullWidth
