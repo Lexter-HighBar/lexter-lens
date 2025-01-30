@@ -10,7 +10,6 @@ import {
   Link,
   TextField,
   Typography,
-  Checkbox,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { LogoImg } from './LogoImg';
@@ -140,7 +139,6 @@ return (
               <li>Bullet point 2</li>
               <li>Bullet point 3</li>
             </ul>
-            <Checkbox /> I Accept the Privacy Policies
           </>
         )}
 {step === 2 && (
