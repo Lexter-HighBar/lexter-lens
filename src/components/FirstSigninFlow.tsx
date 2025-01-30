@@ -40,7 +40,11 @@ const defaultAuthorityTags = [
     'Oil and Gas',
   ];
 const [selectedDefaultTags, setSelectedDefaultTags] = useState<string[]>([]);
-const [tags, setTags] = useState({
+interface Tags {
+  [key: string]: string[];
+}
+
+const [tags, setTags] = useState<Tags>({
     Cities: ['Toronto', 'Vancouver'],
     Expertise: ['Corporate Law', 'Real Estate'],
     Industries: ['Technology', 'Healthcare'],
