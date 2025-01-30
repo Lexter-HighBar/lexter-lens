@@ -4,7 +4,7 @@ import { Question , Comment } from '../../lib/types';
 import { useState } from 'react';
 import { useComments } from '../../hooks/useComments';
 import { useQuestions } from '../../hooks/useQuestions';
-import { Box, CircularProgress, Grid2, Skeleton, Stack } from '@mui/material';
+import { Box, Grid2, Skeleton, Stack } from '@mui/material';
 interface Props {
   questions: Question[];
 }
