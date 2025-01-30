@@ -10,35 +10,29 @@ import {
   Link,
   TextField,
   Typography,
-
   Checkbox,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { LogoImg } from './LogoImg';
-import { useLawyer } from '../lib/contexts/LawyerContext';
+import { useLawyer } from '../lib/contexts/ClerkContext';
 import TagsManager from './TagsManager'; // Import the new TagsManager component
-
-
 interface FirstSigninFlowProps {
   isFirstSignIn: boolean;
   setIsFirstSignIn: (value: boolean) => void;
 }
-
 const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
   isFirstSignIn,
   setIsFirstSignIn,
 }) => {
   const { email, firstName, userName, phone, handleUpdateUser, handleChange } = useLawyer();
-
-  const [step, setStep] = useState<number>(1);
+const [step, setStep] = useState<number>(1);
   const [formData, setFormData] = useState({
     email,
     firstName,
     userName,
     phone,
   });
-
-  const defaultAuthorityTags = [
+const defaultAuthorityTags = [
     'Calgary',
     'Corporate & Commercial Law',
     'Litigation',
@@ -46,37 +40,31 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
     'Ogilvie - Calgary',
     'Oil and Gas',
   ];
-
-  const [selectedDefaultTags, setSelectedDefaultTags] = useState<string[]>([]);
-
-  const [tags, setTags] = useState({
+const [selectedDefaultTags, setSelectedDefaultTags] = useState<string[]>([]);
+const [tags, setTags] = useState({
     Cities: ['Toronto', 'Vancouver'],
     Expertise: ['Corporate Law', 'Real Estate'],
     Industries: ['Technology', 'Healthcare'],
     'Firm Offices': ['Downtown', 'Uptown'],
   });
-
-  const handleDefaultTagClick = (tag: string) => {
+const handleDefaultTagClick = (tag: string) => {
     setSelectedDefaultTags((prev) =>
       prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
     );
   };
-
-  const handleTagRemove = (category: string, tag: string) => {
+const handleTagRemove = (category: string, tag: string) => {
     setTags((prev) => ({
       ...prev,
       [category]: prev[category].filter((t) => t !== tag),
     }));
   };
-
-  const handleTagAdd = (category: string, newTag: string) => {
+const handleTagAdd = (category: string, newTag: string) => {
     setTags((prev) => ({
       ...prev,
       [category]: [...prev[category], newTag],
     }));
   };
-
-  useEffect(() => {
+useEffect(() => {
     setFormData({
       email,
       firstName: firstName || '',
@@ -84,12 +72,10 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
       phone: phone || '',
     });
   }, [email, firstName, userName, phone]);
-
-  const handleClose = () => setIsFirstSignIn(false);
+const handleClose = () => setIsFirstSignIn(false);
   const handleNextStep = () => setStep((prevStep) => prevStep + 1);
   const handlePreviousStep = () => setStep((prevStep) => prevStep - 1);
-
-  return (
+return (
     <Dialog fullWidth open={isFirstSignIn} onClose={handleClose}>
       <Box
         component="section"
@@ -154,10 +140,10 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
               <li>Bullet point 2</li>
               <li>Bullet point 3</li>
             </ul>
+            <Checkbox /> I Accept the Privacy Policies
           </>
         )}
-
-        {step === 2 && (
+{step === 2 && (
           <TagsManager
             defaultTags={defaultAuthorityTags}
             selectedDefaultTags={selectedDefaultTags}
@@ -167,8 +153,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
             onTagAdd={handleTagAdd}
           />
         )}
-
-        {step === 3 && (
+{step === 3 && (
           <TextField
             fullWidth
             margin="normal"
@@ -207,5 +192,4 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
     </Dialog>
   );
 };
-
 export default FirstSigninFlow;

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Box, Typography, Tooltip, Button, TextField, Chip } from '@mui/material';
-
 interface TagsManagerProps {
   defaultTags: string[];
   selectedDefaultTags: string[];
@@ -9,7 +8,6 @@ interface TagsManagerProps {
   onTagRemove: (category: string, tag: string) => void;
   onTagAdd: (category: string, newTag: string) => void;
 }
-
 const TagsManager: React.FC<TagsManagerProps> = ({
   defaultTags,
   selectedDefaultTags,
@@ -46,8 +44,7 @@ const TagsManager: React.FC<TagsManagerProps> = ({
           ))}
         </Box>
       </Box>
-
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
         <Typography variant="body1" sx={{ fontWeight: 'medium' }}>
           Suggested Tags
         </Typography>
@@ -55,8 +52,7 @@ const TagsManager: React.FC<TagsManagerProps> = ({
           <Button variant="text" sx={{ color: 'primary.main' }}>LEARN MORE</Button>
         </Tooltip>
       </Box>
-
-      {Object.entries(tags).map(([category, tagList]) => (
+{Object.entries(tags).map(([category, tagList]) => (
         <Box key={category} sx={{ mb: 3 }}>
           <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>
             {category}
@@ -88,5 +84,4 @@ const TagsManager: React.FC<TagsManagerProps> = ({
     </>
   );
 };
-
 export default TagsManager;
