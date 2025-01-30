@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -10,49 +10,72 @@ import {
   Link,
   TextField,
   Typography,
-
-} from '@mui/material'
-import CloseIcon from '@mui/icons-material/Close'
-import { LogoImg } from './LogoImg'
-import { useLawyer } from '../lib/contexts/ClerkContext'
-import Checkbox from '@mui/material/Checkbox';
-
-
-
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import { LogoImg } from './LogoImg';
+import { useLawyer } from '../lib/contexts/ClerkContext';
+import TagsManager from './TagsManager'; // Import the new TagsManager component
 interface FirstSigninFlowProps {
-  isFirstSignIn: boolean
-  setIsFirstSignIn: (value: boolean) => void
+  isFirstSignIn: boolean;
+  setIsFirstSignIn: (value: boolean) => void;
 }
-
 const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
   isFirstSignIn,
   setIsFirstSignIn,
 }) => {
-  const { email, firstName, userName, phone, handleUpdateUser, handleChange } =
-    useLawyer()
-
-  const [step, setStep] = useState<number>(1)
+  const { email, firstName, userName, phone, handleUpdateUser, handleChange } = useLawyer();
+const [step, setStep] = useState<number>(1);
   const [formData, setFormData] = useState({
     email,
     firstName,
     userName,
     phone,
-  })
-  useEffect(() => {
+  });
+const defaultAuthorityTags = [
+    'Calgary',
+    'Corporate & Commercial Law',
+    'Litigation',
+    'BDP - Calgary',
+    'Ogilvie - Calgary',
+    'Oil and Gas',
+  ];
+const [selectedDefaultTags, setSelectedDefaultTags] = useState<string[]>([]);
+const [tags, setTags] = useState({
+    Cities: ['Toronto', 'Vancouver'],
+    Expertise: ['Corporate Law', 'Real Estate'],
+    Industries: ['Technology', 'Healthcare'],
+    'Firm Offices': ['Downtown', 'Uptown'],
+  });
+const handleDefaultTagClick = (tag: string) => {
+    setSelectedDefaultTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+    );
+  };
+const handleTagRemove = (category: string, tag: string) => {
+    setTags((prev) => ({
+      ...prev,
+      [category]: prev[category].filter((t) => t !== tag),
+    }));
+  };
+const handleTagAdd = (category: string, newTag: string) => {
+    setTags((prev) => ({
+      ...prev,
+      [category]: [...prev[category], newTag],
+    }));
+  };
+useEffect(() => {
     setFormData({
       email,
       firstName: firstName || '',
       userName: userName || '',
       phone: phone || '',
-    })
-  }, [email, firstName, userName, phone])
-  console.log(formData)
-  const handleClose = () => setIsFirstSignIn(false)
-  const handleNextStep = () => setStep((prevStep) => prevStep + 1)
-  const handlePreviousStep = () => setStep((prevStep) => prevStep - 1)
-
-  return (
-    <Dialog fullWidth open={isFirstSignIn} onClose={handleClose} >
+    });
+  }, [email, firstName, userName, phone]);
+const handleClose = () => setIsFirstSignIn(false);
+  const handleNextStep = () => setStep((prevStep) => prevStep + 1);
+  const handlePreviousStep = () => setStep((prevStep) => prevStep - 1);
+return (
+    <Dialog fullWidth open={isFirstSignIn} onClose={handleClose}>
       <Box
         component="section"
         sx={{
@@ -64,7 +87,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
           minHeight: '85px',
         }}
       >
-        <LogoImg variant="Dark" Size={60}  />
+        <LogoImg variant="Dark" Size={60} />
       </Box>
       <DialogTitle
         sx={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}
@@ -72,10 +95,10 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
         {step === 1
           ? 'Lexter Lens Quickstart'
           : step === 2
-            ? `Let's Make Lexter Lens Relevant to You`
-            : step === 3
-              ? 'Make the Legal World More Transparent'
-              : 'Completed'}
+          ? "Let's Make Lexter Lens Relevant to You"
+          : step === 3
+          ? 'Make the Legal World More Transparent'
+          : 'Completed'}
       </DialogTitle>
       <IconButton
         aria-label="close"
@@ -110,33 +133,25 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
               value={formData.userName}
               onChange={handleChange}
             />
-             
-             <Typography>Privacy Policies</Typography>
-             <ul>
-             <li>Bullet point 1</li>
-             <li>Bullet point 2</li>
-             <li>Bullet point 3</li>
-             </ul>
-             <Checkbox/>I Accept the Privacy policies
+            <Typography>Privacy Policies</Typography>
+            <ul>
+              <li>Bullet point 1</li>
+              <li>Bullet point 2</li>
+              <li>Bullet point 3</li>
+            </ul>
           </>
         )}
-        {step === 2 && (
-          <>
-            <Typography>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </Typography>
-            <TextField
-              fullWidth
-              margin="normal"
-              name="phone"
-              label="Phone"
-              value={formData.phone}
-              onChange={handleChange}
-            />
-          </>
+{step === 2 && (
+          <TagsManager
+            defaultTags={defaultAuthorityTags}
+            selectedDefaultTags={selectedDefaultTags}
+            onDefaultTagClick={handleDefaultTagClick}
+            tags={tags}
+            onTagRemove={handleTagRemove}
+            onTagAdd={handleTagAdd}
+          />
         )}
-        {step === 3 && (
+{step === 3 && (
           <TextField
             fullWidth
             margin="normal"
@@ -161,17 +176,18 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
           </Button>
         )}
         {step === 4 && (
-
-          <Button sx={{ fontWeight: 'bold' }} onClick={() => {
-            handleUpdateUser(); 
-            handleClose(); 
-          }}>
+          <Button
+            sx={{ fontWeight: 'bold' }}
+            onClick={() => {
+              handleUpdateUser();
+              handleClose();
+            }}
+          >
             Complete Sign-Up
           </Button>
         )}
       </DialogActions>
     </Dialog>
-  )
-}
-
-export default FirstSigninFlow
+  );
+};
+export default FirstSigninFlow;
