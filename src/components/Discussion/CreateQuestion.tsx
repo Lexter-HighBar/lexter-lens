@@ -18,6 +18,7 @@ import { Flex } from '@radix-ui/themes'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import { useUser } from '@clerk/clerk-react'
 import { Question } from '../../lib/types'
+import { isMobile } from 'react-device-detect';
 
 const CreateQuestion = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -114,47 +115,50 @@ const CreateQuestion = () => {
           </Box>
         </Box>
       </Flex>
-      <Dialog
-        open={isDialogOpen}
-        onClose={() => setIsDialogOpen(false)}
-        fullWidth
-      >
-        <DialogTitle>Create a New Question</DialogTitle>
-        <DialogContent>
-          <TextField
-            fullWidth
-            margin="normal"
-            label="Content"
-            multiline
-            rows={4}
-            value={newQuestion.content}
-            onChange={(e) =>
-              setNewQuestion({ ...newQuestion, content: e.target.value })
-            }
-          />
-          <TextField
-            fullWidth
-            margin="normal"
-            label="Tags (comma-separated)"
-            value={newQuestion.tags}
-            onChange={(e) =>
-              setNewQuestion({
-                ...newQuestion,
-                tags: e.target.value.split(',').map((tag) => tag.trim()),
-              })
-            }
-          />
-          {error && (
-            <Typography variant="body2" color="error" sx={{ marginTop: 1 }}>
-              {error}
-            </Typography>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setIsDialogOpen(false)}>Cancel</Button>
-          <Button onClick={handleCreateQuestion}>Post</Button>
-        </DialogActions>
-      </Dialog>
+    
+
+        <Dialog
+          fullWidth
+          fullScreen={isMobile}
+          open={isDialogOpen}
+          onClose={() => setIsDialogOpen(false)}
+        >
+          <DialogTitle>New Question</DialogTitle>
+          <DialogContent>
+            <TextField
+          fullWidth
+          margin="normal"
+          label="Question"
+          multiline
+          rows={4}
+          value={newQuestion.content}
+          onChange={(e) =>
+            setNewQuestion({ ...newQuestion, content: e.target.value })
+          }
+            />
+            <TextField
+          fullWidth
+          margin="normal"
+          label="Tags (comma-separated)"
+          value={newQuestion.tags}
+          onChange={(e) =>
+            setNewQuestion({
+              ...newQuestion,
+              tags: e.target.value.split(',').map((tag) => tag.trim()),
+            })
+          }
+            />
+            {error && (
+          <Typography variant="body2" color="error" sx={{ marginTop: 1 }}>
+            {error}
+          </Typography>
+            )}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setIsDialogOpen(false)}>Cancel</Button>
+            <Button onClick={handleCreateQuestion}>Post</Button>
+          </DialogActions>
+        </Dialog>
     </>
   )
 }
