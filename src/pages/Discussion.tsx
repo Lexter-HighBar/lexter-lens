@@ -4,6 +4,7 @@ import QuestionsList from '../components/Discussion/QuestionsList'
 import { Question } from '../lib/types'
 import { useQuestions } from '../hooks/useQuestions'
 import CreateQuestion from '../components/Discussion/CreateQuestion'
+import { Box } from '@radix-ui/themes'
 
 // Discussion page component
 export const Discussion = () => {
@@ -18,7 +19,9 @@ export const Discussion = () => {
       }}
     >
       {/* Dialog to create a new question */}
-      <CreateQuestion />
+      <Box sx={{minWidth: '90vw' }}>
+      <CreateQuestion  />
+      </Box>
       <QuestionsList questions={questions as Question[]} />
     </Page>
   )

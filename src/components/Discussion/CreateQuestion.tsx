@@ -86,36 +86,32 @@ const CreateQuestion = () => {
   return (
     <>
       <Flex gap="1" align="center">
-        <Box
-          maxWidth={775}
-          onClick={() => setIsDialogOpen(true)}
-          component="form"
-          sx={{
-            p: '2px 4px',
-            display: 'flex',
-            alignItems: 'center',
-            
-            width: '70dvw',
-            border: '1px solid #ced4da',
-            borderRadius: 5,
-          }}
-        >  
-        <IconButton
-          color="primary"
-          sx={{ p: '10px' }}
-          aria-label="directions"
-        >
-          
-          <AddCircleIcon />
-                    <Divider sx={{ height: 30, mx: 2 }} orientation="vertical" />
-        </IconButton>
-          <InputBase
-            sx={{ ml: 1, flex: 1 }}
-            placeholder="Question in mind ...?"
-            inputProps={{ 'aria-label': 'Question in mind ...?' }}
-          />
-
-        
+        <Box sx={{ width: '80vw', maxWidth: '750px' }}>
+          <Box
+            onClick={() => setIsDialogOpen(true)}
+            component="form"
+            sx={{
+              p: '2px 4px',
+              display: 'flex',
+              alignItems: 'center',
+              border: '1px solid #ced4da',
+              borderRadius: 4,
+            }}
+          >
+            <IconButton
+              color="primary"
+              sx={{ p: '10px' }}
+              aria-label="directions"
+            >
+              <AddCircleIcon />
+              <Divider sx={{ height: 30, mx: 2 }} orientation="vertical" />
+            </IconButton>
+            <InputBase
+              fullWidth
+              placeholder="Question in mind ...?"
+              inputProps={{ 'aria-label': 'Question in mind ...?' }}
+            />
+          </Box>
         </Box>
       </Flex>
       <Dialog
