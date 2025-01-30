@@ -10,12 +10,14 @@ import {
   Link,
   TextField,
   Typography,
+
   Checkbox,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { LogoImg } from './LogoImg';
 import { useLawyer } from '../lib/contexts/LawyerContext';
 import TagsManager from './TagsManager'; // Import the new TagsManager component
+
 
 interface FirstSigninFlowProps {
   isFirstSignIn: boolean;

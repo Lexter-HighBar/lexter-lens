@@ -7,7 +7,7 @@ import { ApiContextProvider } from './lib/contexts/ApiContext'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { UserDataApiProvider } from './lib/contexts/UserdataApiContext'
-import { LawyerProvider } from './lib/contexts/LawyerContext'
+import { LawyerProvider } from './lib/contexts/ClerkContext'
 
 // Import Publishable Key
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
