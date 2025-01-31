@@ -37,9 +37,9 @@ export const useQuestions = (params: UseQuestionsParams | null = {}) => {
   });
 
   // Create a new question
-  interface CreateQuestionVariables extends Omit<Question, '_id'> {}
+  type CreateQuestionVariables = Omit<Question, '_id'>;
 
-  interface CreateQuestionContext {}
+  type CreateQuestionContext = unknown;
 
   const createQuestion = useMutation<Question, Error, CreateQuestionVariables, CreateQuestionContext>(
     {
@@ -48,7 +48,7 @@ export const useQuestions = (params: UseQuestionsParams | null = {}) => {
           return Promise.reject(new Error('API is not available'));
         }
         console.log('newQuestion:', newQuestion);
-        return api.post<Question>('/questions', newQuestion) ;
+        return api.post<Question, unknown>('/questions', newQuestion) ;
         
       },
       onSuccess: () => {
@@ -64,7 +64,7 @@ export const useQuestions = (params: UseQuestionsParams | null = {}) => {
       if (!api) {
         return Promise.reject(new Error('API is not available'));
       }
-      return api.patch<Question>(`/questions/${updatedQuestion.QuestionId}`, updatedQuestion);
+      return api.patch<Question, unknown>(`/questions/${updatedQuestion.QuestionId}`, updatedQuestion);
     },
     onSuccess: (data) => {
       // Refetch specific question or all questions if necessary
