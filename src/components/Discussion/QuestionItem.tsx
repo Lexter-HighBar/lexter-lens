@@ -41,11 +41,11 @@ const QuestionItem = ({ question }: Props) => {
         </Typography>
         <Grid2>
           <Box mt={2}>
-        <Flex >
-          {question.tags.map((tag, index) => (
-            <Chip key={index} label={tag} color="primary" />
-          ))}
-        </Flex>
+          <Flex>
+            {question.tags.map((tag, index) => (
+              <Chip key={index} label={tag} color="primary" sx={{ ml: index === 0 ? 0 : 1 }} />
+            ))}
+          </Flex>
         </Box>
           <CommentList question={question} />
         </Grid2>
