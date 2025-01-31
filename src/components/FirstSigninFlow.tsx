@@ -160,28 +160,68 @@ return (
   <Box
     sx={{
       border: '1px solid grey',
-      borderRadius: '8px',
+      borderRadius: '4px',
       padding: '16px',
       backgroundColor: 'rgba(0, 0, 0, 0.05)',
-      mb: 2,
+      mb: -1,
     }}
   >
-    <Typography sx={{ fontSize: 16, fontWeight: 'bold' }}>
-        This is your message box
-      </Typography>
-      <Typography sx={{ fontSize: 14, color: 'grey.700' }}>
-        You can provide more details or instructions here.
+    <Typography sx={{ fontSize: 16, fontWeight: 'arial' }}>
+        What's the mat leave culture REALLY like at BDP in Calgary?
       </Typography>
     </Box>
           <TextField
             fullWidth
             margin="normal"
+            placeholder="Have a contribution?Share it now."
             name="firstName"
-            label="First Name "
+            value={formData.firstName}
+            onChange={handleChange}
+          />
+            <Box
+    sx={{
+      border: '1px solid grey',
+      borderRadius: '4px',
+      padding: '16px',
+      backgroundColor: 'rgba(0, 0, 0, 0.05)',
+      mb: -1,
+    }}
+  >
+    <Typography sx={{ fontSize: 16, fontWeight: 'arial' }}>
+        What's the mat leave culture REALLY like at BDP in Calgary?
+      </Typography>
+    </Box>
+          <TextField
+            fullWidth
+            margin="normal"
+            placeholder="Have a contribution?Share it now."
+            name="firstName"
+            value={formData.firstName}
+            onChange={handleChange}
+          />
+            <Box
+    sx={{
+      border: 'px solid grey',
+      borderRadius: '4px',
+      padding: '16px',
+      backgroundColor: 'rgba(0, 0, 0, 0.05)',
+      mb: -1,
+    }}
+  >
+    <Typography sx={{ fontSize: 16, fontWeight: 'arial' }}>
+        What's the mat leave culture REALLY like at BDP in Calgary?
+      </Typography>
+    </Box>
+          <TextField
+            fullWidth
+            margin="normal"
+            placeholder="Have a contribution?Share it now."
+            name="firstName"
             value={formData.firstName}
             onChange={handleChange}
           />
   </>
+  
 )}
       </DialogContent>
       <DialogActions>
