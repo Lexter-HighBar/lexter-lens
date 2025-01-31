@@ -1,13 +1,12 @@
-import { useState } from 'react';
-import { useComments } from '../hooks/useComments';
-
-
+import { useState } from "react";
+import { useComments } from "../hooks/useComments";
 
 const Comments = () => {
-  const { comments, loading, error } = useComments(); //the custom hook
-  const [fetchTriggered, setFetchTriggered] = useState<boolean>(false); // Testing: track manual fetch
-console.log(comments)
-  fetchTriggered
+  const { comments, loading, error } = useComments(); // Custom hook
+  const [fetchTriggered, setFetchTriggered] = useState<boolean>(false); // Track manual fetch
+
+  console.log("Comments:", comments);
+  console.log("Fetch Triggered:", fetchTriggered); 
 
   const fetchComments = () => {
     setFetchTriggered(true);
@@ -20,6 +19,8 @@ console.log(comments)
     <div>
       <h3>Comments</h3>
       <button onClick={fetchComments}>Fetch Comments</button>
+
+      <p>Fetch Triggered: {fetchTriggered ? "Yes" : "No"}</p> {/* ✅ Used in JSX */}
 
       <ul>
         {Array.isArray(comments) && comments.length > 0 ? (

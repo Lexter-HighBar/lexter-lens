@@ -30,7 +30,7 @@ export const useComments = (params: UseCommentsParams | null = {}) => {
 
   // Add a comment (POST)
   const createComment = useMutation({
-    mutationFn: (newComment: Partial<Comment>) => post<Comment>('/comments', newComment),
+    mutationFn: (newComment: Partial<Comment>) => post<Comment, unknown>('/comments', newComment),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['comments'] }); // Refresh comments list
     },
@@ -40,7 +40,7 @@ export const useComments = (params: UseCommentsParams | null = {}) => {
   const updateComment = useMutation({
     mutationFn: (updatedComment: { id: string; data: Partial<Comment> }) => {
       const { id, data } = updatedComment;
-      return patch<Comment>(`/comments/${id}`, data);
+      return patch<Comment, unknown>(`/comments/${id}`, data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['comments'] }); // Refresh comments list
