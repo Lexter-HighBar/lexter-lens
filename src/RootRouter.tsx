@@ -15,7 +15,7 @@ import Home from './pages/Home';
 import Signin from './pages/Sign-in';
 import Discussion from './pages/Discussion';
 import SignUpForm from './pages/SignUpForm';
-import ProfilePage from './components/Profile';
+import UserProfile from './components/UserProfile';
 
 
 // RootRouter Component
@@ -59,7 +59,7 @@ export const RootRouter = () => {
         <Route path="/sign-in" element={<Signin />} />
         <Route path="/*" element={<Home />} />
         <Route path="/discussion" element={<Discussion />} />
-        <Route path="/profile*" element={<ProfilePage />} />
+        <Route path="/profile*" element={<UserProfile />} />
       </Routes>
     </>
   ) : (

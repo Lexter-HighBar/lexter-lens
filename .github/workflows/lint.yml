@@ -1,0 +1,31 @@
+name: Lint and TypeScript Check
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'  # Adjust the Node.js version as per your setup
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Run ESLint and TypeScript checks
+        run: |
+          npx eslint . --ext .ts,.tsx
+          npx tsc --noEmit  # This checks TypeScript for errors but doesn't produce output files
