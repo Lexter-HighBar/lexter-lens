@@ -55,6 +55,17 @@ export type JobOffer = {
   updated_at: string
 }
 
+export type Post = {
+  id: string;
+ user: string;
+  date: string;
+  title: string;
+  content: string;
+  tags: string[];
+  likes: number;
+  comments: Comment[];
+};
+
 export type Comment = {
   _id: string;
   ownerId: string;
@@ -68,7 +79,11 @@ export type Comment = {
 
 export type UseCommentsParams = {
   id?: string;
-} ;
+};
+
+export type UseTagsParams = {
+  id?: string;
+};
 
 export type Question = {
   QuestionId: string;
@@ -78,4 +93,12 @@ export type Question = {
   createdOn: string;
   content: string;
   tags: Array<string>;
+};
+
+export type Tag = {
+  firm: Array<string>;
+  city: Array<string>;
+  province: Array<string>;
+  country: string;
+  expertise: Array<string>;
 };

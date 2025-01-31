@@ -79,8 +79,12 @@ const CreateQuestion = () => {
         profilePicture: '',
       })
       setError(null) // Clear any errors
-    } catch (err: any) {
-      setError(err.message || 'Failed to create the question.')
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message || 'Failed to create the question.')
+      } else {
+        setError('Failed to create the question.')
+      }
     }
   }
 
