@@ -156,15 +156,33 @@ return (
           />
         )}
 {step === 3 && (
+  <>
+  <Box
+    sx={{
+      border: '1px solid grey',
+      borderRadius: '8px',
+      padding: '16px',
+      backgroundColor: 'rgba(0, 0, 0, 0.05)',
+      mb: 2,
+    }}
+  >
+    <Typography sx={{ fontSize: 16, fontWeight: 'bold' }}>
+        This is your message box
+      </Typography>
+      <Typography sx={{ fontSize: 14, color: 'grey.700' }}>
+        You can provide more details or instructions here.
+      </Typography>
+    </Box>
           <TextField
             fullWidth
             margin="normal"
             name="firstName"
-            label="First Name"
+            label="First Name "
             value={formData.firstName}
             onChange={handleChange}
           />
-        )}
+  </>
+)}
       </DialogContent>
       <DialogActions>
         {step > 1 && (
