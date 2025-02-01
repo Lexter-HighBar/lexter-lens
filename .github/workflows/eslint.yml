@@ -23,9 +23,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # Run ESLint and output to SARIF format
+      # Run ESLint and output to SARIF format using the correct formatter
       - name: Run ESLint with SARIF formatter
-        run: npx eslint . -f node_modules/@microsoft/eslint-formatter-sarif/sarif.js -o eslint-results.sarif
+        run: npx eslint . -f @microsoft/eslint-formatter-sarif -o eslint-results.sarif
 
       # Upload the SARIF results to GitHub
       - name: Upload SARIF results to GitHub
