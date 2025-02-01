@@ -43,6 +43,12 @@ jobs:
           npx eslint . --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif
           # List files to check if the SARIF file is created
           ls -l
+          
+          # Fail the workflow if ESLint finds errors
+          if grep -q '"error"' eslint-results.sarif; then
+            echo "ESLint errors found!"
+            exit 1
+          fi
 
       - name: Check if SARIF file exists
         run: |
