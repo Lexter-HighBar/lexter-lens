@@ -48,4 +48,6 @@ jobs:
       # Clean up after the job
       - name: Post job cleanup
         run: |
+          # Example cleanup process
           echo "Cleaning up orphan processes..."
+          # Add any additional cleanup commands if necessary, such as removing temp files
