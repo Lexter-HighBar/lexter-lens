@@ -38,7 +38,9 @@ jobs:
       - name: Run ESLint
         env:
           SARIF_ESLINT_IGNORE_SUPPRESSED: "true"
-        run: npm run lint  # Runs ESLint using your locally defined script
+        run: |
+          npm run lint  # Runs ESLint using your locally defined script
+          ls -l  # List files to check if eslint-results.sarif is generated
 
       - name: Upload analysis results to GitHub
         uses: github/codeql-action/upload-sarif@v3
