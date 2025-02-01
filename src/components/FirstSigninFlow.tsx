@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { LogoImg } from './LogoImg';
-import { useLawyer } from '../lib/contexts/ClerkContext';
+import { UseClerkStorage } from '../hooks/UseClerkStorage';
 import TagsManager from './TagsManager'; // Import the new TagsManager component
 interface FirstSigninFlowProps {
   isFirstSignIn: boolean;
@@ -23,7 +23,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
   isFirstSignIn,
   setIsFirstSignIn,
 }) => {
-  const { email, firstName, userName, phone, handleUpdateUser, handleChange } = useLawyer();
+  const { email, firstName, userName, phone, handleUpdateUser, handleChange } = UseClerkStorage();
 const [step, setStep] = useState<number>(1);
   const [formData, setFormData] = useState({
     email,
