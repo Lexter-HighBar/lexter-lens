@@ -10,12 +10,13 @@ on:
 
 jobs:
   eslint:
-    name: Run eslint scanning
+    name: Run ESLint Scanning
     runs-on: ubuntu-latest
     permissions:
       contents: read
       security-events: write
       actions: read
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -23,18 +24,21 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'  # Updated to ESLint-compatible version
+          node-version: '18'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci  # Clean install, matching the lock file
+
+      - name: Install formatter
+        run: npm install --save-dev @microsoft/eslint-formatter-sarif  # Ensure formatter is installed
+
+      - name: Verify dependencies
+        run: npm list --depth=0  # Verifies if all dependencies are installed correctly
 
       - name: Run ESLint
         env:
           SARIF_ESLINT_IGNORE_SUPPRESSED: "true"
-        run: |
-          npx eslint . \
-            --format @microsoft/eslint-formatter-sarif \
-            --output-file eslint-results.sarif
+        run: npm run lint  # Runs ESLint using your locally defined script
 
       - name: Upload analysis results to GitHub
         uses: github/codeql-action/upload-sarif@v3
