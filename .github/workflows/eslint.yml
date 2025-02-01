@@ -1,34 +1,63 @@
-name: Run ESLint and Upload SARIF Results
+name: ESLint
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
-  lint:
+  eslint:
+    name: Run ESLint Scanning
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+
     steps:
-      # Checkout the code
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18.x'
+          node-version: '18'
 
-      # Install dependencies
       - name: Install dependencies
-        run: npm ci
+        run: npm ci  # Clean install, matching the lock file
 
-      # Run ESLint and output to SARIF format using the correct formatter
-      - name: Run ESLint with SARIF formatter
-        run: npx eslint . -f @microsoft/eslint-formatter-sarif -o eslint-results.sarif
+      - name: Install formatter
+        run: npm install --save-dev @microsoft/eslint-formatter-sarif  # Ensure formatter is installed
 
-      # Upload the SARIF results to GitHub
-      - name: Upload SARIF results to GitHub
+      - name: Verify dependencies
+        run: npm list --depth=0  # Verifies if all dependencies are installed correctly
+
+      - name: Run ESLint
+        env:
+          SARIF_ESLINT_IGNORE_SUPPRESSED: "true"
+        run: |
+          # Run ESLint with SARIF formatter and output to eslint-results.sarif
+          npx eslint . --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif
+          # List files to check if the SARIF file is created
+          ls -l
+          
+          # Fail the workflow if ESLint finds errors
+          if grep -q '"error"' eslint-results.sarif; then
+            echo "ESLint errors found!"
+            exit 1
+          fi
+
+      - name: Check if SARIF file exists
+        run: |
+          if [ ! -f eslint-results.sarif ]; then
+            echo "Error: eslint-results.sarif not found!"
+            exit 1
+          fi
+          echo "Found eslint-results.sarif, proceeding..."
+
+      - name: Upload analysis results to GitHub
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: eslint-results.sarif
+          wait-for-processing: true
