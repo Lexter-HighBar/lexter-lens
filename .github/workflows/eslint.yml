@@ -23,31 +23,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # Install the ESLint SARIF formatter
-      - name: Install ESLint SARIF formatter
-        run: npm install --save-dev @microsoft/eslint-formatter-sarif
-
       # Run ESLint and output to SARIF format
       - name: Run ESLint with SARIF formatter
-        run: npm install @microsoft/eslint-formatter-sarif --save-dev
+        run: npx eslint . -f node_modules/@microsoft/eslint-formatter-sarif/sarif.js -o eslint-results.sarif
 
-      # Check the SARIF file for errors
-      - name: Check for ESLint errors in SARIF
-        run: |
-          if grep -q '"ruleSeverity": "error"' eslint-results.sarif; then
-            echo "ESLint errors found. Failing the build."
-            exit 1
-          fi
-
-      # Upload the SARIF results to CodeQL
-      - name: Upload SARIF results to CodeQL
+      # Upload the SARIF results to GitHub
+      - name: Upload SARIF results to GitHub
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: eslint-results.sarif
-
-      # Clean up after the job
-      - name: Post job cleanup
-        run: |
-          # Example cleanup process
-          echo "Cleaning up orphan processes..."
-          # Add any additional cleanup commands if necessary, such as removing temp files
