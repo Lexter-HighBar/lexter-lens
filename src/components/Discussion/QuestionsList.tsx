@@ -1,76 +1,53 @@
-import QuestionItem from './QuestionItem';
-import QuestionDialog from './AddCommentDialog';
-import { Question , Comment } from '../../lib/types';
-import { useState } from 'react';
-import { useComments } from '../../hooks/useComments';
-import { useQuestions } from '../../hooks/useQuestions';
-import { Box, Grid2, Skeleton, Stack } from '@mui/material';
+import QuestionItem from './QuestionItem'
+import QuestionDialog from './AddCommentDialog'
+import { Question, Comment } from '../../lib/types'
+import { useState } from 'react'
+import { useComments } from '../../hooks/useComments'
+import { useQuestions } from '../../hooks/useQuestions'
+import { Box } from '@mui/material'
+import { LoadingSkelton } from './LoadingSkelton'
+
+
 interface Props {
-  questions: Question[];
+  questions: Question[]
 }
 
 const QuestionsList = ({ questions }: Props) => {
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-  const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
-  const { createComment } = useComments();
-  const { loading, error } = useQuestions();
-
-  
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false)
+  const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null)
+  const { createComment } = useComments()
+  const { loading, error } = useQuestions()
 
   const handleOpenDialog = (question: Question) => {
-    setCurrentQuestion(question);
-    setIsDialogOpen(true);
-  };
+    setCurrentQuestion(question)
+    setIsDialogOpen(true)
+  }
 
   const handleCloseDialog = () => {
-    setIsDialogOpen(false);
-    setCurrentQuestion(null);
-  };
+    setIsDialogOpen(false)
+    setCurrentQuestion(null)
+  }
   const handleSubmitComment = (updateComment: { comment: Comment }) => {
     if (!currentQuestion) {
-      return;
+      return
     }
 
-    createComment.mutate({ _id: currentQuestion?.QuestionId, ...updateComment });
-    console.log('Submitted comment:', updateComment);
-  };
+    createComment.mutate({ _id: currentQuestion?.QuestionId, ...updateComment })
+    console.log('Submitted comment:', updateComment)
+  }
 
   if (loading) {
-    return <Grid2  display={'flex'} alignItems={'center'} flexDirection="column" gap="1" width={'100%'}>
-      <Box sx={{marginTop: 2}}>
-      <Stack spacing={1}>
-     {/* For other variants, adjust the size with `width` and `height` */}
-     
-     <Box display={'flex'} gap={2} alignItems={'center'}>
-      <Skeleton variant="circular" width={50} height={50} />
-      <Skeleton variant="text" width={80} height={20} />
-      </Box>
-      <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
-      <Skeleton variant="rounded" width={'80vw'} sx={{maxWidth: '750px'}} height={120} />
-      <Box display={'flex'}  gap={1} alignItems={'center'}>
-      <Skeleton variant='text' width={60}  height={45} sx={{borderRadius:'15px'}} /> 
-      <Skeleton variant='text' width={60}  height={45} sx={{borderRadius:'15px'}} />
-      <Skeleton variant='text' width={60}  height={45} sx={{borderRadius:'15px'}} />
-      </Box>
-      <Box display={'flex'} gap={2} alignItems={'center'}>
-      <Skeleton variant="circular" width={50} height={50} />
-      <Skeleton variant="text" width={80} height={20} />
-      </Box>
-      <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
-      <Skeleton variant="rounded" width={'80vw'} sx={{maxWidth: '750px'}} height={120} />
-      <Skeleton variant="rounded" width={'80vw'} sx={{maxWidth: '750px'}} height={120} />
-    </Stack></Box>
-    </Grid2>;
+    return (
+      <>
+        <LoadingSkelton />
+      </>
+    )
   } else if (error) {
-    return <div>Error loading questions</div>;
+    return <Box p={6}>Error loading questions</Box>
   }
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      >
+    <Box display="flex" flexDirection="column" alignItems="center">
       {questions.map((question) => (
         <QuestionItem
           key={question.QuestionId}
@@ -88,7 +65,7 @@ const QuestionsList = ({ questions }: Props) => {
         />
       )}
     </Box>
-  );
-};
+  )
+}
 
-export default QuestionsList;
+export default QuestionsList

@@ -43,7 +43,7 @@ const QuestionItem = ({ question }: Props) => {
           <Box mt={2}>
           <Flex>
             {question.tags.map((tag, index) => (
-              <Chip key={index} label={tag} color="primary" sx={{ ml: index === 0 ? 0 : 1 }} />
+              <Chip key={index} label={tag} color="primary" sx={{ mr:1 }} />
             ))}
           </Flex>
         </Box>
