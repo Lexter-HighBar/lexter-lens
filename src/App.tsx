@@ -3,11 +3,11 @@ import { RootRouter } from './RootRouter'
 import { Theme } from '@radix-ui/themes'
 import { ThemeProvider } from '@mui/material'
 import { theme } from './lib/theme'
-import { ApiContextProvider } from './lib/contexts/ApiContext'
+import { ApiContextProvider } from './lib/contexts/ApiContextProvider'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-import { UserDataApiProvider } from './lib/contexts/UserdataApiContext'
-import { LawyerProvider } from './lib/contexts/ClerkContext'
+import { UserDataApiProvider } from './lib/contexts/UserdataApiContextProvider'
+import { ClerkContextProvider } from './lib/contexts/ClerkContextProvider'
 
 // Import Publishable Key
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
@@ -28,17 +28,15 @@ function App() {
     >
       <QueryClientProvider client={queryClient}>
         <ApiContextProvider>
-          <LawyerProvider>
+          <ClerkContextProvider>
             <UserDataApiProvider>
-              <LawyerProvider>
                 <ThemeProvider theme={theme}>
                   <Theme radius="large" accentColor="blue">
                     <RootRouter />
                   </Theme>
                 </ThemeProvider>
-              </LawyerProvider>
             </UserDataApiProvider>
-          </LawyerProvider>
+          </ClerkContextProvider>
         </ApiContextProvider>
       </QueryClientProvider>
     </ClerkProvider>
