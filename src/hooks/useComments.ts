@@ -18,16 +18,20 @@ export const useComments = (params: UseCommentsParams | null = {}) => {
   const { data, isLoading, error } = useQuery<Comment | Comment[]>({
     queryKey: id ? ['comment', id] : ['comments'], // Unique key for caching based on ID
     queryFn: async () => {
+      let fetchedData;
       if (id) {
         // Fetch a single comment if an ID is provided
-        return get<Comment>(`/comments/${id}`);
+        fetchedData = await get<Comment>(`/comments/${id}`);
+        return fetchedData;
       } else {
         // Fetch all comments if no ID is provided
-        return get<Comment[]>('/comments');
+        fetchedData = await get<Comment[]>('/comments');
+        // Sort the comments by 'createdOn' in descending order
+        return fetchedData.sort((a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime());
       }
     },
   });
-
+  
   // Add a comment (POST)
   const createComment = useMutation({
     mutationFn: (newComment: Partial<Comment>) => post<Comment, unknown>('/comments', newComment),

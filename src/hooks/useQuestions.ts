@@ -18,24 +18,29 @@ export const useQuestions = (params: UseQuestionsParams | null = {}) => {
   // Fetch Questions
   const { data, isLoading, error } = useQuery<Question | Question[]>({
     queryKey: id ? ['question', id] : tag ? ['questions', tag] : ['questions'], // Dynamic key for caching
-    queryFn: () => {
+    queryFn: async () => {
       if (!api) {
         return Promise.reject(new Error('API is not available'));
       }
-
+  
+      let fetchedData: Question[] | Question;
       if (id) {
         // Fetch a single question by ID
-        return api.get<Question>(`/questions/${id}`);
+        fetchedData = await api.get<Question>(`/questions/${id}`);
+        return fetchedData;
       } else if (tag) {
         // Fetch questions filtered by tag
-        return api.get<Question[]>(`/questions?tag=${tag}`);
+        fetchedData = await api.get<Question[]>(`/questions?tag=${tag}`);
+        // Sort the questions by 'createdOn' in descending order
+        return fetchedData.sort((a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime());
       } else {
         // Fetch all questions
-        return api.get<Question[]>('/questions');
+        fetchedData = await api.get<Question[]>('/questions');
+        // Sort the questions by 'createdOn' in descending order
+        return fetchedData.sort((a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime());
       }
     },
   });
-
   // Create a new question
   type CreateQuestionVariables = Omit<Question, '_id'>;
 

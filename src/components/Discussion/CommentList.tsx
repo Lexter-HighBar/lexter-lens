@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useComments } from '../../hooks/useComments'
 import { Comment, Question } from '../../lib/types'
 import AddCommentDialog from './AddCommentDialog'
+import { formatCreatedOnDate } from '../../services/formatCreatedOnDate'
 
 interface Props {
   question: Question
@@ -14,7 +15,6 @@ const CommentList = ({ question }: Props) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null)
   const { comments, createComment } = useComments()
-
   const questionComments: Comment[] = Array.isArray(comments)
     ? comments.filter((comment) => comment.parentId === question.QuestionId)
     : []
@@ -71,7 +71,7 @@ const CommentList = ({ question }: Props) => {
         <Divider orientation="vertical" flexItem />
         <Link underline="hover" onClick={toggleComments}>
           <Box display={'flex'} gap={1}>
-            {showComments ? (
+            {showComments && questionComments.length > 0 ? (
               'Hide'
             ) : (
               <>
@@ -82,8 +82,9 @@ const CommentList = ({ question }: Props) => {
             
           </Box>
         </Link>
+      {/* Comment list goes here */}
       </Box>
-      {showComments && (
+      {showComments && questionComments.length > 0 && (
         <Box
           maxHeight={500}
           mt={2}
@@ -92,21 +93,25 @@ const CommentList = ({ question }: Props) => {
           gap={1}
           sx={{ overflowY: 'scroll', scrollbarWidth: 'thin' }}
         >
-          {questionComments.map((comment) => (
-            <Box
-              sx={{ backgroundColor: 'grey.100' }}
-              key={comment._id}
-              mt={2}
-              p={2}
-              border={1}
-              borderRadius={2}
-              borderColor={'grey.300'}
-            >
-              <Typography variant="body1">{comment.userName}</Typography>
-              <Typography variant="body1">{comment.content}</Typography>
-              <Typography variant="body2">{comment.createdOn}</Typography>
-            </Box>
-          ))}
+         {questionComments.map((comment) => {
+  const formattedDate = formatCreatedOnDate(new Date(comment.createdOn));
+  return (
+    <Box
+      sx={{ backgroundColor: 'grey.100' }}
+      key={comment._id}
+      mt={2}
+      p={2}
+      border={1}
+      borderRadius={2}
+      borderColor={'grey.300'}
+    >
+      <Typography variant="body1">{comment.userName}</Typography>
+      <Typography variant="body1">{comment.content}</Typography>
+      <Typography variant="body2">{formattedDate}</Typography>
+    </Box>
+  );
+})}
+         
           <Link
             underline="hover"
             alignContent="end"
