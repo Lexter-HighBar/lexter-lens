@@ -65,24 +65,29 @@ const CommentList = ({ question }: Props) => {
           onClick={() => handleOpenDialog(question)}
         >
           <Box display={'flex'} justifyContent={'end'} gap={1}>
-            <MessageCirclePlus />Add Comment
+            <MessageCirclePlus />
+            Add Comment
           </Box>
         </Link>
-        <Divider orientation="vertical" flexItem />
-        <Link underline="hover" onClick={toggleComments}>
-          <Box display={'flex'} gap={1}>
-            {showComments && questionComments.length > 0 ? (
-              'Hide'
-            ) : (
-              <>
-                {' '}
-                <MessageCircleMore /> {questionComments.length}<Typography>comments</Typography>{' '}
-              </>
-            )}
-            
-          </Box>
-        </Link>
-      {/* Comment list goes here */}
+        {questionComments.length > 0 && (
+          <>
+            <Divider orientation="vertical" flexItem />
+            <Link underline="hover" onClick={toggleComments}>
+              <Box display={'flex'} gap={1}>
+                {showComments && questionComments.length > 0 ? (
+                  'Hide'
+                ) : (
+                  <>
+                    {' '}
+                    <MessageCircleMore /> {questionComments.length}
+                    <Typography>comments</Typography>{' '}
+                  </>
+                )}
+              </Box>
+            </Link>
+          </>
+        )}
+        {/* Comment list goes here */}
       </Box>
       {showComments && questionComments.length > 0 && (
         <Box
@@ -93,25 +98,27 @@ const CommentList = ({ question }: Props) => {
           gap={1}
           sx={{ overflowY: 'scroll', scrollbarWidth: 'thin' }}
         >
-         {questionComments.map((comment) => {
-  const formattedDate = formatCreatedOnDate(new Date(comment.createdOn));
-  return (
-    <Box
-      sx={{ backgroundColor: 'grey.100' }}
-      key={comment._id}
-      mt={2}
-      p={2}
-      border={1}
-      borderRadius={2}
-      borderColor={'grey.300'}
-    >
-      <Typography variant="body1">{comment.userName}</Typography>
-      <Typography variant="body1">{comment.content}</Typography>
-      <Typography variant="body2">{formattedDate}</Typography>
-    </Box>
-  );
-})}
-         
+          {questionComments.map((comment) => {
+            const formattedDate = formatCreatedOnDate(
+              new Date(comment.createdOn),
+            )
+            return (
+              <Box
+                sx={{ backgroundColor: 'grey.100' }}
+                key={comment._id}
+                mt={2}
+                p={2}
+                border={1}
+                borderRadius={2}
+                borderColor={'grey.300'}
+              >
+                <Typography variant="body1">{comment.userName}</Typography>
+                <Typography variant="body1">{comment.content}</Typography>
+                <Typography variant="body2">{formattedDate}</Typography>
+              </Box>
+            )
+          })}
+
           <Link
             underline="hover"
             alignContent="end"
