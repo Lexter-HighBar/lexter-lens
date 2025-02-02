@@ -18,7 +18,6 @@ import { UnauthedDashboard } from './pages/UnauthedDashboard'
 // RootRouter Component
 export const RootRouter = () => {
   const auth = useAuth() // Access Clerk authentication state
-  console.log(auth)
 
   // Show a loading spinner while authentication state is loading
   if (!auth.isLoaded)
