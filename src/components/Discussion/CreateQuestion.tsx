@@ -35,7 +35,6 @@ const CreateQuestion = () => {
 
   const api = useQuestions() // Access API context
   const { user } = useUser()
-  console.log('user', user)
 
   const handleCreateQuestion = async () => {
     const { content, tags } = newQuestion

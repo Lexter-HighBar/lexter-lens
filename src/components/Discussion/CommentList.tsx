@@ -1,9 +1,10 @@
-import { Box, Grid2, Link, Typography } from '@mui/material'
-import AddCommentIcon from '@mui/icons-material/AddComment'
+import { Box, Divider, Grid2, Link, Typography } from '@mui/material'
+import { MessageCircleMore, MessageCirclePlus } from 'lucide-react'
 import { useState } from 'react'
 import { useComments } from '../../hooks/useComments'
 import { Comment, Question } from '../../lib/types'
 import AddCommentDialog from './AddCommentDialog'
+import { formatCreatedOnDate } from '../../services/formatCreatedOnDate'
 
 interface Props {
   question: Question
@@ -14,7 +15,6 @@ const CommentList = ({ question }: Props) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null)
   const { comments, createComment } = useComments()
-
   const questionComments: Comment[] = Array.isArray(comments)
     ? comments.filter((comment) => comment.parentId === question.QuestionId)
     : []
@@ -51,42 +51,74 @@ const CommentList = ({ question }: Props) => {
   }
 
   return (
-    <Grid2 mt="1" display={'flex'} flexDirection="column" gap="1" width={'100%'}>
+    <Grid2
+      mt="1"
+      display={'flex'}
+      flexDirection="column"
+      gap="1"
+      width={'100%'}
+    >
       <Box gap={3} mt={2} display={'flex'} justifyContent={'end'}>
         <Link
           underline="hover"
           alignContent="end"
           onClick={() => handleOpenDialog(question)}
         >
-          <Box display={'flex'} gap={1}>
-            <AddCommentIcon /> <Typography>comment</Typography>
+          <Box display={'flex'} justifyContent={'end'} gap={1}>
+            <MessageCirclePlus />
+            Add Comment
           </Box>
         </Link>
-        <Link underline="hover" onClick={toggleComments}>
-          {showComments ? 'Hide' : 'all comments'} (
-          {questionComments.length})
-        </Link>
+        {questionComments.length > 0 && (
+          <>
+            <Divider orientation="vertical" flexItem />
+            <Link underline="hover" onClick={toggleComments}>
+              <Box display={'flex'} gap={1}>
+                {showComments && questionComments.length > 0 ? (
+                  'Hide'
+                ) : (
+                  <>
+                    {' '}
+                    <MessageCircleMore /> {questionComments.length}
+                    <Typography>comments</Typography>{' '}
+                  </>
+                )}
+              </Box>
+            </Link>
+          </>
+        )}
+        {/* Comment list goes here */}
       </Box>
-      {showComments && (
-        <Box maxHeight={500}  mt={2} display={'flex'} flexDirection="column" gap={1}
-        sx={{overflowY:'scroll',
-          scrollbarWidth: 'thin',
-                }}>
-          {questionComments.map((comment) => (
-            <Box
-              sx={{ backgroundColor: 'grey.100' }}
-              key={comment._id}
-              mt={2}
-              p={2}
-              border={1}
-              borderRadius={2}
-              borderColor={'grey.300'}
-            >
-              <Typography variant="body1">{comment.userName}</Typography>
-              <Typography variant="body1">{comment.content}</Typography>
-              <Typography variant="body2">{comment.createdOn}</Typography>
-            </Box>
-          ))}
+      {showComments && questionComments.length > 0 && (
+        <Box
+          maxHeight={500}
+          mt={2}
+          display={'flex'}
+          flexDirection="column"
+          gap={1}
+          sx={{ overflowY: 'scroll', scrollbarWidth: 'thin' }}
+        >
+          {questionComments.map((comment) => {
+            const formattedDate = formatCreatedOnDate(
+              new Date(comment.createdOn),
+            )
+            return (
+              <Box
+                sx={{ backgroundColor: 'grey.100' }}
+                key={comment._id}
+                mt={2}
+                p={2}
+                border={1}
+                borderRadius={2}
+                borderColor={'grey.300'}
+              >
+                <Typography variant="body1">{comment.userName}</Typography>
+                <Typography variant="body1">{comment.content}</Typography>
+                <Typography variant="body2">{formattedDate}</Typography>
+              </Box>
+            )
+          })}
+
           <Link
             underline="hover"
             alignContent="end"
