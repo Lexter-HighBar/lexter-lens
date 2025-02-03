@@ -8,6 +8,7 @@ import {
   IconButton,
   MenuItem,
   Typography,
+  Chip
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import { Flex } from '@radix-ui/themes'
