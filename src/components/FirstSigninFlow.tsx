@@ -156,15 +156,78 @@ return (
           />
         )}
 {step === 3 && (
+  <>
+  <Typography>Based on your tags,you may be able to help other legal professionals.</Typography>
+  <Box
+    sx={{
+      border: '1px solid grey',
+      borderRadius: '4px',
+      padding: '16px',
+      backgroundColor: 'rgba(0, 0, 0, 0.05)',
+      mb: -1,
+    }}
+  >
+    <Typography sx={{ fontSize: 16, fontWeight: 'arial' }}>
+        What's the mat leave culture REALLY like at BDP in Calgary?
+      </Typography>
+    </Box>
           <TextField
             fullWidth
             margin="normal"
+            placeholder="Have a contribution?Share it now."
             name="firstName"
-            label="First Name"
             value={formData.firstName}
             onChange={handleChange}
           />
-        )}
+            <Box
+    sx={{
+      border: '1px solid grey',
+      borderRadius: '4px',
+      padding: '16px',
+      backgroundColor: 'rgba(0, 0, 0, 0.05)',
+      mb: -1,
+    }}
+  >
+    <Typography sx={{ fontSize: 16, fontWeight: 'arial' }}>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit
+      </Typography>
+    </Box>
+          <TextField
+            fullWidth
+            margin="normal"
+            placeholder="Have a contribution?Share it now."
+            name="firstName"
+            value={formData.firstName}
+            onChange={handleChange}
+          />
+            <Box
+    sx={{
+      border: 'px solid grey',
+      borderRadius: '4px',
+      padding: '16px',
+      backgroundColor: 'rgba(0, 0, 0, 0.05)',
+      mb: -1,
+    }}
+  >
+    <Typography sx={{ fontSize: 16, fontWeight: 'arial' }}>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit
+      </Typography>
+    </Box>
+          <TextField
+            fullWidth
+            margin="normal"
+            placeholder="Have a contribution?Share it now."
+            name="firstName"
+            value={formData.firstName}
+            onChange={handleChange}
+          />
+  <Button variant="outlined">Post</Button>
+  <Button variant="outlined">Skip</Button>
+  </>
+)}
+
+
+
       </DialogContent>
       <DialogActions>
         {step > 1 && (
