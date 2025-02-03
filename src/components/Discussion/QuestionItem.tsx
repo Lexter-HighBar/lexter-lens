@@ -36,7 +36,7 @@ const QuestionItem = ({ question }: Props) => {
             <Typography variant="body2">{`${formattedDate}`}</Typography>
           </Box>
         </Box>
-        <Typography mt={2} variant="body1">
+        <Typography mt={2} fontWeight={400} variant="body1">
           {question.content}
         </Typography>
         <Grid2>
