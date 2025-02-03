@@ -1,7 +1,8 @@
 import * as React from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import {
   Box,
+  Button,
   Divider,
   Drawer,
   IconButton,
@@ -17,6 +18,7 @@ interface NavigationMenuProps {
 }
 
 const NavigationMenu: React.FC<NavigationMenuProps> = ({ pages }) => {
+  const navigate = useNavigate()
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
   const location = useLocation()
   const { signOut } = useClerk()
@@ -72,27 +74,22 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({ pages }) => {
               window.location.href = userProfileUrl
             }}
           >
-            <Typography>Manage Account</Typography>
+            <Typography variant='body2'>Manage Account</Typography>
           </MenuItem>
           <MenuItem onClick={() => signOut()}>
-            <Typography>Sign Out</Typography>
+            <Typography variant='body2'>Sign Out</Typography>
           </MenuItem>
           <Divider orientation="horizontal" />
           {/* Navigation Pages */}
           {pages.map(({ label, path }) => (
-            <MenuItem key={label} onClick={handleCloseNavMenu}>
-              <Typography>
-                <Link
-                  to={path}
-                  style={{
-                    textDecoration: 'none',
-                    color: 'inherit',
-                    fontWeight: location.pathname === path ? 'bold' : 'normal',
-                  }}
-                >
-                  {label}
-                </Link>
-              </Typography>
+            <MenuItem
+              key={label}
+              onClick={() => {
+                handleCloseNavMenu()
+                navigate(path)
+              }}
+            >
+              <Typography variant="h6">{label}</Typography>
             </MenuItem>
           ))}
         </Drawer>
@@ -108,7 +105,7 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({ pages }) => {
       >
         <Flex>
           {pages.map(({ label, path }) => (
-            <IconButton key={label}>
+            <Button sx={{ textTransform: 'none' }} size="small" variant="text" key={label}>
               <Link to={path} style={{ textDecoration: 'none' }}>
                 <Typography variant="body1">
                   <Box
@@ -127,7 +124,7 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({ pages }) => {
                   </Box>
                 </Typography>
               </Link>
-            </IconButton>
+            </Button>
           ))}
         </Flex>
       </Box>
