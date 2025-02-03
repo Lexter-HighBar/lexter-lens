@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import {
   Box,
+  Divider,
   Drawer,
   IconButton,
   MenuItem,
@@ -19,7 +20,7 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({ pages }) => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
   const location = useLocation()
   const { signOut } = useClerk()
-  const userProfileUrl = "/profile"
+  const userProfileUrl = '/profile'
 
   // Open the mobile navigation menu
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -59,18 +60,24 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({ pages }) => {
           onClose={handleCloseNavMenu}
         >
           {/* User Avatar */}
-          <Box sx={{ padding: '1em', display: 'flex', justifyContent: 'center' }}>
-            <UserButton />
+          <Box
+            sx={{ padding: '1em', display: 'flex', justifyContent: 'center' }}
+          >
+            <UserButton showName userProfileUrl={userProfileUrl} />
           </Box>
 
           {/* User Options */}
-          <MenuItem onClick={() => { window.location.href = userProfileUrl }}>
+          <MenuItem
+            onClick={() => {
+              window.location.href = userProfileUrl
+            }}
+          >
             <Typography>Manage Account</Typography>
           </MenuItem>
           <MenuItem onClick={() => signOut()}>
             <Typography>Sign Out</Typography>
           </MenuItem>
-
+          <Divider orientation="horizontal" />
           {/* Navigation Pages */}
           {pages.map(({ label, path }) => (
             <MenuItem key={label} onClick={handleCloseNavMenu}>
