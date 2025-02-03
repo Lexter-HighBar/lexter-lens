@@ -157,6 +157,7 @@ return (
         )}
 {step === 3 && (
   <>
+  <Typography>Based on your tags,you may be able to help other legal professionals.</Typography>
   <Box
     sx={{
       border: '1px solid grey',
@@ -188,7 +189,7 @@ return (
     }}
   >
     <Typography sx={{ fontSize: 16, fontWeight: 'arial' }}>
-        What's the mat leave culture REALLY like at BDP in Calgary?
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit
       </Typography>
     </Box>
           <TextField
@@ -209,7 +210,7 @@ return (
     }}
   >
     <Typography sx={{ fontSize: 16, fontWeight: 'arial' }}>
-        What's the mat leave culture REALLY like at BDP in Calgary?
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit
       </Typography>
     </Box>
           <TextField
@@ -220,9 +221,13 @@ return (
             value={formData.firstName}
             onChange={handleChange}
           />
+  <Button variant="outlined">Post</Button>
+  <Button variant="outlined">Skip</Button>
   </>
-  
 )}
+
+
+
       </DialogContent>
       <DialogActions>
         {step > 1 && (
