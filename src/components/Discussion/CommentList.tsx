@@ -65,10 +65,15 @@ const CommentList = ({ question }: Props) => {
           onClick={() => handleOpenDialog(question)}
         >
           <Box display={'flex'} justifyContent={'end'} gap={1}>
-            <MessageCirclePlus />
+
+            <MessageCirclePlus size={20} />
+            <Typography variant="subtitle2">
             Add Comment
+            </Typography>
           </Box>
         </Link>
+        
+
         {questionComments.length > 0 && (
           <>
             <Divider orientation="vertical" flexItem />
@@ -79,8 +84,9 @@ const CommentList = ({ question }: Props) => {
                 ) : (
                   <>
                     {' '}
-                    <MessageCircleMore /> {questionComments.length}
-                    <Typography>comments</Typography>{' '}
+                    <MessageCircleMore size={20} /><Typography variant="subtitle2"> {questionComments.length} </Typography>
+                    <Typography variant="subtitle2">comments</Typography>{' '}
+
                   </>
                 )}
               </Box>
@@ -104,17 +110,20 @@ const CommentList = ({ question }: Props) => {
             )
             return (
               <Box
-                sx={{ backgroundColor: 'grey.100' }}
+                sx={{ backgroundColor: 'grey.50' }}
                 key={comment._id}
                 mt={2}
                 p={2}
-                border={1}
+          
                 borderRadius={2}
-                borderColor={'grey.300'}
-              >
-                <Typography variant="body1">{comment.userName}</Typography>
-                <Typography variant="body1">{comment.content}</Typography>
+              
+              > 
+                <Typography py={1} variant="body1">{comment.userName}</Typography>
+                <Typography py={1} variant="body1">{comment.content}</Typography>
+               
                 <Typography variant="body2">{formattedDate}</Typography>
+                <Divider />
+
               </Box>
             )
           })}

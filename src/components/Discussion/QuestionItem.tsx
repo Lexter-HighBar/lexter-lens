@@ -32,11 +32,11 @@ const QuestionItem = ({ question }: Props) => {
             style={{ width: '50px', height: 'auto', borderRadius: '50%' }}
           />
           <Box>
-            <Typography variant="h6"> {question.userName}</Typography>
+            <Typography variant="body1"> {question.userName}</Typography>
             <Typography variant="body2">{`${formattedDate}`}</Typography>
           </Box>
         </Box>
-        <Typography mt={2} variant="h6">
+        <Typography mt={2} variant="body1">
           {question.content}
         </Typography>
         <Grid2>
