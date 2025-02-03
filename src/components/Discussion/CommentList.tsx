@@ -65,6 +65,7 @@ const CommentList = ({ question }: Props) => {
           onClick={() => handleOpenDialog(question)}
         >
           <Box display={'flex'} justifyContent={'end'} gap={1}>
+
             <MessageCirclePlus size={20} />
             <Typography variant="subtitle2">
             Add Comment
@@ -72,6 +73,7 @@ const CommentList = ({ question }: Props) => {
           </Box>
         </Link>
         
+
         {questionComments.length > 0 && (
           <>
             <Divider orientation="vertical" flexItem />
@@ -84,6 +86,7 @@ const CommentList = ({ question }: Props) => {
                     {' '}
                     <MessageCircleMore size={20} /><Typography variant="subtitle2"> {questionComments.length} </Typography>
                     <Typography variant="subtitle2">comments</Typography>{' '}
+
                   </>
                 )}
               </Box>
@@ -120,6 +123,7 @@ const CommentList = ({ question }: Props) => {
                
                 <Typography variant="body2">{formattedDate}</Typography>
                 <Divider />
+
               </Box>
             )
           })}
