@@ -22,7 +22,9 @@ export const Discussion = () => {
       <Box> 
       <CreateQuestion  />
       </Box>
-      <QuestionsList questions={questions as Question[]} />
+      
+      <QuestionsList  questions={questions as Question[]} />
+    
     </Page>
   )
 }
