@@ -6,6 +6,7 @@ import { useFetchTagsFromAI } from '../hooks/useFetchTagsFromAI'
 import React, { useState, useCallback } from 'react'
 import { CircularProgress } from '@mui/material'
 
+
 interface ChipGeneratorProps {
   inputText: string
   onTagChange: (tags: string[]) => void
@@ -41,6 +42,7 @@ const ChipGenerator: React.FC<ChipGeneratorProps> = ({
         loading={loading}
         multiple
         freeSolo
+
         options={validTags ? Object.keys(validTags) : []}
         value={selectedTags}
         onChange={handleTagChange}
