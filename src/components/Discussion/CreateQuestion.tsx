@@ -18,7 +18,8 @@ import { Flex } from '@radix-ui/themes'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import { useUser } from '@clerk/clerk-react'
 import { Question } from '../../lib/types'
-import { isMobile } from 'react-device-detect';
+import { isMobile } from 'react-device-detect'
+import ChipGenerator from '../ChipGenerateur'
 
 const CreateQuestion = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -35,6 +36,7 @@ const CreateQuestion = () => {
 
   const api = useQuestions() // Access API context
   const { user } = useUser()
+
 
   const handleCreateQuestion = async () => {
     const { content, tags } = newQuestion
@@ -64,7 +66,6 @@ const CreateQuestion = () => {
       }
 
       // Send the new question to the API
-
       await api.createQuestion.mutateAsync(questionPayload)
 
       setIsDialogOpen(false)
@@ -86,6 +87,7 @@ const CreateQuestion = () => {
       }
     }
   }
+
 
   return (
     <>
@@ -114,54 +116,49 @@ const CreateQuestion = () => {
               fullWidth
               placeholder="Question in mind ...?"
               inputProps={{ 'aria-label': 'Question in mind ...?' }}
+           
             />
           </Box>
         </Box>
       </Flex>
-    
 
-        <Dialog
-          fullWidth
-          fullScreen={isMobile}
-          open={isDialogOpen}
-          onClose={() => setIsDialogOpen(false)}
-        >
-          <DialogTitle>New Question</DialogTitle>
-          <DialogContent>
-            <TextField
-          fullWidth
-          margin="normal"
-          label="Question"
-          multiline
-          rows={4}
-          value={newQuestion.content}
-          onChange={(e) =>
-            setNewQuestion({ ...newQuestion, content: e.target.value })
-          }
-            />
-            <TextField
-          fullWidth
-          margin="normal"
-          label="Tags (comma-separated)"
-          value={newQuestion.tags}
-          onChange={(e) =>
-            setNewQuestion({
-              ...newQuestion,
-              tags: e.target.value.split(',').map((tag) => tag.trim()),
-            })
-          }
-            />
-            {error && (
-          <Typography variant="body2" color="error" sx={{ marginTop: 1 }}>
-            {error}
-          </Typography>
-            )}
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setIsDialogOpen(false)}>Cancel</Button>
-            <Button onClick={handleCreateQuestion}>Post</Button>
-          </DialogActions>
-        </Dialog>
+      <Dialog
+        fullWidth
+        fullScreen={isMobile}
+        open={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+      >
+        <DialogTitle>New Question</DialogTitle>
+        <DialogContent>
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Question"
+            multiline
+            rows={4}
+            value={newQuestion.content}
+            onChange={(e) =>
+              setNewQuestion({ ...newQuestion, content: e.target.value })
+            }
+          />
+
+          <ChipGenerator
+            inputText={newQuestion.content}
+            onTagChange={(tags) => setNewQuestion({ ...newQuestion, tags })}
+         
+          />
+
+          {error && (
+            <Typography variant="body2" color="error" sx={{ marginTop: 1 }}>
+              {error}
+            </Typography>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setIsDialogOpen(false)}>Cancel</Button>
+          <Button onClick={handleCreateQuestion}>Post</Button>
+        </DialogActions>
+      </Dialog>
     </>
   )
 }

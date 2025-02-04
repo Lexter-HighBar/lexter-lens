@@ -21,6 +21,12 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/userdata\/questions/, '/questions'),
       },
+
+      '/userdata/tags': {
+        target: 'https://lexter-server.onrender.com/api',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/userdata\/questions/, '/tags'),
+      },
     },
   },
   build: {

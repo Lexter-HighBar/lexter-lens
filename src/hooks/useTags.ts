@@ -17,10 +17,10 @@ export const useTags = (params: UseTagsParams | null = {}) => {
 
       if (id) {
         // Fetch a single tag if an ID is provided
-        return api.get<Tag>(`/userdata/${id}`)
+        return api.get<Tag>(`/tags/${id}`)
       } else {
         // Fetch all tags if no ID is provided
-        return api.get<Tag[]>('/userdata')
+        return api.get<Tag[]>('/tags')
       }
     },
   })

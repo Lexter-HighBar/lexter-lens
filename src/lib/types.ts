@@ -96,9 +96,15 @@ export type Question = {
 };
 
 export type Tag = {
-  firm: Array<string>;
-  city: Array<string>;
-  province: Array<string>;
-  country: string;
-  expertise: Array<string>;
+  id: number;
+  name: string;
+  kind: string;
+  description: string;
 };
+
+export type SuggestedTag = {
+  id: number;
+  name: string;
+  kind: string;
+  description: string;
+}
