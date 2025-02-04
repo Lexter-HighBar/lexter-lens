@@ -223,10 +223,39 @@ return (
           />
   <Button variant="outlined">Post</Button>
   <Button variant="outlined">Skip</Button>
+  <Typography sx={{     fontSize: 20, fontWeight: 'bold', textAlign: 'center'
+ }}>Get answers to your private questions</Typography>
+ <Typography >lorem ipsum dolor sit amet, consectetur adipiscing elit.</Typography>
+
+          <TextField
+            fullWidth
+            margin="normal"
+            placeholder="Have a Question?Ask it now."
+            name="firstName"
+            value={formData.firstName}
+            onChange={handleChange}
+          />
+<TextField
+            fullWidth
+            margin="normal"
+            placeholder="HHave a Question?Ask it now."
+            name="firstName"
+            value={formData.firstName}
+            onChange={handleChange}
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            placeholder="Have a Question?Ask it now."
+            name="firstName"
+            value={formData.firstName}
+            onChange={handleChange}
+          />
+  <Button variant="outlined">Post</Button>
+  <Button variant="outlined">Skip</Button>
   </>
+  
 )}
-
-
 
       </DialogContent>
       <DialogActions>
