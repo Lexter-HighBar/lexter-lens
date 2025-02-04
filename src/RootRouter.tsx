@@ -14,6 +14,7 @@ import Signin from './pages/Sign-in'
 import Discussion from './pages/Discussion'
 import UserProfile from './components/UserProfile'
 import { UnauthedDashboard } from './pages/UnauthedDashboard'
+import QuestionView from './pages/QuestionView'
 
 // RootRouter Component
 export const RootRouter = () => {
@@ -44,8 +45,8 @@ export const RootRouter = () => {
             </RequireAuth>
           }
         />
-   
-          <Route
+
+        <Route
           path="/discussion"
           element={
             <RequireAuth>
@@ -59,6 +60,14 @@ export const RootRouter = () => {
           element={
             <RequireAuth>
               <UserProfile />{' '}
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/question/:id"
+          element={
+            <RequireAuth>
+              <QuestionView />
             </RequireAuth>
           }
         />
