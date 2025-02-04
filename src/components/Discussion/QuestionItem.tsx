@@ -1,6 +1,6 @@
-import { Typography, Chip, Box, Grid2 } from '@mui/material'
+import { Typography, Chip, Box } from '@mui/material'
 import { Question } from '../../lib/types'
-import { Flex } from '@radix-ui/themes'
+
 import { formatCreatedOnDate } from '../../services/formatCreatedOnDate'
 import CommentList from './CommentList'
 
@@ -45,11 +45,10 @@ const QuestionItem = ({ question }: Props) => {
             {question.tags.map((tag, index) => (
               <Chip key={index} label={tag} variant='outlined' size='small' sx={{ mr:1 , mb:1 }} />
             ))}
-          
+
         </Box>
           <CommentList question={question} />
         
-       
       </Box>
     </>
   )
