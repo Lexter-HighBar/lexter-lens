@@ -1,6 +1,7 @@
 import Chip from '@mui/material/Chip'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
+import Autocomplete from '@mui/material/Autocomplete'
 import { useFetchTagsFromAI } from '../hooks/useFetchTagsFromAI'
 import { useState, useCallback } from 'react'
 
@@ -22,43 +23,31 @@ const ChipGenerator: React.FC<ChipGeneratorProps> = ({
     }
   }, [inputText, fetchTags])
 
-  const handleTagClick = (tag: string) => {
-    if (!selectedTags.includes(tag)) {
-      const newSelectedTags = [...selectedTags, tag]
-      setSelectedTags(newSelectedTags)
-      onTagChange(newSelectedTags)
-    }
-  }
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const tags = e.target.value.split(',').map((tag) => tag.trim())
-    setSelectedTags(tags)
-    onTagChange(tags)
+  const handleTagChange = (event: React.SyntheticEvent, newTags: string[]) => {
+    event.preventDefault()
+    setSelectedTags(newTags)
+    onTagChange(newTags)
   }
 
   return (
     <Stack spacing={2}>
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error.message}</p>}
-      <Stack direction="row" spacing={1} flexWrap="wrap">
-        {validTags &&
-          Object.keys(validTags).map((key) => (
-            <Chip
-              sx={{ m: 2 }}
-              key={key}
-              label={key}
-              onClick={() => handleTagClick(key)}
-              color={selectedTags.includes(key) ? 'primary' : 'default'}
-            />
-          ))}
-      </Stack>
-      <TextField
+
+      <Autocomplete
+        multiple
+        options={validTags ? Object.keys(validTags) : []}
+        value={selectedTags}
+        onChange={handleTagChange}
+        renderTags={(tagValue, getTagProps) =>
+          tagValue.map((option, index) => (
+            <Chip label={option} {...getTagProps({ index })} />
+          ))
+        }
+        renderInput={(params) => (
+          <TextField {...params} label="Suggested Tags" placeholder="Select tags" onFocus={handleFetchTags} />
+        )}
         fullWidth
-        margin="normal"
-        label="Tags (comma-separated)"
-        value={selectedTags.join(', ')}
-        onChange={handleInputChange}
-        onFocus={handleFetchTags}
       />
     </Stack>
   )
