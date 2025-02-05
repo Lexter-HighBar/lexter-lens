@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Box,
   Button,
@@ -14,24 +14,31 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import { LogoImg } from './LogoImg';
 import { UseClerkStorage } from '../hooks/UseClerkStorage';
-import TagsManager from './TagsManager'; // Import the new TagsManager component
+import TagsManager from './TagsManager';
+
 interface FirstSigninFlowProps {
   isFirstSignIn: boolean;
   setIsFirstSignIn: (value: boolean) => void;
 }
+
+interface Tags {
+  [key: string]: string[];
+}
+
 const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
   isFirstSignIn,
   setIsFirstSignIn,
 }) => {
-  const { email, firstName, userName, phone, handleUpdateUser, handleChange } = UseClerkStorage();
-const [step, setStep] = useState<number>(1);
+  const { email, firstName, userName, phone, handleUpdateUser } = UseClerkStorage();
+  const [step, setStep] = useState<number>(1);
   const [formData, setFormData] = useState({
     email,
     firstName,
     userName,
     phone,
   });
-const defaultAuthorityTags = [
+
+  const defaultAuthorityTags = [
     'Calgary',
     'Corporate & Commercial Law',
     'Litigation',
@@ -39,35 +46,44 @@ const defaultAuthorityTags = [
     'Ogilvie - Calgary',
     'Oil and Gas',
   ];
-const [selectedDefaultTags, setSelectedDefaultTags] = useState<string[]>([]);
-interface Tags {
-  [key: string]: string[];
-}
+  const [selectedDefaultTags, setSelectedDefaultTags] = useState<string[]>([]);
 
-const [tags, setTags] = useState<Tags>({
+  const [tags, setTags] = useState<Tags>({
     Cities: ['Toronto', 'Vancouver'],
     Expertise: ['Corporate Law', 'Real Estate'],
     Industries: ['Technology', 'Healthcare'],
     'Firm Offices': ['Downtown', 'Uptown'],
   });
-const handleDefaultTagClick = (tag: string) => {
+
+  const handleDefaultTagClick = (tag: string) => {
     setSelectedDefaultTags((prev) =>
       prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
     );
   };
-const handleTagRemove = (category: string, tag: string) => {
+
+  const handleTagRemove = (category: string, tag: string) => {
     setTags((prev) => ({
       ...prev,
       [category]: prev[category].filter((t) => t !== tag),
     }));
   };
-const handleTagAdd = (category: string, newTag: string) => {
+
+  const handleTagAdd = (category: string, newTag: string) => {
     setTags((prev) => ({
       ...prev,
       [category]: [...prev[category], newTag],
     }));
   };
-useEffect(() => {
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  useEffect(() => {
     setFormData({
       email,
       firstName: firstName || '',
@@ -75,10 +91,20 @@ useEffect(() => {
       phone: phone || '',
     });
   }, [email, firstName, userName, phone]);
-const handleClose = () => setIsFirstSignIn(false);
+
+  const handleClose = () => setIsFirstSignIn(false);
   const handleNextStep = () => setStep((prevStep) => prevStep + 1);
   const handlePreviousStep = () => setStep((prevStep) => prevStep - 1);
-return (
+
+  // Create a ref for the private questions section so we can scroll to it
+  const questionsSectionRef = useRef<HTMLDivElement>(null);
+
+  // Scroll down to the private questions section when the first skip is clicked
+  const handleSkipScrollDown = () => {
+    questionsSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  return (
     <Dialog fullWidth open={isFirstSignIn} onClose={handleClose}>
       <Box
         component="section"
@@ -93,9 +119,7 @@ return (
       >
         <LogoImg variant="Dark" Size={60} />
       </Box>
-      <DialogTitle
-        sx={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}
-      >
+      <DialogTitle sx={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>
         {step === 1
           ? 'Lexter Lens Quickstart'
           : step === 2
@@ -127,7 +151,7 @@ return (
               name="firstName"
               label="First Name"
               value={formData.firstName}
-              onChange={handleChange}
+              onChange={handleInputChange}
             />
             <TextField
               fullWidth
@@ -135,7 +159,7 @@ return (
               name="userName"
               label="User Name"
               value={formData.userName}
-              onChange={handleChange}
+              onChange={handleInputChange}
             />
             <Typography>Privacy Policies</Typography>
             <ul>
@@ -145,7 +169,7 @@ return (
             </ul>
           </>
         )}
-{step === 2 && (
+        {step === 2 && (
           <TagsManager
             defaultTags={defaultAuthorityTags}
             selectedDefaultTags={selectedDefaultTags}
@@ -155,115 +179,127 @@ return (
             onTagAdd={handleTagAdd}
           />
         )}
-{step === 3 && (
-  <>
-  <Typography>Based on your tags,you may be able to help other legal professionals.</Typography>
-  <Box
-    sx={{
-      border: '1px solid grey',
-      borderRadius: '4px',
-      padding: '16px',
-      backgroundColor: 'rgba(0, 0, 0, 0.05)',
-      mb: -1,
-    }}
-  >
-    <Typography sx={{ fontSize: 16, fontWeight: 'arial' }}>
-        What's the mat leave culture REALLY like at BDP in Calgary?
-      </Typography>
-    </Box>
-          <TextField
-            fullWidth
-            margin="normal"
-            placeholder="Have a contribution?Share it now."
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleChange}
-          />
+        {step === 3 && (
+          <>
+            <Typography>
+              Based on your tags, you may be able to help other legal professionals.
+            </Typography>
             <Box
-    sx={{
-      border: '1px solid grey',
-      borderRadius: '4px',
-      padding: '16px',
-      backgroundColor: 'rgba(0, 0, 0, 0.05)',
-      mb: -1,
-    }}
-  >
-    <Typography sx={{ fontSize: 16, fontWeight: 'arial' }}>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit
-      </Typography>
-    </Box>
-          <TextField
-            fullWidth
-            margin="normal"
-            placeholder="Have a contribution?Share it now."
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleChange}
-          />
+              sx={{
+                border: '1px solid grey',
+                borderRadius: '4px',
+                padding: '16px',
+                backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                mb: -1,
+              }}
+            >
+              <Typography sx={{ fontSize: 16, fontWeight: 'bold' }}>
+                What's the mat leave culture REALLY like at BDP in Calgary?
+              </Typography>
+            </Box>
+            <TextField
+              fullWidth
+              margin="normal"
+              placeholder="Have a contribution? Share it now."
+              name="contribution1"
+              value={formData.firstName} // Adjust as needed for individual state management
+              onChange={handleInputChange}
+            />
             <Box
-    sx={{
-      border: 'px solid grey',
-      borderRadius: '4px',
-      padding: '16px',
-      backgroundColor: 'rgba(0, 0, 0, 0.05)',
-      mb: -1,
-    }}
-  >
-    <Typography sx={{ fontSize: 16, fontWeight: 'arial' }}>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit
-      </Typography>
-    </Box>
-          <TextField
-            fullWidth
-            margin="normal"
-            placeholder="Have a contribution?Share it now."
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleChange}
-          />
-  <Button variant="outlined">Post</Button>
-  <Button variant="outlined">Skip</Button>
-  <Typography sx={{     fontSize: 20, fontWeight: 'bold', textAlign: 'center'
- }}>Get answers to your private questions</Typography>
- <Typography >lorem ipsum dolor sit amet, consectetur adipiscing elit.</Typography>
-
-          <TextField
-            fullWidth
-            margin="normal"
-            placeholder="Have a Question?Ask it now."
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleChange}
-          />
-<TextField
-            fullWidth
-            margin="normal"
-            placeholder="HHave a Question?Ask it now."
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleChange}
-          />
-          <TextField
-            fullWidth
-            margin="normal"
-            placeholder="Have a Question?Ask it now."
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleChange}
-          />
-  <Button variant="outlined">Post</Button>
-  <Button variant="outlined">Skip</Button>
-  </>
-  
-)}
-
+              sx={{
+                border: '1px solid grey',
+                borderRadius: '4px',
+                padding: '16px',
+                backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                mb:-1,
+              }}
+            >
+              <Typography sx={{ fontSize: 16, fontWeight: 'bold' }}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit
+              </Typography>
+            </Box>
+            <TextField
+              fullWidth
+              margin="normal"
+              placeholder="Have a contribution? Share it now."
+              name="contribution2"
+              value={formData.firstName}
+              onChange={handleInputChange}
+            />
+            <Box
+              sx={{
+                border: '1px solid grey',
+                borderRadius: '4px',
+                padding: '16px',
+                backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                mb: -1,
+              }}
+            >
+              <Typography sx={{ fontSize: 16, fontWeight: 'bold' }}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit
+              </Typography>
+            </Box>
+            <TextField
+              fullWidth
+              margin="normal"
+              placeholder="Have a contribution? Share it now."
+              name="contribution3"
+              value={formData.firstName}
+              onChange={handleInputChange}
+            />
+            <Box sx={{ display: 'flex', gap: 2, my: 2 }}>
+              <Button variant="outlined">Post</Button>
+              <Button variant="outlined" onClick={handleSkipScrollDown}>
+                Skip
+              </Button>
+            </Box>
+            {/* This empty div (with ref) marks the start of the private questions section */}
+            <div ref={questionsSectionRef} />
+            <Typography
+              sx={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center', mt: 4 }}
+            >
+              Get answers to your private questions
+            </Typography>
+            <Typography>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </Typography>
+            <TextField
+              fullWidth
+              margin="normal"
+              placeholder="Have a Question? Ask it now."
+              name="question1"
+              value={formData.firstName}
+              onChange={handleInputChange}
+            />
+            <TextField
+              fullWidth
+              margin="normal"
+              placeholder="Have a Question? Ask it now."
+              name="question2"
+              value={formData.firstName}
+              onChange={handleInputChange}
+            />
+            <TextField
+              fullWidth
+              margin="normal"
+              placeholder="Have a Question? Ask it now."
+              name="question3"
+              value={formData.firstName}
+              onChange={handleInputChange}
+            />
+            <Box sx={{ display: 'flex', gap: 2, my: 2 }}>
+              <Button variant="outlined">Post</Button>
+              <Button variant="outlined" onClick={handleNextStep}>
+                Skip
+              </Button>
+            </Box>
+          </>
+        )}
       </DialogContent>
       <DialogActions>
         {step > 1 && (
-          <Link onClick={handlePreviousStep}>
-            <Typography sx={{ fontWeight: 'light' }}>
-              Step: {step - 1}/3
-            </Typography>
+          <Link onClick={handlePreviousStep} sx={{ cursor: 'pointer' }}>
+            <Typography sx={{ fontWeight: 'light' }}>Step: {step - 1}/3</Typography>
           </Link>
         )}
         {step < 4 && (
@@ -286,4 +322,6 @@ return (
     </Dialog>
   );
 };
+
 export default FirstSigninFlow;
+
