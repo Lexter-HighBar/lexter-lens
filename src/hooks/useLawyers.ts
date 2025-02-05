@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { useApiContext } from '../lib/hooks/useApiContext'
+import { useApiContext } from './useApiContext'
 import { Lawyer, PaginatedResponse, PaginationParams } from '../lib/types'
 
 export const useLawyers = (params: PaginationParams) => {

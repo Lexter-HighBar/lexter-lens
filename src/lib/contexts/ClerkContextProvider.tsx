@@ -1,6 +1,6 @@
 import { useState, useEffect, ReactNode } from "react";
 import { ClerkContext, ClerkContextType } from "./ClerkContext";
-import { useClerkFunction } from "../../hooks/ClerkFunction";  // Import functions here
+import { useClerkFunction } from "../../hooks/useClerkFunction";  // Import functions here
 import { useUser } from "@clerk/clerk-react";
 
 type Props = {

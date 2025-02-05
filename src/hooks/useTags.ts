@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { Tag, UseTagsParams } from '../lib/types'
-import { useUserContext } from '../lib/hooks/UserContext';
+import { useUserContext } from './UserContext';
 
 
 export const useTags = (params: UseTagsParams | null = {}) => {
