@@ -50,7 +50,7 @@ const QuestionView = () => {
           {question.content}
         </Typography>
 
-        <Box width={'89dvw'} mt={2}>
+        <Box maxWidth={750} mt={2}>
           {question.tags.map((tag, index) => (
             <Chip
               key={index}
