@@ -5,7 +5,6 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions,
   IconButton,
   Link,
   TextField,
@@ -93,7 +92,16 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
   }, [email, firstName, userName, phone]);
 
   const handleClose = () => setIsFirstSignIn(false);
-  const handleNextStep = () => setStep((prevStep) => prevStep + 1);
+
+  // 修改步驟邏輯：當 step 為 3 時，點擊 Next 即完成註冊
+  const handleNextStep = () => {
+    if (step === 3) {
+      handleUpdateUser();
+      handleClose();
+    } else {
+      setStep((prevStep) => prevStep + 1);
+    }
+  };
   const handlePreviousStep = () => setStep((prevStep) => prevStep - 1);
 
   // Create a ref for the private questions section so we can scroll to it
@@ -103,6 +111,22 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
   const handleSkipScrollDown = () => {
     questionsSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  // 將步驟指示與下一步按鈕放入 popup 內容區塊的共用區段
+  const renderNavigation = () => (
+    <Box display="flex" justifyContent="space-between" alignItems="center" mt={2}>
+      {step > 1 ? (
+        <Link onClick={handlePreviousStep} sx={{ cursor: 'pointer' }}>
+          <Typography sx={{ fontWeight: 'light' }}>Step: {step}/3</Typography>
+        </Link>
+      ) : (
+        <Typography sx={{ fontWeight: 'light' }}>Step: {step}/3</Typography>
+      )}
+      <Button sx={{ fontWeight: 'bold' }} onClick={handleNextStep}>
+        {step === 3 ? 'Complete Sign-Up' : 'Next'}
+      </Button>
+    </Box>
+  );
 
   return (
     <Dialog fullWidth open={isFirstSignIn} onClose={handleClose}>
@@ -167,17 +191,21 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
               <li>Bullet point 2</li>
               <li>Bullet point 3</li>
             </ul>
+            {renderNavigation()}
           </>
         )}
         {step === 2 && (
-          <TagsManager
-            defaultTags={defaultAuthorityTags}
-            selectedDefaultTags={selectedDefaultTags}
-            onDefaultTagClick={handleDefaultTagClick}
-            tags={tags}
-            onTagRemove={handleTagRemove}
-            onTagAdd={handleTagAdd}
-          />
+          <>
+            <TagsManager
+              defaultTags={defaultAuthorityTags}
+              selectedDefaultTags={selectedDefaultTags}
+              onDefaultTagClick={handleDefaultTagClick}
+              tags={tags}
+              onTagRemove={handleTagRemove}
+              onTagAdd={handleTagAdd}
+            />
+            {renderNavigation()}
+          </>
         )}
         {step === 3 && (
           <>
@@ -202,7 +230,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
               margin="normal"
               placeholder="Have a contribution? Share it now."
               name="contribution1"
-              value={formData.firstName} // Adjust as needed for individual state management
+              value={formData.firstName}
               onChange={handleInputChange}
             />
             <Box
@@ -211,7 +239,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
                 borderRadius: '4px',
                 padding: '16px',
                 backgroundColor: 'rgba(0, 0, 0, 0.05)',
-                mb:-1,
+                mb: -1,
               }}
             >
               <Typography sx={{ fontSize: 16, fontWeight: 'bold' }}>
@@ -253,7 +281,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
                 Skip
               </Button>
             </Box>
-            {/* This empty div (with ref) marks the start of the private questions section */}
+            {/* 此處作為 private questions 區塊的起始參考點 */}
             <div ref={questionsSectionRef} />
             <Typography
               sx={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center', mt: 4 }}
@@ -293,35 +321,12 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
                 Skip
               </Button>
             </Box>
+            {renderNavigation()}
           </>
         )}
       </DialogContent>
-      <DialogActions>
-        {step > 1 && (
-          <Link onClick={handlePreviousStep} sx={{ cursor: 'pointer' }}>
-            <Typography sx={{ fontWeight: 'light' }}>Step: {step - 1}/3</Typography>
-          </Link>
-        )}
-        {step < 4 && (
-          <Button sx={{ fontWeight: 'bold' }} onClick={handleNextStep}>
-            Next
-          </Button>
-        )}
-        {step === 4 && (
-          <Button
-            sx={{ fontWeight: 'bold' }}
-            onClick={() => {
-              handleUpdateUser();
-              handleClose();
-            }}
-          >
-            Complete Sign-Up
-          </Button>
-        )}
-      </DialogActions>
     </Dialog>
   );
 };
 
 export default FirstSigninFlow;
-
