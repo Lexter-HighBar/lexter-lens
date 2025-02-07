@@ -35,6 +35,12 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
     firstName,
     userName,
     phone,
+    contribution1: '',
+    contribution2: '',
+    contribution3: '',
+    question1: '',
+    question2: '',
+    question3: '',
   });
 
   const defaultAuthorityTags = [
@@ -82,13 +88,15 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
     }));
   };
 
+  // 保留原有欄位的同時更新 email、firstName、userName 與 phone
   useEffect(() => {
-    setFormData({
+    setFormData((prev) => ({
+      ...prev,
       email,
       firstName: firstName || '',
       userName: userName || '',
       phone: phone || '',
-    });
+    }));
   }, [email, firstName, userName, phone]);
 
   const handleClose = () => setIsFirstSignIn(false);
@@ -230,7 +238,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
               margin="normal"
               placeholder="Have a contribution? Share it now."
               name="contribution1"
-              value={formData.firstName}
+              value={formData.contribution1}
               onChange={handleInputChange}
             />
             <Box
@@ -251,7 +259,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
               margin="normal"
               placeholder="Have a contribution? Share it now."
               name="contribution2"
-              value={formData.firstName}
+              value={formData.contribution2}
               onChange={handleInputChange}
             />
             <Box
@@ -272,7 +280,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
               margin="normal"
               placeholder="Have a contribution? Share it now."
               name="contribution3"
-              value={formData.firstName}
+              value={formData.contribution3}
               onChange={handleInputChange}
             />
             <Box sx={{ display: 'flex', gap: 2, my: 2 }}>
@@ -296,7 +304,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
               margin="normal"
               placeholder="Have a Question? Ask it now."
               name="question1"
-              value={formData.firstName}
+              value={formData.question1}
               onChange={handleInputChange}
             />
             <TextField
@@ -304,7 +312,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
               margin="normal"
               placeholder="Have a Question? Ask it now."
               name="question2"
-              value={formData.firstName}
+              value={formData.question2}
               onChange={handleInputChange}
             />
             <TextField
@@ -312,7 +320,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
               margin="normal"
               placeholder="Have a Question? Ask it now."
               name="question3"
-              value={formData.firstName}
+              value={formData.question3}
               onChange={handleInputChange}
             />
             <Box sx={{ display: 'flex', gap: 2, my: 2 }}>
@@ -330,3 +338,4 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
 };
 
 export default FirstSigninFlow;
+
