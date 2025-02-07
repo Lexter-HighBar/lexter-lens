@@ -5,7 +5,7 @@ import { Grid, Spinner } from '@radix-ui/themes'
 import { Divider } from '@mui/material'
 
 // Component imports
-import ResponsiveAppBar from './components/layout/ResponsiveAppBar'
+import ResponsiveAppBar from './components/layout/AppBar'
 import RequireAuth from './components/RequireAuth'
 
 // Page imports

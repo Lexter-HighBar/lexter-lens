@@ -4,30 +4,34 @@ import {
   Divider,
   Grid2,
   IconButton,
-  Link,
   Snackbar,
   Typography,
 } from '@mui/material'
+import { Comment, Question } from '../../../lib/types'
+import { useEffect, useState } from 'react'
+import { useComments } from '../../../hooks/useComments'
+import { CommentListContainer } from './CommentListContainer'
 import {
   CopyIcon,
   ExternalLink,
   MessageCircleMore,
   MessageCirclePlus,
 } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import { useComments } from '../../hooks/useComments'
-import { Comment, Question } from '../../lib/types'
-import AddCommentDialog from './AddCommentDialog'
-import { formatCreatedOnDate } from '../../services/formatCreatedOnDate'
+import AddCommentDialog from '../AddCommentDialog'
 import { useNavigate } from 'react-router'
 
-interface Props {
+interface CommentListProps {
   question: Question
-  defaultOpen?: boolean // optional prop
-  showShareLink?: boolean
+  defaultOpen?: boolean
+  showShareLink?: boolean 
 }
 
-const CommentList = ({ question, defaultOpen, showShareLink }: Props) => {
+export const CommentList = ({
+  question,
+  defaultOpen,
+  showShareLink,
+}: CommentListProps) => {
+
   const [showComments, setShowComments] = useState<boolean>(false)
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false)
   const [openSnackBar, setOpenSnackBar] = useState<boolean>(false)
@@ -36,8 +40,9 @@ const CommentList = ({ question, defaultOpen, showShareLink }: Props) => {
   const questionComments: Comment[] = Array.isArray(comments)
     ? comments.filter((comment) => comment.parentId === question.QuestionId)
     : []
-  const navigate = useNavigate()
+    
 
+  const navigate = useNavigate()
   const handleRedirect = () => {
     navigate(`/question/${question._id}`)
   }
@@ -52,7 +57,8 @@ const CommentList = ({ question, defaultOpen, showShareLink }: Props) => {
   useEffect(() => {
     setShowComments(defaultOpen || false)
   }, [defaultOpen])
-  const toggleComments = () => {
+
+  const handleToggleComments = () => {
     setShowComments(!showComments)
   }
 
@@ -63,7 +69,6 @@ const CommentList = ({ question, defaultOpen, showShareLink }: Props) => {
 
   const handleCloseDialog = () => {
     setIsDialogOpen(false)
-    setCurrentQuestion(null)
   }
 
   const handleSubmitComment = async (newComment: { comment: Comment }) => {
@@ -82,8 +87,9 @@ const CommentList = ({ question, defaultOpen, showShareLink }: Props) => {
       alert('Failed to submit comment. Please try again.')
     }
   }
-
+  if (showShareLink) {
   return (
+ 
     <Grid2
       mt="1"
       display={'flex'}
@@ -102,13 +108,13 @@ const CommentList = ({ question, defaultOpen, showShareLink }: Props) => {
         {questionComments.length > 0 && (
           <>
             <Divider orientation="vertical" flexItem />
-            <IconButton onClick={toggleComments}>
+            <IconButton onClick={handleToggleComments}>
               <Box display={'flex'} gap={1}>
                 {showComments && questionComments.length > 0 ? (
                   <IconButton
                     size="small"
                     type="button"
-                    onClick={toggleComments}
+                    onClick={handleToggleComments}
                   >
                     <Typography variant="subtitle2">Close</Typography>
                   </IconButton>
@@ -125,76 +131,37 @@ const CommentList = ({ question, defaultOpen, showShareLink }: Props) => {
                 )}
               </Box>
             </IconButton>
+            {showShareLink ? (
+              <IconButton onClick={handleRedirect}>
+                <ExternalLink size={20} />
+              </IconButton>
+            ) : (
+              <IconButton onClick={handleCopyLink}>
+                <CopyIcon size={20} />
+              </IconButton>
+            )}
           </>
         )}
-        {showShareLink ? (
-          <IconButton onClick={handleRedirect}>
-            <ExternalLink size={20} />
-          </IconButton>
-        ) : (
-          <IconButton onClick={handleCopyLink}>
-            <CopyIcon size={20} />
-          </IconButton>
-        )}
-        {/* Comment list goes here */}
       </Box>
       {showComments && questionComments.length > 0 && (
-        <Box
-          maxHeight={500}
-          mt={2}
-          display={'flex'}
-          flexDirection="column"
-          gap={1}
-          sx={{ overflowY: 'scroll', scrollbarWidth: 'thin' }}
-        >
-          {questionComments.map((comment) => {
-            const formattedDate = formatCreatedOnDate(
-              new Date(comment.createdOn),
-            )
-            return (
-              <Box
-                sx={{ backgroundColor: 'grey.50' }}
-                key={comment._id}
-                mt={2}
-                p={2}
-                borderRadius={2}
-              >
-                <Typography py={1} variant="body1">
-                  {comment.userName}
-                </Typography>
-                <Typography py={1} variant="body1">
-                  {comment.content}
-                </Typography>
-
-                <Typography variant="body2">{formattedDate}</Typography>
-                <Divider />
-              </Box>
-            )
-          })}
-
-          <Link
-            underline="hover"
-            alignContent="end"
-            onClick={() => handleOpenDialog(question)}
-          ></Link>
-          <Link underline="hover" alignContent="end" onClick={toggleComments}>
-            {showComments ? 'Hide' : 'Show all comments'} (
-            {questionComments.length})
-          </Link>
-        </Box>
+        <CommentListContainer
+          comments={questionComments}
+          showComments={showComments}
+          toggleComments={handleToggleComments}
+        />
       )}
-      {currentQuestion && (
+      {isDialogOpen && (
         <AddCommentDialog
           isOpen={isDialogOpen}
           onClose={handleCloseDialog}
-          currentQuestion={currentQuestion}
+          currentQuestion={question}
           isEditing={false}
           onSubmit={handleSubmitComment}
         />
       )}
       <Snackbar
         open={openSnackBar}
-        autoHideDuration={2000} // 2 seconds
+        autoHideDuration={2000}
         onClose={() => setOpenSnackBar(false)}
       >
         <Alert severity="success" sx={{ width: '100%' }}>
@@ -203,6 +170,4 @@ const CommentList = ({ question, defaultOpen, showShareLink }: Props) => {
       </Snackbar>
     </Grid2>
   )
-}
-
-export default CommentList
+}}

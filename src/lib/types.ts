@@ -67,7 +67,7 @@ export type Post = {
 };
 
 export type Comment = {
-  _id: string;
+  _id?: string;
   ownerId: string;
   createdOn: string;
   userName: string;
@@ -86,7 +86,7 @@ export type UseTagsParams = {
 };
 
 export type Question = {
-  _id: string;
+  _id?: string;
   QuestionId: string;
   ownerId: string;
   userName: string;
