@@ -4,34 +4,29 @@ import {
   Divider,
   Grid2,
   IconButton,
+
   Snackbar,
   Typography,
 } from '@mui/material'
-import { Comment, Question } from '../../../lib/types'
-import { useEffect, useState } from 'react'
-import { useComments } from '../../../hooks/useComments'
-import { CommentListContainer } from './CommentListContainer'
 import {
-  CopyIcon,
-  ExternalLink,
   MessageCircleMore,
   MessageCirclePlus,
 } from 'lucide-react'
-import AddCommentDialog from '../AddCommentDialog'
-import { useNavigate } from 'react-router'
+import { useEffect, useState } from 'react'
+import { useComments } from '../../hooks/useComments'
+import { Comment, Question } from '../../lib/types'
+import AddCommentDialog from './AddCommentDialog'
+import { CommentList } from './Comments/CommentList'
 
-interface CommentListProps {
+
+
+interface Props {
   question: Question
-  defaultOpen?: boolean
-  showShareLink?: boolean 
+  defaultOpen?: boolean // optional prop
 }
 
-export const CommentList = ({
-  question,
-  defaultOpen,
-  showShareLink,
-}: CommentListProps) => {
-
+const QuestionComments = ({ question, defaultOpen }: Props) => {
+  
   const [showComments, setShowComments] = useState<boolean>(false)
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false)
   const [openSnackBar, setOpenSnackBar] = useState<boolean>(false)
@@ -40,25 +35,15 @@ export const CommentList = ({
   const questionComments: Comment[] = Array.isArray(comments)
     ? comments.filter((comment) => comment.parentId === question.QuestionId)
     : []
-    
 
-  const navigate = useNavigate()
-  const handleRedirect = () => {
-    navigate(`/question/${question._id}`)
-  }
 
-  const handleCopyLink = () => {
-    const link = window.location.href
-    navigator.clipboard.writeText(link).then(() => {
-      setOpenSnackBar(true)
-    })
-  }
+
 
   useEffect(() => {
     setShowComments(defaultOpen || false)
+    
   }, [defaultOpen])
-
-  const handleToggleComments = () => {
+  const toggleComments = () => {
     setShowComments(!showComments)
   }
 
@@ -69,6 +54,7 @@ export const CommentList = ({
 
   const handleCloseDialog = () => {
     setIsDialogOpen(false)
+    setCurrentQuestion(null)
   }
 
   const handleSubmitComment = async (newComment: { comment: Comment }) => {
@@ -87,9 +73,8 @@ export const CommentList = ({
       alert('Failed to submit comment. Please try again.')
     }
   }
- 
+
   return (
- 
     <Grid2
       mt="1"
       display={'flex'}
@@ -108,13 +93,13 @@ export const CommentList = ({
         {questionComments.length > 0 && (
           <>
             <Divider orientation="vertical" flexItem />
-            <IconButton onClick={handleToggleComments}>
+            <IconButton onClick={toggleComments}>
               <Box display={'flex'} gap={1}>
                 {showComments && questionComments.length > 0 ? (
                   <IconButton
                     size="small"
                     type="button"
-                    onClick={handleToggleComments}
+                    onClick={toggleComments}
                   >
                     <Typography variant="subtitle2">Close</Typography>
                   </IconButton>
@@ -131,37 +116,30 @@ export const CommentList = ({
                 )}
               </Box>
             </IconButton>
-            {showShareLink ? (
-              <IconButton onClick={handleRedirect}>
-                <ExternalLink size={20} />
-              </IconButton>
-            ) : (
-              <IconButton onClick={handleCopyLink}>
-                <CopyIcon size={20} />
-              </IconButton>
-            )}
           </>
         )}
+      
+        {/* Comment list goes here */}
       </Box>
-      {showComments && questionComments.length > 0 && (
-        <CommentListContainer
-          comments={questionComments}
-          showComments={showComments}
-          toggleComments={handleToggleComments}
-        />
+      {questionComments.length > 0 && showComments && (
+          <CommentList question={question} defaultOpen={showComments}  showShareLink={false}/>
+        
       )}
-      {isDialogOpen && (
+      
+   
+
+      {currentQuestion && (
         <AddCommentDialog
           isOpen={isDialogOpen}
           onClose={handleCloseDialog}
-          currentQuestion={question}
+          currentQuestion={currentQuestion}
           isEditing={false}
           onSubmit={handleSubmitComment}
         />
       )}
       <Snackbar
         open={openSnackBar}
-        autoHideDuration={2000}
+        autoHideDuration={2000} 
         onClose={() => setOpenSnackBar(false)}
       >
         <Alert severity="success" sx={{ width: '100%' }}>
@@ -171,3 +149,5 @@ export const CommentList = ({
     </Grid2>
   )
 }
+
+export default QuestionComments

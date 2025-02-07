@@ -61,7 +61,7 @@ const QuestionView = () => {
           ))}
         </Box>
 
-        <CommentList question={question} defaultOpen showShareLink />
+        <CommentList question={question} defaultOpen showShareLink={false} />
       </Box>
     </Page>
   )

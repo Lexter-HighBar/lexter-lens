@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import { useComments } from '../../../hooks/useComments';
 import { Comment } from '../../../lib/types';
-import { CommentItem } from './CommentItem';
+import {  ReplyItem } from './ReplyItem';
 
 interface RepliesListContainerProps {
     comments: Comment[]; // Assuming comments is an array of objects
@@ -16,9 +16,9 @@ export const RepliesListContainer = ({ comments }: RepliesListContainerProps) =>
   };
 
   return (
-    <Box border={1} borderRadius={2} maxHeight={600} display={'flex'} flexDirection="column" gap={1} sx={{ overflowY: 'scroll', scrollbarWidth: 'thin' }}>
+    <Box mt={1} boxShadow={2} borderRadius={2} maxHeight={400} display={'flex'} flexDirection="column" gap={1} sx={{ overflowY: 'scroll', scrollbarWidth: 'thin' }}>
       {comments.map((comment) => (
-        <CommentItem key={comment._id} comment={comment} onCreateReply={handleCreateReply} />
+        <ReplyItem key={comment._id} comment={comment} onCreateReply={handleCreateReply} />
       ))}
      
     </Box>

@@ -53,9 +53,8 @@ export const RepliesList = ({ comment, defaultOpen }: CommentListProps) => {
                 <>
                   <IconButton size="small" onClick={handleToggleReplies}>
                     <Typography variant="subtitle2">
-                    {' '}{questionComments.length}{'   '}
-                
-                    Replies</Typography>{' '}
+                      {questionComments.length}{'   '}
+                   Replies</Typography>
                   </IconButton>
                 </>
               )}
