@@ -167,7 +167,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
       <DialogContent sx={{ minHeight: '200px' }}>
         {step === 1 && (
           <>
-            <Typography>Welcome, {firstName ? firstName : ''}</Typography>
+            <Typography>Welcome, {formData.firstName || ''}</Typography>
             <Typography>Create a first name and a user name:</Typography>
             <TextField
               fullWidth
