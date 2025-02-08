@@ -1,12 +1,15 @@
 import { useParams } from 'react-router-dom'
-import { Typography, Chip, Box } from '@mui/material'
+import { Typography, Chip, Box, IconButton } from '@mui/material'
 import { formatCreatedOnDate } from '../services/formatCreatedOnDate'
-import CommentList from '../components/Discussion/CommentList'
+
 import { useQuestions } from '../hooks/useQuestions'
 import { Page } from '../components/layout/Page'
+import { ChevronLeft } from 'lucide-react'
+import { CommentList } from '../components/Discussion/Comments/CommentList'
+
 
 const QuestionView = () => {
-  const { id } = useParams() // Get the ID from the URL
+  const { id } = useParams()
   const { questions, loading, error } = useQuestions({ id })
 
   if (loading) return <Typography>Loading...</Typography>
@@ -24,16 +27,12 @@ const QuestionView = () => {
         overflowX: 'hidden',
       }}
     >
-      <Box
-        maxWidth={750}
-        width={'89dvw'}
-        m={1}
-        p={2}
-        border={1}
-        borderRadius={2}
-        borderColor={'grey.300'}
-        key={question.QuestionId}
-      >
+      <Box maxWidth={750} width={'89dvw'} m={1} p={2} key={question.QuestionId}>
+        <Box display="flex" flexDirection="row" alignItems="center" pb={2} >
+          <IconButton >
+          <ChevronLeft onClick={() => window.history.back()}  size={40} />
+          </IconButton>
+        </Box>
         <Box display="flex" flexDirection="row" alignItems="center" gap={2}>
           <img
             src={question.profilePicture || ''}
@@ -61,7 +60,8 @@ const QuestionView = () => {
             />
           ))}
         </Box>
-        <CommentList question={question} defaultOpen={true} />
+
+        <CommentList question={question} defaultOpen showShareLink={false} />
       </Box>
     </Page>
   )

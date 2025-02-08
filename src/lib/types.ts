@@ -67,7 +67,7 @@ export type Post = {
 };
 
 export type Comment = {
-  _id: string;
+  _id?: string;
   ownerId: string;
   createdOn: string;
   userName: string;

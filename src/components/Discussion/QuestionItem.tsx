@@ -2,7 +2,8 @@ import { Typography, Chip, Box } from '@mui/material'
 import { Question } from '../../lib/types'
 
 import { formatCreatedOnDate } from '../../services/formatCreatedOnDate'
-import CommentList from './CommentList'
+import {CommentList} from './Comments/CommentList'
+
 
 interface Props {
   question: Question
@@ -48,7 +49,7 @@ const QuestionItem = ({ question }: Props) => {
 
         </Box>
     
-          <CommentList showShareLink question={question} />
+          <CommentList question={question}   showShareLink  />
         
       </Box>
     </>

@@ -30,7 +30,7 @@ const Comments = () => {
             </li>
           ))
         ) : (
-          <p>No comments available</p>
+          <p>No zcomments available</p>
         )}
       </ul>
     </div>
