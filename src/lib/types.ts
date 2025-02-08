@@ -86,6 +86,7 @@ export type UseTagsParams = {
 };
 
 export type Question = {
+  _id: string;
   QuestionId: string;
   ownerId: string;
   userName: string;
