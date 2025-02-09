@@ -3,6 +3,7 @@ import { Comment } from '../../../lib/types'
 import { useEffect, useState } from 'react'
 import { useComments } from '../../../hooks/useComments'
 import { RepliesListContainer } from './RepliesListContainer'
+import VoteComponent from '../Votes/VoteComponent'
 
 interface CommentListProps {
   comment: Comment
@@ -35,6 +36,7 @@ export const RepliesList = ({ comment, defaultOpen }: CommentListProps) => {
       gap="1"
       width={'100%'}
     >
+      <VoteComponent questionId={comment.parentId} ownerId={comment.ownerId} />
       <Box gap={3} display={'flex'} justifyContent={'end'}>
         {questionComments.length > 0 && (
           <>
@@ -53,8 +55,10 @@ export const RepliesList = ({ comment, defaultOpen }: CommentListProps) => {
                 <>
                   <IconButton size="small" onClick={handleToggleReplies}>
                     <Typography variant="subtitle2">
-                      {questionComments.length}{'   '}
-                   Replies</Typography>
+                      {questionComments.length}
+                      {'   '}
+                      Replies
+                    </Typography>
                   </IconButton>
                 </>
               )}
