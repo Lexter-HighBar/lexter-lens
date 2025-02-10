@@ -7,7 +7,6 @@ import { Page } from '../components/layout/Page'
 import { ChevronLeft } from 'lucide-react'
 import { CommentList } from '../components/Discussion/Comments/CommentList'
 
-
 const QuestionView = () => {
   const { id } = useParams()
   const { questions, loading, error } = useQuestions({ id })
@@ -28,13 +27,10 @@ const QuestionView = () => {
       }}
     >
       <Box maxWidth={750} width={'89dvw'} m={1} p={2} key={question.QuestionId}>
-        <Box display="flex" flexDirection="row" alignItems="center" pb={2} >
-          <IconButton >
-          <ChevronLeft onClick={() => window.history.back()}  size={40} />
-          </IconButton>
-        </Box>
         <Box display="flex" flexDirection="row" alignItems="center" gap={2}>
-          <img
+        <IconButton >
+            <ChevronLeft onClick={() => window.history.back()} size={30} style={{ color: '#1D4170'  }} /> 
+          </IconButton> <img
             src={question.profilePicture || ''}
             alt="Profile Picture"
             style={{ width: '60px', height: '60px', borderRadius: '50%' }}
