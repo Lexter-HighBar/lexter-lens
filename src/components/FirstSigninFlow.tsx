@@ -88,7 +88,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
     }));
   };
 
-  // 保留原有欄位的同時更新 email、firstName、userName 與 phone
+  // Keep the original fields while updating email, firstName, userName, and phone
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
@@ -101,7 +101,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
 
   const handleClose = () => setIsFirstSignIn(false);
 
-  // 修改步驟邏輯：當 step 為 3 時，點擊 Next 即完成註冊
+  // Modify the step logic: When the step is 3, clicking Next will complete the registration process
   const handleNextStep = () => {
     if (step === 3) {
       handleUpdateUser();
@@ -120,7 +120,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
     questionsSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // 將步驟指示與下一步按鈕放入 popup 內容區塊的共用區段
+  // Place the step instructions and the next-step button into the shared section of the popup content block
   const renderNavigation = () => (
     <Box display="flex" justifyContent="space-between" alignItems="center" mt={2}>
       {step > 1 ? (
@@ -289,7 +289,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
                 Skip
               </Button>
             </Box>
-            {/* 此處作為 private questions 區塊的起始參考點 */}
+            {/* This serves as the starting reference point for the private questions section*/}
             <div ref={questionsSectionRef} />
             <Typography
               sx={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center', mt: 4 }}
