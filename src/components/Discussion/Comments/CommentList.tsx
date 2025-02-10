@@ -95,20 +95,24 @@ export const CommentList = ({
       gap="1"
       width={'100%'}
     >
-      <Box display={'flex'} justifyContent={'space-between'}>
-        <Box display={'flex'} justifyContent={'start'}>
-          <VoteComponent questionId={question.QuestionId} ownerId={question.ownerId} />
+      <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} >
+        <Box display={'flex'} justifyContent={'start'} >
+          <VoteComponent
+            questionId={question.QuestionId}
+            ownerId={question.ownerId}
+          />
         </Box>
         <Box gap={3} mt={2} display={'flex'} justifyContent={'end'}>
           <IconButton onClick={() => handleOpenDialog(question)}>
             <Box display={'flex'} justifyContent={'end'} gap={1}>
-              <MessageCirclePlus size={20} />
+              <MessageCirclePlus size={25} />
 
               <Typography
                 sx={{
                   display: { xs: 'none', md: 'flex' },
                 }}
                 variant="subtitle2"
+                fontWeight={500}
               >
                 Add Comment
               </Typography>
@@ -131,14 +135,15 @@ export const CommentList = ({
                   ) : (
                     <>
                       {' '}
-                      <MessageCircleMore size={20} />
-                      <Typography variant="subtitle2">
+                      <MessageCircleMore size={25} />
+                      <Typography fontWeight={500} variant="subtitle2">
                         {' '}
                         {questionComments.length}{' '}
                       </Typography>
                       <Typography
                         sx={{
                           display: { xs: 'none', md: 'flex' },
+                          fontWeight: '500',
                         }}
                         variant="subtitle2"
                       >
@@ -150,11 +155,11 @@ export const CommentList = ({
               </IconButton>
               {showShareLink ? (
                 <IconButton onClick={handleRedirect}>
-                  <ExternalLink size={20} />
+                  <ExternalLink size={25} />
                 </IconButton>
               ) : (
                 <IconButton onClick={handleCopyLink}>
-                  <CopyIcon size={20} />
+                  <CopyIcon size={25} />
                 </IconButton>
               )}
             </>

@@ -109,12 +109,15 @@ export type SuggestedTag = {
   kind: string;
   description: string;
 }
-export interface Vote {
+export interface QuestionVote {
   _id: string;
   questionId: string;
-  votes: {
-    userId: string;
+  votes: Vote[];
+  totalVotes?: number; 
+}
+
+export type Vote = {
+  totalVotes: number;
     voteType: 1 | -1;
-  }[];
-  totalVotes?: number; // Virtual field for computed total votes
+    voteDirection: 'up' | 'down';
 }
