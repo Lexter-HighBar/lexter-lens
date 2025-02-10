@@ -203,14 +203,18 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
           </>
         )}
         {step === 2 && (
-          <>
+          <> here 
             <TagsManager
-              defaultTags={defaultAuthorityTags}
-              selectedDefaultTags={selectedDefaultTags}
-              onDefaultTagClick={handleDefaultTagClick}
+              defaultTags={defaultAuthorityTags}          
               tags={tags}
-              onTagRemove={handleTagRemove}
-              onTagAdd={handleTagAdd}
+              title='Authority Tags'
+              disabled={true}
+            />
+            <TagsManager
+              defaultTags={defaultAuthorityTags}          
+              tags={tags}
+              title='Authority Tags'
+             
             />
             {renderNavigation()}
           </>
