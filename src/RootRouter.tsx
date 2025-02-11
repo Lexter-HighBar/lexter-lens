@@ -14,6 +14,7 @@ import Signin from './pages/Sign-in'
 import Discussion from './pages/Discussion'
 import UserProfile from './components/UserProfile'
 import { UnauthedDashboard } from './pages/UnauthedDashboard'
+import Footer from './components/Footer';
 
 // RootRouter Component
 export const RootRouter = () => {
@@ -43,6 +44,7 @@ export const RootRouter = () => {
               <Home />
             </RequireAuth>
           }
+          
         />
    
           <Route
@@ -66,6 +68,7 @@ export const RootRouter = () => {
         <Route path="/sign-in" element={<Signin />} />
         <Route path="/unauthed-dashboard" element={<UnauthedDashboard />} />
       </Routes>
+      <Footer />
     </>
   )
 }
