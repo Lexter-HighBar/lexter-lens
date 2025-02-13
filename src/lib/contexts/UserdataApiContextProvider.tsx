@@ -18,7 +18,6 @@ type Props = {
     axios.interceptors.request.use(async (config) => {
       const token = await getToken();
       config.headers['Content-Type'] = 'application/json';
-  
     if (token) config.headers.Authorization = `Bearer ${token}`;
       return config;
     });

@@ -1,12 +1,12 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
-import { OpenAI } from 'openai'
+import { GoogleGenerativeAI } from '@google/generative-ai'
 import { useFilterLawyersById } from './useFilterLawyersById'
 
-const openai = new OpenAI({
-  apiKey: `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`,
-  //to remove exposed API key
-  dangerouslyAllowBrowser: true,
-})
+// Google Generative AI Configuration
+const API_KEY = 'AIzaSyAxbDQyrIZcR9fnjKQNGDGIgoMcgnswSCI' 
+const genAI = new GoogleGenerativeAI(API_KEY)
+const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
+
 export const useFetchQuestionsFromAI = (id: number) => {
   const [suggestedQuestions, setSuggestedQuestions] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -29,11 +29,10 @@ export const useFetchQuestionsFromAI = (id: number) => {
       console.log('Lawyer Data:', lawyer)
 
       const prompt = `You are provided with a lawyer's profile: "${lawyer}". Based on this profile and the related expertise tags: ${lawyer.tags}, 
-      generate one insightful questions that other professionals in the same field would find relevant and valuable. 
+      generate one insightful question that other professionals in the same field would find relevant and valuable. 
       Focus on aspects such as industry trends, work-life balance, and organizational culture. 
       Avoid personal questions or inquiries about the lawyer's individual experiences. 
-      try to generate a real life question that someone would ask.
-      do not return [object] or [object Object] inside the question content.
+      Try to generate a real-life question that someone would ask.
       Format the output as follows:
       {
         "Questions": {
@@ -41,27 +40,29 @@ export const useFetchQuestionsFromAI = (id: number) => {
         }
       }`
 
-      const response = await openai.chat.completions.create({
-        messages: [
+      const response = await model.generateContent({
+        contents: [
           {
             role: 'user',
-            content: prompt,
+            parts: [
+              {
+                text: prompt,
+              },
+            ],
           },
         ],
-        model: 'gpt-3.5-turbo',
       })
 
-      console.log('AI Response:', response)
-      const textResponse = response.choices[0].message.content
-      console.log('Raw AI Response:', textResponse)
+      const data = await response.response
+      const textResponse = await data.text()
 
       const cleanedResponse = textResponse
-        ?.replace(/```json\n?|```/g, '')
+        ?.replace(/```json\n?|```/g, '') // Clean up formatting
         .trim()
-      const parsedResponse = JSON.parse(cleanedResponse || '{}')
-      console.log('Cleaned Response:', cleanedResponse)
 
+      const parsedResponse = JSON.parse(cleanedResponse || '{}')
       console.log('Parsed Response:', parsedResponse)
+
       setSuggestedQuestions(parsedResponse?.Questions || {})
     } catch (err) {
       if (err instanceof Error) {
