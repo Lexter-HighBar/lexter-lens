@@ -7,19 +7,29 @@ import {
   Box,
   Typography,
   Card,
-  TextField,
   MenuItem,
   Chip,
+  Select,
+  SelectChangeEvent,
 } from '@mui/material'
+
+interface City {
+  id: number
+  city: string
+}
+
 import Grid from '@mui/material/Grid2'
 import { useState, useEffect } from 'react'
 import { useTags } from '../hooks/useTags'
+import { useCities } from '../hooks/useCities'
 
 const UserProfile = () => {
   const { user } = useUser()
   const { tags } = useTags()
+  const { cities } = useCities()
   const [avatar, setAvatar] = useState(user?.imageUrl || '')
   const [selectedTags, setSelectedTags] = useState<string[]>([])
+  const [selectedCities, setSelectedCities] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
   const [alert, setAlert] = useState({
     open: false,
@@ -29,14 +39,17 @@ const UserProfile = () => {
 
   const tagsArray = user?.unsafeMetadata?.tags as string[]
   useEffect(() => {
-    setSelectedTags(tagsArray)
-  }, [tags])
-
-  console.log(user)
-  useEffect(() => {
-    if (Array.isArray(tags) && tags.length > 0) {
+    if (tagsArray) {
+      setSelectedTags(tagsArray)
     }
-  }, [tags])
+  }, [tagsArray])
+
+  const citiesArray = user?.unsafeMetadata?.cities as string[]
+  useEffect(() => {
+    if (citiesArray) {
+      setSelectedCities(citiesArray)
+    }
+  }, [citiesArray])
 
   const handleAvatarChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -69,7 +82,7 @@ const UserProfile = () => {
     reader.readAsDataURL(file)
   }
 
-  const handleTagChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleTagChange = (event: SelectChangeEvent<string[]>) => {
     setSelectedTags(event.target.value as string[])
   }
 
@@ -81,7 +94,49 @@ const UserProfile = () => {
     setLoading(true)
     try {
       if (user) {
-        await user.update({ unsafeMetadata: { tags: selectedTags } })
+        await user.update({
+          unsafeMetadata: {
+            ...user.unsafeMetadata,
+            tags: selectedTags,
+          },
+        })
+      }
+      setAlert({
+        open: true,
+        message: 'Tags updated successfully',
+        severity: 'success',
+      })
+    } catch (error) {
+      setAlert({
+        open: true,
+        message: 'Failed to update tags',
+        severity: 'error',
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleCityChange = (event: SelectChangeEvent<string[]>) => {
+    setSelectedCities(event.target.value as string[])
+  }
+
+  const handleRemoveCity = (cityToRemove: string) => {
+    setSelectedCities((prevCities) =>
+      prevCities.filter((city) => city !== cityToRemove),
+    )
+  }
+
+  const handleUpdateCities = async () => {
+    setLoading(true)
+    try {
+      if (user) {
+        await user.update({
+          unsafeMetadata: {
+            ...user.unsafeMetadata,
+            cities: selectedCities,
+          },
+        })
       }
       setAlert({
         open: true,
@@ -182,42 +237,86 @@ const UserProfile = () => {
       </Box>
 
       <Box sx={{ flex: 1, minWidth: 0, p: 3 }}>
-        <Typography variant="h5" gutterBottom>
-          Select Interest Tags
-        </Typography>
-        <TextField
-          select
-          label="Expertise Tags"
-          fullWidth
-          onChange={handleTagChange}
-          margin="normal"
-          value={selectedTags}
-          SelectProps={{
-            multiple: true,
-            renderValue: (selected) => (selected as string[]).join(', '),
-          }}
-        >
-          {Array.isArray(tags) &&
-            tags.map((tag) => (
-              <MenuItem key={tag.id} value={tag.name}>
-                {tag.name}
-              </MenuItem>
-            ))}
-        </TextField>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 2 }}>
-          {selectedTags.map((tag) => (
-            <Chip key={tag} label={tag} onDelete={() => handleRemoveTag(tag)} />
-          ))}
-        </Box>
-        <Button
-          variant="contained"
-          fullWidth
-          onClick={handleUpdateTags}
-          disabled={loading}
-          sx={{ mt: 2 }}
-        >
-          {loading ? <CircularProgress size={24} /> : 'Update Tags'}
-        </Button>
+        <Grid container direction="column" spacing={3}>
+          <Grid>
+            <Typography variant="h5" gutterBottom>
+              Select Expertise Tags
+            </Typography>
+            <Select
+              label="Expertise Tags"
+              fullWidth
+              onChange={handleTagChange}
+              margin="dense"
+              value={selectedTags || []}
+              multiple
+              renderValue={(selected) => (selected as string[]).join(', ')}
+            >
+              {Array.isArray(tags) &&
+                tags.map((tag) => (
+                  <MenuItem key={tag.id} value={tag.name}>
+                    {tag.name}
+                  </MenuItem>
+                ))}
+            </Select>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 2 }}>
+              {selectedTags?.map((tag) => (
+                <Chip
+                  key={tag}
+                  label={tag}
+                  onDelete={() => handleRemoveTag(tag)}
+                />
+              ))}
+            </Box>
+            <Button
+              variant="contained"
+              fullWidth
+              onClick={handleUpdateTags}
+              disabled={loading}
+              sx={{ mt: 2 }}
+            >
+              {loading ? <CircularProgress size={24} /> : 'Update Tags'}
+            </Button>
+          </Grid>
+          <Grid>
+            <Typography variant="h5" gutterBottom>
+              Select City Tags
+            </Typography>
+            <Select
+              label="Cities"
+              fullWidth
+              onChange={handleCityChange}
+              margin="dense"
+              value={selectedCities || []}
+              multiple
+              renderValue={(selected) => (selected as string[]).join(', ')}
+            >
+              {Array.isArray(cities) &&
+                cities.map((city: City) => (
+                  <MenuItem key={city.id} value={city.city}>
+                    {city.city}
+                  </MenuItem>
+                ))}
+            </Select>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 2 }}>
+              {selectedCities?.map((city) => (
+                <Chip
+                  key={city}
+                  label={city}
+                  onDelete={() => handleRemoveCity(city)}
+                />
+              ))}
+            </Box>
+            <Button
+              variant="contained"
+              fullWidth
+              onClick={handleUpdateCities}
+              disabled={loading}
+              sx={{ mt: 2 }}
+            >
+              {loading ? <CircularProgress size={24} /> : 'Update Tags'}
+            </Button>
+          </Grid>
+        </Grid>
       </Box>
 
       <Snackbar
