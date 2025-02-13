@@ -2,7 +2,7 @@ import { Box, Typography } from "@mui/material";
 import { Comment } from "../../../lib/types";
 
 import { RepliesList } from "./RepliesList";
-import { Flex } from "@radix-ui/themes";
+
 
 
 interface CommentItemProps {
@@ -30,15 +30,15 @@ export const ReplyItem = ({ comment }: CommentItemProps) => {
   // };
 
   return (
-    <Box sx={{ backgroundColor: 'grey.50' }} key={comment._id} p={1} borderRadius={2}>
-      <Flex >
+    <Box key={comment._id}  borderRadius={2} sx={{border: '1px solid #e0e0e0', backgroundColor: 'grey.100', p: 1 }}>
+      <Box  sx={{ display: 'flex', alignItems: 'start', gap: 2, alignSelf: 'flex-start' }} >
       <Typography fontWeight={500} variant="body1">
-        {comment.userName}
+        {comment.userName}:
       </Typography>
       <Typography py={1} variant="body1">
         {comment.content}
       </Typography>
-      </Flex>
+      </Box>
       <RepliesList comment={comment} />
       
       {

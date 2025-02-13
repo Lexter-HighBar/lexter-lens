@@ -1,7 +1,7 @@
 import { useState, useEffect, ReactNode } from "react";
 import { ClerkContext, ClerkContextType } from "./ClerkContext";
-import { useClerkFunction } from "../../hooks/ClerkFunction";  // Import functions here
 import { useUser } from "@clerk/clerk-react";
+import { useClerkFunction } from "../../hooks/ClerkFunction";
 
 type Props = {
   children: ReactNode;
@@ -10,6 +10,7 @@ type Props = {
 export const ClerkContextProvider = ({ children }: Props) => {
   const { user, isLoaded } = useUser();
   const [lawyerData, setLawyerData] = useState<ClerkContextType>({
+    lawyerId: 0, 
     email: "",
     firstName: "",
     userName: "",
@@ -25,6 +26,8 @@ export const ClerkContextProvider = ({ children }: Props) => {
       const firstName = user.unsafeMetadata.firstName as string | undefined;
       const userName = user.unsafeMetadata.userName as string | undefined;
       const phone = user.unsafeMetadata.phone as string | undefined;
+      const lawyerId = user.unsafeMetadata.lawyerId as number | undefined;
+
 
       setLawyerData((prev) => ({
         ...prev,
@@ -32,13 +35,13 @@ export const ClerkContextProvider = ({ children }: Props) => {
         firstName: firstName || "",
         userName: userName || "",
         phone: phone || "",
+        lawyerId: lawyerId || 0,
         isLoading: false,
       }));
     }
   }, [isLoaded, user]);
 
-  const { handleChange, handleUpdateUser } = useClerkFunction(lawyerData);  // Use the functions here
-
+  const { handleChange, handleUpdateUser } = useClerkFunction(lawyerData); 
   return (
     <ClerkContext.Provider
       value={{

@@ -23,12 +23,25 @@ export type PaginatedResponse<T> = {
 // domain data
 
 // GET /lawyers Pagic
-export type Lawyer = {
-  id: number
-  first_name: string
-  last_name: string
-  created_at: string
-  updated_at: string
+export interface Lawyer {
+  created_at: string;
+  employment: {
+    current_employer_id: number;
+    current_employer_name: string;
+    employed_from: string | null;
+    employed_until: string | null;
+    office_id: number;
+  };
+  first_name: string;
+  id: number;
+  last_name: string;
+  status: string | null;
+  tag_ids: number[];
+  tags: {
+    id: number;
+    name: string;
+  }[]
+  updated_at: string;
 }
 
 export type Employer = {
@@ -108,4 +121,23 @@ export type SuggestedTag = {
   name: string;
   kind: string;
   description: string;
+}
+export interface QuestionVote {
+  _id: string;
+  questionId: string;
+  votes: Vote[];
+  totalVotes?: number; 
+}
+
+export type Vote = {
+  totalUps: number;
+  totalDowns: number;
+  userVoted: boolean;
+  voteDirection: 'up' | 'down'
+}
+
+export interface SuggestedQuestions {
+  question1: string;
+  question2: string;
+  question3: string;
 }

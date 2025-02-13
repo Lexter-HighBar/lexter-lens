@@ -2,7 +2,7 @@ import Chip from '@mui/material/Chip'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import Autocomplete from '@mui/material/Autocomplete'
-import { useFetchTagsFromAI } from '../hooks/useFetchTagsFromAI'
+import { useFetchTagsFromAI } from '../hooks/useFetchQuestionTagsFromAI'
 import React, { useState, useCallback } from 'react'
 import { CircularProgress } from '@mui/material'
 

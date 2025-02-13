@@ -45,15 +45,15 @@ export const CommentItem = ({ comment, onCreateReply }: CommentItemProps) => {
         {comment.content}
       </Typography>
       <Typography variant="body2">{formattedDate}</Typography>
-      
+
       <RepliesList comment={comment} />
 
       <Box
         sx={{
           display: 'flex',
-          alignItems: 'center',
+          alignItems: 'end',
           justifyContent: 'space-between',
-          p: 2,
+          p: 1,
           border: '1px solid rgb(211, 211, 211)',
           borderRadius: 2,
         }}
@@ -66,13 +66,18 @@ export const CommentItem = ({ comment, onCreateReply }: CommentItemProps) => {
           onChange={(e) => setReplyContent(e.target.value)}
           placeholder="Enter your reply"
           sx={{ mr: 2 }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault() // Prevents adding a new line
+              handleReply() // Call the function
+            }
+          }}
         />
+
         <IconButton onClick={handleReply} disabled={!replyContent}>
           <SendIcon />
         </IconButton>
       </Box>
-
-    
     </Box>
   )
 }

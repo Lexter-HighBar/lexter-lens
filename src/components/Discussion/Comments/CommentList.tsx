@@ -19,11 +19,12 @@ import {
 } from 'lucide-react'
 import AddCommentDialog from '../AddCommentDialog'
 import { useNavigate } from 'react-router'
+import VoteComponent from '../Votes/VoteComponent'
 
 interface CommentListProps {
   question: Question
   defaultOpen?: boolean
-  showShareLink?: boolean 
+  showShareLink?: boolean
 }
 
 export const CommentList = ({
@@ -31,7 +32,6 @@ export const CommentList = ({
   defaultOpen,
   showShareLink,
 }: CommentListProps) => {
-
   const [showComments, setShowComments] = useState<boolean>(false)
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false)
   const [openSnackBar, setOpenSnackBar] = useState<boolean>(false)
@@ -40,7 +40,6 @@ export const CommentList = ({
   const questionComments: Comment[] = Array.isArray(comments)
     ? comments.filter((comment) => comment.parentId === question.QuestionId)
     : []
-    
 
   const navigate = useNavigate()
   const handleRedirect = () => {
@@ -87,9 +86,8 @@ export const CommentList = ({
       alert('Failed to submit comment. Please try again.')
     }
   }
- 
+
   return (
- 
     <Grid2
       mt="1"
       display={'flex'}
@@ -97,51 +95,76 @@ export const CommentList = ({
       gap="1"
       width={'100%'}
     >
-      <Box gap={3} mt={2} display={'flex'} justifyContent={'end'}>
-        <IconButton onClick={() => handleOpenDialog(question)}>
-          <Box display={'flex'} justifyContent={'end'} gap={1}>
-            <MessageCirclePlus size={20} />
-            <Typography variant="subtitle2">Add Comment</Typography>
-          </Box>
-        </IconButton>
+      <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} >
+        <Box display={'flex'} justifyContent={'start'} >
+          <VoteComponent
+            questionId={question.QuestionId}
+            ownerId={question.ownerId}
+          />
+        </Box>
+        <Box gap={3} mt={2} display={'flex'} justifyContent={'end'}>
+          <IconButton onClick={() => handleOpenDialog(question)}>
+            <Box display={'flex'} justifyContent={'end'} gap={1}>
+              <MessageCirclePlus size={25} />
 
-        {questionComments.length > 0 && (
-          <>
-            <Divider orientation="vertical" flexItem />
-            <IconButton onClick={handleToggleComments}>
-              <Box display={'flex'} gap={1}>
-                {showComments && questionComments.length > 0 ? (
-                  <IconButton
-                    size="small"
-                    type="button"
-                    onClick={handleToggleComments}
-                  >
-                    <Typography variant="subtitle2">Close</Typography>
-                  </IconButton>
-                ) : (
-                  <>
-                    {' '}
-                    <MessageCircleMore size={20} />
-                    <Typography variant="subtitle2">
+              <Typography
+                sx={{
+                  display: { xs: 'none', md: 'flex' },
+                }}
+                variant="subtitle2"
+                fontWeight={500}
+              >
+                Add Comment
+              </Typography>
+            </Box>
+          </IconButton>
+
+          {questionComments.length > 0 && (
+            <>
+              <Divider orientation="vertical" flexItem />
+              <IconButton onClick={handleToggleComments}>
+                <Box display={'flex'} gap={1}>
+                  {showComments && questionComments.length > 0 ? (
+                    <IconButton
+                      size="small"
+                      type="button"
+                      onClick={handleToggleComments}
+                    >
+                      <Typography variant="subtitle2">Close</Typography>
+                    </IconButton>
+                  ) : (
+                    <>
                       {' '}
-                      {questionComments.length}{' '}
-                    </Typography>
-                    <Typography variant="subtitle2">comments</Typography>{' '}
-                  </>
-                )}
-              </Box>
-            </IconButton>
-            {showShareLink ? (
-              <IconButton onClick={handleRedirect}>
-                <ExternalLink size={20} />
+                      <MessageCircleMore size={25} />
+                      <Typography fontWeight={500} variant="subtitle2">
+                        {' '}
+                        {questionComments.length}{' '}
+                      </Typography>
+                      <Typography
+                        sx={{
+                          display: { xs: 'none', md: 'flex' },
+                          fontWeight: '500',
+                        }}
+                        variant="subtitle2"
+                      >
+                        comments
+                      </Typography>{' '}
+                    </>
+                  )}
+                </Box>
               </IconButton>
-            ) : (
-              <IconButton onClick={handleCopyLink}>
-                <CopyIcon size={20} />
-              </IconButton>
-            )}
-          </>
-        )}
+              {showShareLink ? (
+                <IconButton onClick={handleRedirect}>
+                  <ExternalLink size={25} />
+                </IconButton>
+              ) : (
+                <IconButton onClick={handleCopyLink}>
+                  <CopyIcon size={25} />
+                </IconButton>
+              )}
+            </>
+          )}
+        </Box>
       </Box>
       {showComments && questionComments.length > 0 && (
         <CommentListContainer

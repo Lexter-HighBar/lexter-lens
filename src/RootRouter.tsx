@@ -56,7 +56,7 @@ export const RootRouter = () => {
         />
 
         <Route
-          path="/profile*"
+          path="/profile"
           element={
             <RequireAuth>
               <UserProfile />{' '}
