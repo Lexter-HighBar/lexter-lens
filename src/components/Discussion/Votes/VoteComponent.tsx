@@ -79,10 +79,9 @@ const VoteComponent = ({ questionId, ownerId }: VoteComponentProps) => {
           onClick={handleUpVote}
         >
           <ArrowUpwardIcon color={userVote === 'up' ? 'primary' : 'inherit'} />
+
           <Typography variant="body1">{votes?.totalUps}</Typography>
         </ToggleButton>
-        
-       
         <Divider orientation="vertical" flexItem />
 
         <ToggleButton
@@ -91,6 +90,7 @@ const VoteComponent = ({ questionId, ownerId }: VoteComponentProps) => {
           onClick={handleDownVote}
         >
           <Typography variant="body1">{votes?.totalDowns}</Typography>
+
           <ArrowDownwardIcon
             color={userVote === 'down' ? 'error' : 'inherit'}
           />
