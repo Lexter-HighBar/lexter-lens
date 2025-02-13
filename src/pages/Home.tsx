@@ -13,7 +13,7 @@ const Home: React.FC = () => {
     const fetchTopQuestioners = async () => {
       try {
         const response = await axios.get("http://localhost:5000/api/questions/top-questioners");
-        console.log("Top Questioners:", response.data);  // 檢查數據
+        console.log("Top Questioners:", response.data);  
         setTopQuestioners(response.data);
       } catch (error) {
         console.error("Failed to fetch top questioners:", error);
