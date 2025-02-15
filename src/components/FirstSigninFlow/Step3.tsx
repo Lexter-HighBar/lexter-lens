@@ -53,8 +53,8 @@ const Step3: React.FC<Step3Props> = ({
 
     const { content } = newQuestion
 
-    if (!content.trim() || tags.length !== 0) {
-      setErrorMessage('Tags and content are required.')
+    if (!content.trim() || tags.length === 0) {
+      setErrorMessage('Tags and content are required, please navigate back and select interest tags.')
       return
     }
 

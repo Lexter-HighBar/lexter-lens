@@ -53,7 +53,8 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
       ...prev,
       lawyerId: formData.lawyerId,
     }))
-  }, [formData.lawyerId])
+  }, [formData.lawyerId ])
+  
 
   // Form data change handler
   const handleFormDataChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -118,9 +119,9 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
       </Button>
     </Box>
   )
-
+console.log('selectedTags', selectedTags)
   return (
-    <Dialog fullWidth open={isFirstSignIn} onClose={handleClose}>
+    <Dialog  fullWidth open={isFirstSignIn} onClose={handleClose}>
       <Box
         component="section"
         sx={{

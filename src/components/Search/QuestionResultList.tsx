@@ -15,10 +15,12 @@ import {
 import SearchIcon from '@mui/icons-material/Search'
 import { Question } from '../../lib/types'
 import HighlightedText from './HighlightedText'
+import CloseIcon from '@mui/icons-material/Close';
 
 import VotePreview from './VotePreview'
 import { Page } from '../layout/Page'
 import TagSelector from '../tagsSelector'
+
 
 interface QuestionListProps {
   open: boolean
@@ -31,6 +33,7 @@ interface QuestionListProps {
   questions: Question[]
   selectedTags: string[]
   handleTagClick: (tags: string[]) => void
+  isMobile: boolean
 }
 
 const QuestionResultList: React.FC<QuestionListProps> = ({
@@ -44,20 +47,32 @@ const QuestionResultList: React.FC<QuestionListProps> = ({
   questions,
   selectedTags,
   handleTagClick,
+  isMobile
 }) => {
+
   return (
-    <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
+    console.log(questions),
+    <Dialog
+    
+      open={open}
+      onClose={handleClose}
+      fullScreen = {isMobile}
+      fullWidth
+    >   
+      
       <DialogContent
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'start',
+          alignItems: 'end',
           coverflowY: 'hidden',
           scrollbarWidth: 'thin',
           overflowX: 'scroll',
           height: '80vh',
         }}
-      >
+      > 
+      <Box>
+    <CloseIcon sx={{position: 'absolute', top: 4, right: 4, cursor: 'pointer'}} onClick={handleClose} /></Box>
         {/* Search Input in Modal */}
         <Box
           sx={{
@@ -66,7 +81,7 @@ const QuestionResultList: React.FC<QuestionListProps> = ({
             flexDirection: 'column',
             alignItems: 'start',
           }}
-        >
+        >  
           <Box sx={{ mt: -2, width: '100%' }}>
             <TagSelector
               variant="standard"
@@ -149,14 +164,16 @@ const QuestionResultList: React.FC<QuestionListProps> = ({
                     />
                   ))}
                   <Divider />
-                  <Box display={'flex'} justifyContent={'space-between'}>
+                  <Box display={'flex'}  flexDirection={'column'} justifyContent={'space-between'}>
                     <Box
                       display={'flex'}
                       flexDirection={'row'}
-                      alignItems={'center'}
+                      alignItems={'start'}
+                      justifyContent={'space-between'}
                     >
+                      <Box maxHeight={25} overflow={'hidden'} display={'flex'} gap={1} alignItems={'center'}>
                       <Typography variant="caption">
-                        <Typography variant="caption" fontWeight={500}>
+                        <Typography  variant="caption" fontWeight={500}>
                           {' '}
                           {question.userName}
                         </Typography>{' '}
@@ -167,6 +184,7 @@ const QuestionResultList: React.FC<QuestionListProps> = ({
                         {' '}
                         {new Date(question.createdOn).toLocaleDateString()}
                       </Typography>
+                      </Box>
 
                       <VotePreview
                         key={question.QuestionId}
@@ -207,6 +225,7 @@ const QuestionResultList: React.FC<QuestionListProps> = ({
         </Page>
       </DialogContent>
     </Dialog>
+
   )
 }
 

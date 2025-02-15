@@ -100,6 +100,7 @@ export default function SearchBar() {
 
       {/* Search Modal */}
       <QuestionResultList
+      isMobile={isMobile}
         handleTagClick={handleTagClick}
         selectedTags={selectedTags}
         questions={questions}
