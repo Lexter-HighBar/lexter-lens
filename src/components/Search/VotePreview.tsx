@@ -9,8 +9,8 @@ const VotePreview = ({ question }: { question: Question }) => {
   
     return (
         data && (
-            <Typography pl={2} fontWeight={500} variant="caption">
-              Votes: {(data?.totalUps ?? 0) + (data?.totalDowns ?? 0) === 0 ? 'No votes yet' : 
+            <Typography pl={1} fontWeight={300}  variant="caption" >
+               {(data?.totalUps ?? 0) + (data?.totalDowns ?? 0) === 0 ? 'no votes' : 
                 `${(data?.totalUps ?? 0) !== 0 ? `${data?.totalUps} up` : ''} ${(data?.totalDowns ?? 0) !== 0 ? `${data?.totalDowns} down` : ''}` 
               }
             </Typography>

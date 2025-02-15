@@ -54,7 +54,7 @@ const Step3: React.FC<Step3Props> = ({
     const { content } = newQuestion
 
     if (!content.trim() || tags.length === 0) {
-      setErrorMessage('Tags and content are required.')
+      setErrorMessage('Tags and content are required, please navigate back and select interest tags.')
       return
     }
 
@@ -69,8 +69,8 @@ const Step3: React.FC<Step3Props> = ({
       const questionPayload: Question = {
         QuestionId: uuidv4(),
         ownerId: 'anonymousId',
-        userName: (user.unsafeMetadata?.userName as string) ?? '',
-        profilePicture: user.imageUrl || '',
+        userName: `'Anonymous'`,
+        profilePicture: '../../assets/anonymous.png',
         createdOn: new Date().toISOString(),
         content: suggestedQuestions?.question1 || '',
         tags: tags.map((tag: string) => tag.trim()),
@@ -83,7 +83,7 @@ const Step3: React.FC<Step3Props> = ({
         userName: (user.unsafeMetadata?.userName as string) ?? '',
         createdOn: new Date().toISOString(),
         tags: [],
-        profilePicture: user.imageUrl || '',
+        profilePicture: user.imageUrl ?? '',
       }
       // Send the new question to the API
       await api.createQuestion.mutateAsync(questionPayload)
