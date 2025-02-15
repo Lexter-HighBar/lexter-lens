@@ -22,6 +22,7 @@ const Step2: React.FC<Step2Props> = ({
     [],
   )
 
+
   useEffect(() => {
     if (lawyers.data?.items) {
       const lawyer = lawyers.data.items.find(

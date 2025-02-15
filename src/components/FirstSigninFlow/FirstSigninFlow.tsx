@@ -32,6 +32,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
   const [confirmationNumber, setConfirmationNumber] = useState<number>()
   const { user } = useUser()
 
+
   // Local form state management
   const [formData, setFormData] = useState({
     isFirstSignIn: false,
@@ -41,13 +42,10 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
     userName: user?.unsafeMetadata.userName as string,
     phone: user?.unsafeMetadata.phone as string,
   })
-  console.log('confirmationNumber:', confirmationNumber)
-  console.log('formData:', formData)
 
   const { suggestedQuestions, loading, error } = useFetchQuestionsFromAI(
     confirmationNumber ?? 0,
   )
-  console.log('suggestedQuestions:', suggestedQuestions)
 
   // Update lawyerId in formData when confirmationNumber changes
   useEffect(() => {
@@ -183,7 +181,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
         )}
         {step === 3 && suggestedQuestions && (
           <Step3
-            tags={selectedTags || []}
+            tags={selectedTags}
             suggestedQuestions={suggestedQuestions}
             loading={loading}
             error={error}
