@@ -7,7 +7,7 @@ import Container from '@mui/material/Container'
 
 import { LogoImg } from '../LogoImg'
 import NavigationMenu from '../NavigationMenu'
-import SearchBar from '../SearchBar'
+import SearchBar from '../Search/SearchBar'
 
 import { UserButton } from '@clerk/clerk-react'
 

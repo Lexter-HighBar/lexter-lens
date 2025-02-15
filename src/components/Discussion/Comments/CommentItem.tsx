@@ -34,7 +34,7 @@ export const CommentItem = ({ comment, onCreateReply }: CommentItemProps) => {
     <Box
       sx={{ backgroundColor: 'grey.50' }}
       key={comment._id}
-      mt={2}
+      mt={1}
       p={2}
       borderRadius={2}
     >
@@ -53,7 +53,7 @@ export const CommentItem = ({ comment, onCreateReply }: CommentItemProps) => {
           display: 'flex',
           alignItems: 'end',
           justifyContent: 'space-between',
-          p: 1,
+        px: 1,
           border: '1px solid rgb(211, 211, 211)',
           borderRadius: 2,
         }}

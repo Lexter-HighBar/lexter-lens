@@ -28,9 +28,12 @@ const TagsManager: React.FC<TagsManagerProps> = ({
         <Typography variant="body1" sx={{ fontWeight: 'medium' }}>
           {title}
         </Typography>
+        {tooltip && tooltip.length > 0 && (
+
         <Tooltip title={tooltip}>
           <Typography variant="body1">LEARN MORE</Typography>
         </Tooltip>
+        )}
       </Box>
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
         {defaultTags.map((tag) => (
