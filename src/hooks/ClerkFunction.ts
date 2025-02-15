@@ -21,6 +21,8 @@ export const useClerkFunction = (lawyerData: ClerkContextType) => {
             firstName: lawyerData.firstName,
             userName: lawyerData.userName,
             phone: lawyerData.phone,
+            lawyerId: lawyerData.lawyerId,
+            email: lawyerData.email
           },
         });
       } catch (error) {

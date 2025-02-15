@@ -1,6 +1,7 @@
 import { createContext } from "react";
 
 export interface ClerkContextType {
+  lawyerId: number ;
   email: string | undefined;
   firstName: string | undefined;
   userName: string | undefined;
