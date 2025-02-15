@@ -24,3 +24,4 @@ GET
 /job_offers
 /job_postings
 /tags
+

@@ -1,13 +1,17 @@
-import { TextField,  Autocomplete, Box, CircularProgress } from "@mui/material";
+import { TextField,  Autocomplete, Box, CircularProgress, Typography } from "@mui/material";
 import { useTags } from "../hooks/useTags";
+import { Page } from "./layout/Page";
+import { TextFieldVariants } from '@mui/material';
+
 
 
 interface TagSelectorProps {
     selectedTags: string[]
-    setSelectedTags: (tags: string[]) => void
+    setSelectedTags: (tags: string[]) => void,
+    variant?: string
 }
 
-const TagSelector = ({ selectedTags, setSelectedTags }: TagSelectorProps) => {
+const TagSelector = ({ selectedTags, setSelectedTags, variant }: TagSelectorProps) => {
   const { tags, loading, error } = useTags();
 
 
@@ -38,9 +42,12 @@ const TagSelector = ({ selectedTags, setSelectedTags }: TagSelectorProps) => {
   // Check for loading
   if (loading) {
     return (
-      <Box sx={{ width: 400, display: "flex", flexDirection: "column", gap: 2 }}>
+      <Page>
+      <Box sx={{ width: "100%", display: "flex", alignItems: "center", flexDirection: "column", gap: 2 }}>
         <CircularProgress />
+        <Typography variant="caption">Loading tags...</Typography>
       </Box>
+      </Page>
     );
   }
 
@@ -55,13 +62,14 @@ const TagSelector = ({ selectedTags, setSelectedTags }: TagSelectorProps) => {
       {/* Autocomplete Input */}
       <Autocomplete
       //delete icon
+      
       fullWidth
   multiple
   options={tags.map((tag) => tag.name)}
   value={selectedTags}
   onChange={handleSelect}
   getOptionLabel={(option) => option} // Add this prop
-  renderInput={(params) => <TextField {...params} label="Search Tags" variant="outlined" />}
+  renderInput={(params) => <TextField {...params} label="Search Tags"  variant={variant as TextFieldVariants}  />}
 />
       {/* Selected Tags as Chips
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 , p: 1 }}>
