@@ -8,18 +8,23 @@ import FirstSigninFlow from "../components/FirstSigninFlow";
 const Home: React.FC = () => {
   const [isFirstSignIn, setIsFirstSignIn] = useState<boolean>(true);
   const [topQuestioners, setTopQuestioners] = useState([]);
+  const [topCommenters, setTopCommenters] = useState([]);
+  const [topRepliers, setTopRepliers] = useState([]);
 
   useEffect(() => {
-    const fetchTopQuestioners = async () => {
+    const fetchLeaderboardData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/questions/top-questioners");
-        console.log("Top Questioners:", response.data);  
-        setTopQuestioners(response.data);
+        const questionersResponse = await axios.get("http://localhost:5000/api/questions/top-questioners");
+        setTopQuestioners(questionersResponse.data);
+
+        const commentsResponse = await axios.get("http://localhost:5000/api/comments/top-commenters-repliers");
+        setTopCommenters(commentsResponse.data.topCommenters);
+        setTopRepliers(commentsResponse.data.topRepliers);
       } catch (error) {
-        console.error("Failed to fetch top questioners:", error);
+        console.error("Failed to fetch leaderboard data:", error);
       }
     };
-    fetchTopQuestioners();
+    fetchLeaderboardData();
   }, []);
 
   return (
@@ -32,7 +37,6 @@ const Home: React.FC = () => {
       </Box>
 
       <Grid container spacing={2}>
-        {/* Insights Section */}
         <Grid item xs={12} md={8}>
           <InsightsSection
             title="Relevant Insights"
@@ -46,31 +50,46 @@ const Home: React.FC = () => {
           />
         </Grid>
 
-        {/* Leaderboard Section */}
         <Grid item xs={12} md={4}>
           <Paper sx={{ padding: 2 }}>
-            <Typography variant="h5" gutterBottom>
+            <Typography variant="h4" gutterBottom sx={{ fontWeight: "bold", textAlign: "center" }}>
               Leaderboard
             </Typography>
             <List>
               <ListItem>
-                <ListItemText primary="Top 3 Who Asked the Most Questions" />
+                <ListItemText
+                  primary="Top 3 Who Asked the Most Questions"
+                  primaryTypographyProps={{ variant: "h6", fontWeight: "bold" }}
+                />
               </ListItem>
-              {topQuestioners.length > 0 ? (
-                topQuestioners.map((user, index) => (
-                  <ListItem key={index}>
-                    <ListItemText primary={`${index + 1}. ${user._id} (${user.count} questions)`} />
-                  </ListItem>
-                ))
-              ) : (
-                <ListItem>
-                  <ListItemText primary="No data available" />
+              {topQuestioners.map((user, index) => (
+                <ListItem key={index}>
+                  <ListItemText primary={`${index + 1}. ${user._id} (${user.count} questions)`} />
                 </ListItem>
-              )}
+              ))}
+              <ListItem>
+                <ListItemText
+                  primary="Top 3 Who Made the Most Comments"
+                  primaryTypographyProps={{ variant: "h6", fontWeight: "bold" }}
+                />
+              </ListItem>
+              {topCommenters.map((user, index) => (
+                <ListItem key={index}>
+                  <ListItemText primary={`${index + 1}. ${user._id} (${user.count} comments)`} />
+                </ListItem>
+              ))}
+              <ListItem>
+                <ListItemText
+                  primary="Top 3 Who Made the Most Replies"
+                  primaryTypographyProps={{ variant: "h6", fontWeight: "bold" }}
+                />
+              </ListItem>
+              {topRepliers.map((user, index) => (
+                <ListItem key={index}>
+                  <ListItemText primary={`${index + 1}. ${user._id} (${user.count} replies)`} />
+                </ListItem>
+              ))}
             </List>
-            <Typography variant="body1" sx={{ marginTop: 2 }}>
-              Earn badges and leaderboard points by inviting relevant authorities to answer questions!
-            </Typography>
           </Paper>
         </Grid>
       </Grid>
@@ -79,3 +98,4 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+
