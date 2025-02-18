@@ -1,6 +1,7 @@
 import { useTags } from './useTags'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { useState } from 'react'
+import { Tag } from '../lib/types'
 
 const API_KEY = 'AIzaSyAxbDQyrIZcR9fnjKQNGDGIgoMcgnswSCI'
 const genAI = new GoogleGenerativeAI(API_KEY)

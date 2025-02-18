@@ -1,89 +1,66 @@
-import { useState, useCallback, useEffect, useRef } from 'react'
+import { useTags } from './useTags'
 import { GoogleGenerativeAI } from '@google/generative-ai'
-import { useFilterLawyersById } from './useFilterLawyersById'
+import { useState } from 'react'
+import { Tag } from '../lib/types'
 
-// Google Generative AI Configuration
-const API_KEY = 'AIzaSyAxbDQyrIZcR9fnjKQNGDGIgoMcgnswSCI' 
+const API_KEY = 'AIzaSyAxbDQyrIZcR9fnjKQNGDGIgoMcgnswSCI'
 const genAI = new GoogleGenerativeAI(API_KEY)
 const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
 
-export const useFetchQuestionsFromAI = (id: number) => {
-  const [suggestedQuestions, setSuggestedQuestions] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const lawyerData = useFilterLawyersById(id)
-  const hasFetched = useRef(false)
+export const useFetchTagsFromAI = (text: string) => {
+  const { tags, loading, error } = useTags()
+  const [validTags, setValidTags] = useState<{ [key: string]: boolean } | null>(
+    null,
+  )
 
-  const fetchRelevantTags = useCallback(async () => {
-    console.log('lawyerData:', lawyerData)
-    if (!lawyerData?.lawyer) {
-      console.warn('Missing required data, skipping AI call.')
-      return
-    }
+  if (loading)
+    return { tags: null, loading: true, error: null, validTags: null }
 
-    setLoading(true)
-    setError(null)
+  if (error) return { tags: null, loading: false, error, validTags: null }
 
+  const tagNames = Array.isArray(tags)
+  ? tags.filter((tag) => tag !== null).map((tag) => (tag as Tag).name)
+  : [tags].filter((tag) => tag !== null).map((tag) => (tag as Tag)?.name)
+
+  const fetchTags = async () => {
     try {
-      const lawyer = lawyerData.lawyer
-      console.log('Lawyer Data:', lawyer)
-
-      const prompt = `You are provided with a lawyer's profile: "${lawyer}". Based on this profile and the related expertise tags: ${lawyer.tags}, 
-      generate one insightful question that other professionals in the same field would find relevant and valuable. 
-      Focus on aspects such as industry trends, work-life balance, and organizational culture. 
-      Avoid personal questions or inquiries about the lawyer's individual experiences. 
-      Try to generate a real-life question that someone would ask.
-      Format the output as follows:
-      {
-        "Questions": {
-          "question1": "First question"
-        }
-      }`
-
       const response = await model.generateContent({
         contents: [
           {
             role: 'user',
             parts: [
               {
-                text: prompt,
+                text: `Given the text: "${text}", select only relevant tags from the following list:
+                      ${tagNames} Then return only the tags that are relevant to the text in this format:
+                      validTags: { tagName1: true, tagName2: true, ... }
+                      Only include tags that match exactly from the list. Do not create new tags. If no match is found, return an empty object.
+                      Ensure the response follows this structure: validTags: {}`,
               },
             ],
           },
         ],
       })
-
       const data = await response.response
-      const textResponse = await data.text()
+      const textResponse = data.text()
 
+      // Clean up the response by removing unwanted backticks or formatting
       const cleanedResponse = textResponse
-        ?.replace(/```json\n?|```/g, '') // Clean up formatting
+        .replace(/```json\n/, '') // Remove backticks and code block formatting
+        .replace(/```/, '') // Remove ending backticks
+        .replace('validTags:', '') // Remove the prefix 'validTags:'
         .trim()
 
-      const parsedResponse = JSON.parse(cleanedResponse || '{}')
+      // Try parsing the cleaned response
+      const parsedResponse = JSON.parse(cleanedResponse)
       console.log('Parsed Response:', parsedResponse)
 
-      setSuggestedQuestions(parsedResponse?.Questions || {})
-    } catch (err) {
-      if (err instanceof Error) {
-        console.error('Error fetching relevant tags:', err)
-        setError(err.message)
-      } else {
-        console.error('Unknown error:', err)
-        setError('An unknown error occurred')
-      }
-      setSuggestedQuestions(null)
-    } finally {
-      setLoading(false)
+      const validTags = parsedResponse || {}
+      setValidTags(validTags)
+    } catch (error) {
+      console.error('Error fetching tags:', error)
+      setValidTags(null)
     }
-  }, [lawyerData])
+  }
 
-  useEffect(() => {
-    if (lawyerData?.lawyer && !hasFetched.current) {
-      fetchRelevantTags()
-      hasFetched.current = true
-    }
-  }, [id, lawyerData, fetchRelevantTags])
-
-  return { suggestedQuestions, loading, error }
+  return { fetchTags, tags, validTags }
 }
