@@ -11,8 +11,10 @@ export const ApiContextProvider = ({ children }: Props) => {
   const { getToken } = useAuth();
   const axios = Axios.create();
 
-  // axios.defaults.baseURL = import.meta.env.VITE_API_URL || "/api";
-  axios.defaults.baseURL =  "/api";
+  axios.defaults.baseURL = 
+  import.meta.env.MODE === "development"
+    ? "/api" // Uses proxy in development
+    : "https://rails-server-staging-dl6kl.ondigitalocean.app/external"; // Direct URL in production
 
   axios.interceptors.request.use(async (config) => {
     const token = await getToken();
