@@ -1,4 +1,4 @@
-# Lexter Lens
+# Lexter Lens 
 
 ## app architecture
 
@@ -24,3 +24,4 @@ GET
 /job_offers
 /job_postings
 /tags
+

@@ -5,7 +5,7 @@ import { Grid, Spinner } from '@radix-ui/themes'
 import { Divider } from '@mui/material'
 
 // Component imports
-import ResponsiveAppBar from './components/layout/ResponsiveAppBar'
+import ResponsiveAppBar from './components/layout/AppBar'
 import RequireAuth from './components/RequireAuth'
 
 // Page imports
@@ -14,6 +14,8 @@ import Signin from './pages/Sign-in'
 import Discussion from './pages/Discussion'
 import UserProfile from './components/UserProfile'
 import { UnauthedDashboard } from './pages/UnauthedDashboard'
+import QuestionView from './pages/QuestionView'
+import Footer from './components/Footer';
 
 // RootRouter Component
 export const RootRouter = () => {
@@ -43,9 +45,10 @@ export const RootRouter = () => {
               <Home />
             </RequireAuth>
           }
+          
         />
-   
-          <Route
+
+        <Route
           path="/discussion"
           element={
             <RequireAuth>
@@ -55,10 +58,18 @@ export const RootRouter = () => {
         />
 
         <Route
-          path="/profile*"
+          path="/profile"
           element={
             <RequireAuth>
               <UserProfile />{' '}
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/question/:id"
+          element={
+            <RequireAuth>
+              <QuestionView />
             </RequireAuth>
           }
         />
@@ -66,6 +77,7 @@ export const RootRouter = () => {
         <Route path="/sign-in" element={<Signin />} />
         <Route path="/unauthed-dashboard" element={<UnauthedDashboard />} />
       </Routes>
+      <Footer />
     </>
   )
 }

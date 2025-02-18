@@ -2,10 +2,9 @@ import Chip from '@mui/material/Chip'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import Autocomplete from '@mui/material/Autocomplete'
-import { useFetchTagsFromAI } from '../hooks/useFetchTagsFromAI'
+import { useFetchTagsFromAI } from '../hooks/useTagsFromAI'
 import React, { useState, useCallback } from 'react'
 import { CircularProgress } from '@mui/material'
-
 
 interface ChipGeneratorProps {
   inputText: string
@@ -42,7 +41,6 @@ const ChipGenerator: React.FC<ChipGeneratorProps> = ({
         loading={loading}
         multiple
         freeSolo
-
         options={validTags ? Object.keys(validTags) : []}
         value={selectedTags}
         onChange={handleTagChange}
@@ -52,7 +50,7 @@ const ChipGenerator: React.FC<ChipGeneratorProps> = ({
           ))
         }
         renderInput={(params) => (
-            <TextField
+          <TextField
             {...params}
             label="Suggested Tags"
             placeholder="Select tags or enter manually"
@@ -61,7 +59,9 @@ const ChipGenerator: React.FC<ChipGeneratorProps> = ({
               ...params.InputProps,
               endAdornment: (
                 <React.Fragment>
-                  {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                  {loading ? (
+                    <CircularProgress color="inherit" size={20} />
+                  ) : null}
                   {params.InputProps?.endAdornment}
                 </React.Fragment>
               ),
