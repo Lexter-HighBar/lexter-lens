@@ -5,6 +5,7 @@ import { useQuestions } from '../../hooks/useQuestions'
 import { v4 as uuidv4 } from 'uuid'
 import { useUser } from '@clerk/clerk-react'
 import { useComments } from '../../hooks/useComments'
+import anonymouse from '../../../assets/anonymous.png'
 
 interface Step3Props {
   tags: string[]
@@ -70,7 +71,7 @@ const Step3: React.FC<Step3Props> = ({
         QuestionId: uuidv4(),
         ownerId: 'anonymousId',
         userName: `'Anonymous'`,
-        profilePicture: '../../assets/anonymous.png',
+        profilePicture: anonymouse,
         createdOn: new Date().toISOString(),
         content: suggestedQuestions?.question1 || '',
         tags: tags.map((tag: string) => tag.trim()),
