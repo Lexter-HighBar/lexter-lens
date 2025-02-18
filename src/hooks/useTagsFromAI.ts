@@ -19,8 +19,8 @@ export const useFetchTagsFromAI = (text: string) => {
   if (error) return { tags: null, loading: false, error, validTags: null }
 
   const tagNames = Array.isArray(tags)
-  ? tags.filter((tag) => tag !== null).map((tag) => (tag as Tag).name)
-  : [tags].filter((tag) => tag !== null).map((tag) => (tag as Tag)?.name)
+  ? (tags as { name: string }[]).filter((tag) => tag !== null).map((tag) => tag.name)
+  : ([tags] as { name: string }[]).filter((tag) => tag !== null).map((tag) => tag.name)
 
   const fetchTags = async () => {
     try {
@@ -31,11 +31,44 @@ export const useFetchTagsFromAI = (text: string) => {
             parts: [
               {
                 text: `Given the text: "${text}", select only relevant tags from the following list:
-                      ${tagNames} Then return only the tags that are relevant to the text in this format:
+                      ${tagNames}. Then return only the tags that are relevant to the text in this format:
                       validTags: { tagName1: true, tagName2: true, ... }
                       Only include tags that match exactly from the list. Do not create new tags. If no match is found, return an empty object.
-                      Ensure the response follows this structure: validTags: {}`,
-              },
+                      Never return the phrase "choose the topic" in any form. 
+                      Ensure the response follows this structure: validTags: {}
+              
+                      Examples:
+              
+                      Example 1:
+                      Text: "Canada's top court is considering offering mediation."
+                      Tag list: ["Canada", "Supreme Court", "mediation", "law", "education"]
+                      Response: validTags: { Canada: true, Supreme Court: true, mediation: true }
+              
+                      Example 2:
+                      Text: "Midlife career crisis. Leave government job or study for LSAT"
+                      Tag list: ["career", "government", "LSAT", "law", "Canada"]
+                      Response: validTags: { career: true, government: true, LSAT: true }
+              
+                      Example 3:
+                      Text: "Called Police on Dad for Domestic Violence"
+                      Tag list: ["domestic violence", "police", "family", "law", "Canada"]
+                      Response: validTags: { domestic violence: true, police: true }
+              
+                      Example 4:
+                      Text: "Should I Stay in My LLB Program or Drop Out, Continue My Bachelor of Arts Degree, and Then Apply to Law School in Canada?"
+                      Tag list: ["LLB", "law school", "Canada", "education", "career"]
+                      Response: validTags: { LLB: true, law school: true, Canada: true }
+              
+                      Example 5:
+                      Text: "Anyone with experience with MT Align, McCarthy Tetrault's independent contractor lawyer program?"
+                      Tag list: ["MT Align", "McCarthy Tetrault", "lawyer", "contractor", "Canada"]
+                      Response: validTags: { MT Align: true, McCarthy Tetrault: true, lawyer: true }
+              
+                      Question for the final user:
+                      Based on the text provided, which tags are the most relevant? Only select from the available options and avoid using unrelated phrases.
+                `,
+              }
+              
             ],
           },
         ],
