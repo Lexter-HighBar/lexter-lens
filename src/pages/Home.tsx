@@ -10,7 +10,7 @@ const Home: React.FC = () => {
   const [isFirstSignIn, setIsFirstSignIn] = useState<boolean>(
     Boolean(user.user?.unsafeMetadata.isFirstSignIn) 
   )
-  console.log('isFirstSignIn:', isFirstSignIn)
+
   const handleTestClick = () => {
     setIsFirstSignIn(true)
   }
