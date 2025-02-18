@@ -9,7 +9,7 @@ interface Step1Props {
 const Step1 = ({ onChange, onIdChange }: Step1Props) => {
   const { firstName, userName } = UseClerkStorage()
   console.log('firstName:', userName)
-  if (userName)
+
     return (
       <>
         <Typography>Welcome, {firstName || ''}</Typography>
@@ -20,7 +20,7 @@ const Step1 = ({ onChange, onIdChange }: Step1Props) => {
           margin="normal"
           name="userName"
           label="User Name"
-          defaultValue={userName}
+          defaultValue={userName || ''}
           onChange={onChange}
         />
 

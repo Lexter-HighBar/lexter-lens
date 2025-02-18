@@ -8,12 +8,15 @@ import { useUser } from '@clerk/clerk-react'
 const Home: React.FC = () => {
   const user = useUser()
   const [isFirstSignIn, setIsFirstSignIn] = useState<boolean>(
-    Boolean(user.user?.unsafeMetadata.isFirstSignIn) 
+    user.user?.unsafeMetadata.isFirstSignIn as boolean ?? true
   )
   console.log('isFirstSignIn:', isFirstSignIn)
+
   const handleTestClick = () => {
     setIsFirstSignIn(true)
   }
+  console.log(user)
+
 
   return (
     <Page sx={{ minHeight: '100vh', height: 'auto' }}>

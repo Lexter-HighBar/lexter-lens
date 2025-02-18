@@ -1,11 +1,13 @@
 import { useQuery } from '@tanstack/react-query'
 import { Tag, UseTagsParams } from '../lib/types'
-import { useUserContext } from '../lib/hooks/UserContext';
+
+import { useContext } from 'react';
+import { UserdataApiContext } from '../lib/contexts/UserdataApiContext';
 
 
 export const useTags = (params: UseTagsParams | null = {}) => {
   const { id } = params || {};
-  const api = useUserContext()
+  const api = useContext(UserdataApiContext);
 
   // Define the query function based on whether an ID is provided
   const { data, isLoading, error } = useQuery<Tag | Tag[]>({

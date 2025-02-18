@@ -28,17 +28,29 @@ export const useFetchQuestionsFromAI = (id: number) => {
       const lawyer = lawyerData.lawyer
       console.log('Lawyer Data:', lawyer)
 
+
       const prompt = `You are provided with a lawyer's profile: "${lawyer}". Based on this profile and the related expertise tags: ${lawyer.tags}, 
-      generate one insightful question that other professionals in the same field would find relevant and valuable. 
-      Focus on aspects such as industry trends, work-life balance, and organizational culture. 
-      Avoid personal questions or inquiries about the lawyer's individual experiences. 
-      Try to generate a real-life question that someone would ask.
+      generate one short, relevant question that other professionals in the same field would find valuable and relatable. 
+      Focus on industry trends, work-life balance, challenges in the profession, or common experiences lawyers face. 
+      Make sure the question is conversational and practical, similar to what you might see in professional forums or communities. 
+      Here are some examples of the style and tone of questions to inspire the output:
+      - "Anyone noticing changes in client expectations post-pandemic?"
+      - "How are you managing work-life balance with remote court sessions?"
+      - "What strategies are you using to stay updated with recent regulatory changes?"
+      - "Is it just me, or has billing become more challenging lately?"
+      - "Any tips on dealing with difficult partners or supervisors?"
+      Avoid overly generic questions or personal inquiries. 
+      Never includes brackets in the queastion like in this example question should be a conplete question without brackets:
+      How are you all adapting your practice to the evolving landscape of [mention a relevant legal area if possible, otherwise omit] technology and client communication preferences?
+
+
       Format the output as follows:
       {
         "Questions": {
           "question1": "First question"
         }
-      }`
+      }`;
+      
 
       const response = await model.generateContent({
         contents: [

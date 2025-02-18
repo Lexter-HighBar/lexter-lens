@@ -12,7 +12,7 @@ type Props = {
     const axios = Axios.create();
   
     // Base URL for userdata API 
-    axios.defaults.baseURL =  'https://lexter-server.onrender.com/api'; //To be replaced after adding .env with the next line 
+    axios.defaults.baseURL =  '/userdata'; //To be replaced after adding .env with the next line 
    // axios.defaults.baseURL = import.meta.env.VITE_EXPRES_API_URL || '/userdata';
   
     axios.interceptors.request.use(async (config) => {
@@ -20,6 +20,8 @@ type Props = {
       config.headers['Content-Type'] = 'application/json';
     if (token) config.headers.Authorization = `Bearer ${token}`;
       return config;
+    
+
     });
   
     async function get<T, S = T>(path: string, search?: Partial<S>) {
