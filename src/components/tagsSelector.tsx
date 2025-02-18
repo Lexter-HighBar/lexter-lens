@@ -8,19 +8,25 @@ import {
 import { useTags } from '../hooks/useTags'
 import { Page } from './layout/Page'
 import { TextFieldVariants } from '@mui/material'
+import { useCities } from '../hooks/useCities'
 
 interface TagSelectorProps {
   selectedTags: string[]
   setSelectedTags: (tags: string[]) => void
   variant?: string
+  cityType?: boolean
 }
 
 const TagSelector = ({
   selectedTags,
   setSelectedTags,
   variant,
+  cityType,
 }: TagSelectorProps) => {
+  const { cities } = useCities()
   const { tags, loading, error } = useTags()
+
+  // Check for variant
 
   // Handle selection of tags
   const handleSelect = (
@@ -85,7 +91,7 @@ const TagSelector = ({
 
         fullWidth
         multiple
-        options={tags.map((tag) => tag.name)}
+        options={cityType ? cities.map((city) => city.city) : tags.map((tag) => tag.name)}
         value={selectedTags}
         onChange={handleSelect}
         getOptionLabel={(option) => option} // Add this prop
