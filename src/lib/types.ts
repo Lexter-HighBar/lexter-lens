@@ -94,7 +94,8 @@ export type UseCommentsParams = {
   id?: string;
 };
 
-export type UseTagsParams = {
+
+export type UseCitiesParams = {
   id?: string;
 };
 
@@ -116,12 +117,15 @@ export type Tag = {
   description: string;
 };
 
-export type SuggestedTag = {
+export type City = {
   id: number;
-  name: string;
-  kind: string;
-  description: string;
-}
+  city: string;
+  province_id: string;
+  province_name: string;
+  timezone: string;
+  lat: number;
+  lng: number;
+};
 export interface QuestionVote {
   _id: string;
   questionId: string;

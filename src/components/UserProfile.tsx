@@ -1,6 +1,5 @@
-import { useUser } from '@clerk/clerk-react';
+import { useUser } from '@clerk/clerk-react'
 import {
-  TextField,
   Button,
   CircularProgress,
   Snackbar,
@@ -9,251 +8,336 @@ import {
   Typography,
   Card,
   MenuItem,
-} from '@mui/material';
-import { useState, useEffect } from 'react';
-import Grid from '@mui/material/Grid2';
-import { RiEdit2Fill } from 'react-icons/ri';
-// import { useLawyer } from '../lib/contexts/ClerkContext';
-import { useTags } from '../hooks/useTags';
+  Chip,
+  Select,
+  SelectChangeEvent,
+} from '@mui/material'
 
-const firms = ['Firm A', 'Firm B', 'Firm C']; // Example firms
-const cities = ['City A', 'City B', 'City C']; // Example cities
-const provinces = ['Province A', 'Province B', 'Province C']; // Example provinces
-const expertiseOptions = ['Option 1', 'Option 2', 'Option 3']; // Example expertise options
+interface City {
+  id: number
+  city: string
+}
+
+import Grid from '@mui/material/Grid2'
+import { useState, useEffect } from 'react'
+import { useTags } from '../hooks/useTags'
+import { useCities } from '../hooks/useCities'
 
 const UserProfile = () => {
-  // const { firstName,  } = useLawyer(); // Getting data from context
-  const { tags, error } = useTags();
-  const [loading, setLoading] = useState<boolean>(false);
-  const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
-  const [snackbarMessage, setSnackbarMessage] = useState<string>('');
-  const { user } = useUser();
-  console.log(tags, error)
+  const { user } = useUser()
+  const { tags } = useTags()
+  const { cities } = useCities()
+  const [avatar, setAvatar] = useState(user?.imageUrl || '')
+  const [selectedTags, setSelectedTags] = useState<string[]>([])
+  const [selectedCities, setSelectedCities] = useState<string[]>([])
+  const [loading, setLoading] = useState(false)
+  const [alert, setAlert] = useState({
+    open: false,
+    message: '',
+    severity: 'info' as 'info' | 'success' | 'error',
+  })
 
-  const [formData, setFormData] = useState({
-    email: '',
-    firstName:  '',
-    lastName:  '', // to be added from Clerk or MongoDB
-    firm: '', // to be added from Clerk or MongoDB
-    city: '', // to be added from Clerk or MongoDB
-    province: '', // to be added from Clerk or MongoDB
-    country: 'Canada',
-    expertise: '',
-    phone: ''
-  });
-
+  const tagsArray = user?.unsafeMetadata?.tags as string[]
   useEffect(() => {
-    if (user) {
-      setFormData({
-        email: user.primaryEmailAddress?.emailAddress || '',
-        firstName: user.firstName || '',
-        lastName: user.lastName || '',
-        firm: '',
-        city: '',
-        province: '',
-        country: 'Canada',
-        expertise: '',
-        phone: '',
-      });
+    if (tagsArray) {
+      setSelectedTags(tagsArray)
     }
-  }, [user]);
+  }, [tagsArray])
 
-  const handleUpdateName = async () => {
-    if (!formData.firstName || !formData.lastName) {
-      setSnackbarMessage('First name and last name cannot be empty');
-      setOpenSnackbar(true);
-      return;
+  const citiesArray = user?.unsafeMetadata?.cities as string[]
+  useEffect(() => {
+    if (citiesArray) {
+      setSelectedCities(citiesArray)
     }
+  }, [citiesArray])
 
-    setLoading(true);
+  const handleAvatarChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    const reader = new FileReader()
+    reader.onload = async (e) => {
+      setAvatar(e.target?.result as string)
+      setLoading(true)
+
+      try {
+        await user?.setProfileImage({ file })
+        setAlert({
+          open: true,
+          message: 'Profile picture updated successfully!',
+          severity: 'success',
+        })
+      } catch (error) {
+        console.error(error)
+        setAlert({
+          open: true,
+          message: 'Failed to upload image.',
+          severity: 'error',
+        })
+      } finally {
+        setLoading(false)
+      }
+    }
+    reader.readAsDataURL(file)
+  }
+
+  const handleTagChange = (event: SelectChangeEvent<string[]>) => {
+    setSelectedTags(event.target.value as string[])
+  }
+
+  const handleRemoveTag = (tagToRemove: string) => {
+    setSelectedTags((prevTags) => prevTags.filter((tag) => tag !== tagToRemove))
+  }
+
+  const handleUpdateTags = async () => {
+    setLoading(true)
     try {
       if (user) {
         await user.update({
-          firstName: formData.firstName,
-          lastName: formData.lastName,
+          unsafeMetadata: {
+            ...user.unsafeMetadata,
+            tags: selectedTags,
           },
-        );
-        setSnackbarMessage('Profile updated successfully');
+        })
       }
+      setAlert({
+        open: true,
+        message: 'Tags updated successfully',
+        severity: 'success',
+      })
     } catch (error) {
-      console.error('Error updating profile:', error);
-      setSnackbarMessage('Failed to update profile');
+      console.error(error)
+      setAlert({
+        open: true,
+        message: 'Failed to update tags',
+        severity: 'error',
+      })
     } finally {
-      setLoading(false);
-      setOpenSnackbar(true);
+      setLoading(false)
     }
-  };
+  }
+
+  const handleCityChange = (event: SelectChangeEvent<string[]>) => {
+    setSelectedCities(event.target.value as string[])
+  }
+
+  const handleRemoveCity = (cityToRemove: string) => {
+    setSelectedCities((prevCities) =>
+      prevCities.filter((city) => city !== cityToRemove),
+    )
+  }
+
+  const handleUpdateCities = async () => {
+    setLoading(true)
+    try {
+      if (user) {
+        await user.update({
+          unsafeMetadata: {
+            ...user.unsafeMetadata,
+            cities: selectedCities,
+          },
+        })
+      }
+      setAlert({
+        open: true,
+        message: 'Tags updated successfully',
+        severity: 'success',
+      })
+    } catch (error) {
+      console.error(error)
+      setAlert({
+        open: true,
+        message: 'Failed to update tags',
+        severity: 'error',
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleCloseAlert = () => {
+    setAlert((prev) => ({ ...prev, open: false }))
+  }
 
   if (!user) {
-    return <CircularProgress />; // Show a loading spinner while the user is being fetched
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="200px"
+      >
+        <CircularProgress />
+      </Box>
+    )
   }
 
   return (
-    <>
-      <Card
+    <Card
+      sx={{
+        display: 'flex',
+        flexDirection: { xs: 'column', md: 'row' },
+        maxWidth: '100%',
+        overflow: 'hidden',
+        p: 3,
+      }}
+    >
+      <Box
         sx={{
-          flexDirection: { xs: 'column', md: 'row' },
-          display: 'flex',
-          flexGrow: 1,
-          justifyContent: 'center',
-          alignItems: { xs: 'center', md: 'flex-start' },
-          padding: '20px',
+          width: { xs: '100%', md: '300px' },
+          textAlign: 'center',
+          borderRight: { md: '1px solid rgba(0, 0, 0, 0.12)' },
+          p: 3,
         }}
       >
-        <Box sx={{ padding: '20px', width: '100%' }}>
-          <Grid sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <Grid container direction="column" alignItems="center" spacing={2}>
+          <Grid>
             <img
-              src={user?.imageUrl || ''}
+              src={avatar}
               alt="Profile Picture"
-              style={{ width: '100px', height: 'auto', borderRadius: '50%', marginBottom: '40px' }}
+              style={{
+                width: '100px',
+                height: '100px',
+                borderRadius: '50%',
+                objectFit: 'cover',
+              }}
             />
-            <Box sx={{ mt: '-25px' }}>
-              <RiEdit2Fill />
-            </Box>
-            <Grid>
-              <Typography variant="h6">
-                {formData.firstName} {formData.lastName}
-              </Typography>
-              <Typography variant="body2">{formData.email}</Typography>
-            </Grid>
           </Grid>
-        </Box>
-        <Box
-          sx={{
-            borderLeft: { md: '0.5px solid rgb(239, 239, 255)' },
-            padding: '20px',
-            width: '100%',
-            height: '90vh',
-          }}
-        >
-          <Typography variant="h5">Your User Information</Typography>
-          <Box
-            sx={{ display: 'flex', flexDirection: 'column', marginTop: '10px' }}
-          >
-            <TextField
-              size="small"
-              label="First Name"
-              value={formData.firstName}
-              onChange={(e) =>
-                setFormData({ ...formData, firstName: e.target.value })
-              }
-              margin="normal"
-            />
-            <TextField
-              size="small"
-              label="Last Name"
-              value={formData.lastName}
-              onChange={(e) =>
-                setFormData({ ...formData, lastName: e.target.value })
-              }
-              margin="normal"
-            />
-            <TextField
-              size="small"
-              label="Phone Number"
-              value={formData.phone}
-              onChange={(e) =>
-                setFormData({ ...formData, phone: e.target.value })
-              }
-              margin="normal"
-            />
-            <TextField
-              label="Firm"
-              select
-              size="small"
-              value={formData.firm}
-              onChange={(e) => setFormData({ ...formData, firm: e.target.value })}
-              margin="normal"
+          <Grid>
+            <Button
+              variant="contained"
+              component="label"
+              sx={{ mt: 1 }}
+              disabled={loading}
             >
-              {firms.map((firm) => (
-                <MenuItem key={firm} value={firm}>
-                  {firm}
-                </MenuItem>
-              ))}
-            </TextField>
-            <TextField
-              label="City"
-              select
-              size="small"
-              value={formData.city}
-              onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-              margin="normal"
+              {loading ? <CircularProgress size={24} /> : 'Upload New Picture'}
+              <input
+                type="file"
+                hidden
+                accept="image/*"
+                onChange={handleAvatarChange}
+              />
+            </Button>
+          </Grid>
+
+          <Grid>
+            <Typography variant="body1">
+              Username: {(user?.unsafeMetadata?.userName as string) || 'N/A'}
+            </Typography>
+            <Typography variant="body1">
+              First Name: {user.firstName || 'N/A'}
+            </Typography>
+            <Typography variant="body1">
+              Last Name: {user.lastName || 'N/A'}
+            </Typography>
+            <Typography variant="body1">
+              Email: {user.primaryEmailAddress?.emailAddress}
+            </Typography>
+          </Grid>
+        </Grid>
+      </Box>
+
+      <Box sx={{ flex: 1, minWidth: 0, p: 3 }}>
+        <Grid container direction="column" spacing={3}>
+          <Grid>
+            <Typography variant="h5" gutterBottom>
+              Select Expertise Tags
+            </Typography>
+            <Select
+              label="Expertise Tags"
+              fullWidth
+              onChange={handleTagChange}
+              margin="dense"
+              value={selectedTags || []}
+              multiple
+              renderValue={(selected) => (selected as string[]).join(', ')}
             >
-              {cities.map((city) => (
-                <MenuItem key={city} value={city}>
-                  {city}
-                </MenuItem>
+              {Array.isArray(tags) &&
+                tags.map((tag) => (
+                  <MenuItem key={tag.id} value={tag.name}>
+                    {tag.name}
+                  </MenuItem>
+                ))}
+            </Select>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 2 }}>
+              {selectedTags?.map((tag) => (
+                <Chip
+                  key={tag}
+                  label={tag}
+                  onDelete={() => handleRemoveTag(tag)}
+                />
               ))}
-            </TextField>
-            <TextField
-              label="Province"
-              select
-              size="small"
-              value={formData.province}
-              onChange={(e) =>
-                setFormData({ ...formData, province: e.target.value })
-              }
-              margin="normal"
+            </Box>
+            <Button
+              variant="contained"
+              fullWidth
+              onClick={handleUpdateTags}
+              disabled={loading}
+              sx={{ mt: 2 }}
             >
-              {provinces.map((province) => (
-                <MenuItem key={province} value={province}>
-                  {province}
-                </MenuItem>
-              ))}
-            </TextField>
-            <TextField
-              label="Country"
-              size="small"
-              value={formData.country}
-              disabled
-              margin="normal"
-            />
-            <TextField
-              label="Expertise"
-              select
-              size="small"
-              value={formData.expertise}
-              onChange={(e) =>
-                setFormData({ ...formData, expertise: e.target.value })
-              }
-              margin="normal"
+              {loading ? <CircularProgress size={24} /> : 'Update Tags'}
+            </Button>
+          </Grid>
+          <Grid>
+            <Typography variant="h5" gutterBottom>
+              Select City Tags
+            </Typography>
+            <Select
+              label="Cities"
+              fullWidth
+              onChange={handleCityChange}
+              margin="dense"
+              value={selectedCities || []}
+              multiple
+              renderValue={(selected) => (selected as string[]).join(', ')}
             >
-              {expertiseOptions.map((option) => (
-                <MenuItem key={option} value={option}>
-                  {option}
-                </MenuItem>
+              {Array.isArray(cities) &&
+                cities.map((city: City) => (
+                  <MenuItem key={city.id} value={city.city}>
+                    {city.city}
+                  </MenuItem>
+                ))}
+            </Select>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 2 }}>
+              {selectedCities?.map((city) => (
+                <Chip
+                  key={city}
+                  label={city}
+                  onDelete={() => handleRemoveCity(city)}
+                />
               ))}
-            </TextField>
-          </Box>
-          <Button
-            size="small"
-            variant="contained"
-            color="primary"
-            onClick={handleUpdateName}
-            disabled={loading}
-            startIcon={loading && <CircularProgress size={20} />}
-            sx={{ marginTop: '20px' }}
-          >
-            {loading ? 'Updating...' : 'Update User Info'}
-          </Button>
-        </Box>
-      </Card>
+            </Box>
+            <Button
+              variant="contained"
+              fullWidth
+              onClick={handleUpdateCities}
+              disabled={loading}
+              sx={{ mt: 2 }}
+            >
+              {loading ? <CircularProgress size={24} /> : 'Update Tags'}
+            </Button>
+          </Grid>
+        </Grid>
+      </Box>
 
       <Snackbar
-        open={openSnackbar}
+        open={alert.open}
         autoHideDuration={6000}
-        onClose={() => setOpenSnackbar(false)}
+        onClose={handleCloseAlert}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       >
         <Alert
-          onClose={() => setOpenSnackbar(false)}
-          severity="info"
+          onClose={handleCloseAlert}
+          severity={alert.severity}
           sx={{ width: '100%' }}
         >
-          {snackbarMessage}
+          {alert.message}
         </Alert>
       </Snackbar>
-    </>
-  );
-};
+    </Card>
+  )
+}
 
-export default UserProfile;
+export default UserProfile
