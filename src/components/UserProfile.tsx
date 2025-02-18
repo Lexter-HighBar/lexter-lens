@@ -70,6 +70,7 @@ const UserProfile = () => {
           severity: 'success',
         })
       } catch (error) {
+        console.error(error)
         setAlert({
           open: true,
           message: 'Failed to upload image.',
@@ -107,6 +108,7 @@ const UserProfile = () => {
         severity: 'success',
       })
     } catch (error) {
+      console.error(error)
       setAlert({
         open: true,
         message: 'Failed to update tags',
@@ -144,6 +146,7 @@ const UserProfile = () => {
         severity: 'success',
       })
     } catch (error) {
+      console.error(error)
       setAlert({
         open: true,
         message: 'Failed to update tags',
