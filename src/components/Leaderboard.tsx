@@ -1,4 +1,4 @@
-import { Box, Typography, List, ListItem, ListItemText, Paper } from "@mui/material";
+import { Typography, List, ListItem, ListItemText, Paper } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
