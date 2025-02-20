@@ -83,7 +83,7 @@ const UserProfile = () => {
           unsafeMetadata: {
             ...user.unsafeMetadata,
             tags: selectedTags,
-          },
+          }
         })
         handleUpdateCities() //Out of time to blind the two functions call together for now // to fix later maybe split this function
       }
