@@ -79,7 +79,7 @@ const UserProfile = () => {
     reader.readAsDataURL(file)
   }
 
-  const lawyers = useLawyers({ page: 1, count: 10 })
+  const lawyers = useLawyers({ page: 1, count: 100 }) // increased to 100 profile page just to have more lawyers
   const lawyerId = user?.unsafeMetadata?.lawyerId as number
   const [lawyerTags, setLawyerTags] = useState<{ id: number; name: string }[]>(
     [],
@@ -90,7 +90,7 @@ const UserProfile = () => {
 
     if (lawyers.data?.items) {
       const lawyer = lawyers.data.items.find(
-        (lawyer: Lawyer) => lawyer.id === Number(lawyerId),
+        (lawyer: Lawyer) => lawyer.id === Number(2), //Here you need to pass an Id to search for that sepcific lawyer i hard coded it but the user should have and id  when then send him to the app
       )
 
       console.log('Selected Lawyer:', lawyer)
