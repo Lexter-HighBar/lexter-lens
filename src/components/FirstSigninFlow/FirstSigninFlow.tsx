@@ -41,7 +41,7 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
     userName: user?.unsafeMetadata.userName as string,
     phone: user?.unsafeMetadata.phone as string,
   })
-console.log(formData)
+
   const { suggestedQuestions, loading, error } = useFetchQuestionsFromAI(
     confirmationNumber ?? 0,
   )
