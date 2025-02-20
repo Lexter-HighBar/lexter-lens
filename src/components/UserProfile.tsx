@@ -49,7 +49,7 @@ const UserProfile = () => {
 
   const handleAvatarChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
-    ) => {
+  ) => {
     const file = event.target.files?.[0]
     if (!file) return
 
@@ -78,28 +78,35 @@ const UserProfile = () => {
     }
     reader.readAsDataURL(file)
   }
-  
-  const lawyers = useLawyers ({ page: 1, count: 10 });
+
+  const lawyers = useLawyers({ page: 1, count: 10 })
   const lawyerId = user?.unsafeMetadata?.lawyerId as number
-  const [lawyerTags, setLawyerTags] = useState<{ id: number; name: string }[]>([])
+  const [lawyerTags, setLawyerTags] = useState<{ id: number; name: string }[]>(
+    [],
+  )
 
   useEffect(() => {
+    console.log('Lawyers Data:', lawyers.data?.items)
+
     if (lawyers.data?.items) {
       const lawyer = lawyers.data.items.find(
         (lawyer: Lawyer) => lawyer.id === Number(lawyerId),
       )
+
+      console.log('Selected Lawyer:', lawyer)
+
       if (!lawyer) {
         console.error(`No lawyer found with id ${lawyerId}`)
       }
+
       if (lawyer?.tags) {
+        console.log('Lawyer Tags:', lawyer.tags)
         setLawyerTags(
           lawyer.tags.map((tag) => ({ id: tag.id, name: tag.name })),
         )
       }
     }
   }, [lawyerId, lawyers.data?.items])
-
-  
 
   const handleUpdateTags = async () => {
     setLoading(true)
@@ -109,7 +116,7 @@ const UserProfile = () => {
           unsafeMetadata: {
             ...user.unsafeMetadata,
             tags: selectedTags,
-          }
+          },
         })
         handleUpdateCities() //Out of time to blind the two functions call together for now // to fix later maybe split this function
       }
@@ -192,7 +199,6 @@ const UserProfile = () => {
       >
         <Box
           sx={{
-           
             width: { xs: '100%', md: '300px' },
             textAlign: 'center',
             borderRight: { md: '1px solid rgba(0, 0, 0, 0.12)' },
@@ -200,7 +206,7 @@ const UserProfile = () => {
             p: 3,
           }}
         >
-          <Grid container direction="column" alignItems="center" >
+          <Grid container direction="column" alignItems="center">
             <Grid>
               <img
                 src={avatar}
@@ -231,7 +237,8 @@ const UserProfile = () => {
 
             <Grid>
               <Typography variant="body1">
-                Username: {(user?.unsafeMetadata?.userName as string) || 'not set yet'}
+                Username:{' '}
+                {(user?.unsafeMetadata?.userName as string) || 'not set yet'}
               </Typography>
               <Typography variant="body1">
                 {user?.firstName && `First Name: ${user.firstName}`}
