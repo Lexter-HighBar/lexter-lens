@@ -8,12 +8,10 @@ import {
   IconButton,
   MenuItem,
   Typography,
-  Dialog
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import { Flex } from '@radix-ui/themes'
-import { UserButton } from '@clerk/clerk-react'
-import Leaderboard from '../components/Leaderboard' // import Leaderboard
+import { UserButton, useClerk } from '@clerk/clerk-react' // Import UserButton and Clerk hook
 
 interface NavigationMenuProps {
   pages: { label: string; path: string }[]
@@ -22,14 +20,16 @@ interface NavigationMenuProps {
 const NavigationMenu: React.FC<NavigationMenuProps> = ({ pages }) => {
   const navigate = useNavigate()
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
-  const [isLeaderboardOpen, setIsLeaderboardOpen] = React.useState(false) // status control Leaderboard Dialog
   const location = useLocation()
+  const { signOut } = useClerk()
   const userProfileUrl = '/profile'
 
+  // Open the mobile navigation menu
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget)
   }
 
+  // Close the mobile navigation menu
   const handleCloseNavMenu = () => {
     setAnchorElNav(null)
   }
@@ -61,11 +61,26 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({ pages }) => {
           open={Boolean(anchorElNav)}
           onClose={handleCloseNavMenu}
         >
-          <Box sx={{ padding: '1em', display: 'flex', justifyContent: 'center' }}>
+          {/* User Avatar */}
+          <Box
+            sx={{ padding: '1em', display: 'flex', justifyContent: 'center' }}
+          >
             <UserButton showName userProfileUrl={userProfileUrl} />
           </Box>
 
-          {/* page menu */}
+          {/* User Options */}
+          <MenuItem
+            onClick={() => {
+              window.location.href = userProfileUrl
+            }}
+          >
+            <Typography variant='body2'>Manage Account</Typography>
+          </MenuItem>
+          <MenuItem onClick={() => signOut()}>
+            <Typography variant='body2'>Sign Out</Typography>
+          </MenuItem>
+          <Divider orientation="horizontal" />
+          {/* Navigation Pages */}
           {pages.map(({ label, path }) => (
             <MenuItem
               key={label}
@@ -77,33 +92,17 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({ pages }) => {
               <Typography variant="h6">{label}</Typography>
             </MenuItem>
           ))}
-
-          <Divider />
-
-          {/* Leaderboard menu botton */}
-          <MenuItem
-            onClick={() => {
-              handleCloseNavMenu()
-              setIsLeaderboardOpen(true) // open Leaderboard Dialog
-            }}
-          >
-            <Typography variant="h6">Leaderboard</Typography>
-          </MenuItem>
         </Drawer>
       </Box>
 
-      {/* Leaderboard Dialog */}
-      <Dialog
-        open={isLeaderboardOpen}
-        onClose={() => setIsLeaderboardOpen(false)}
-        fullWidth
-        maxWidth="sm"
-      >
-        <Leaderboard />
-      </Dialog>
-
       {/* Desktop Navigation */}
-      <Box sx={{ flexGrow: 0, display: { xs: 'none', md: 'flex' }, margin: '0 1.5em' }}>
+      <Box
+        sx={{
+          flexGrow: 0,
+          display: { xs: 'none', md: 'flex' },
+          margin: '0 1.5em',
+        }}
+      >
         <Flex>
           {pages.map(({ label, path }) => (
             <Button sx={{ textTransform: 'none' }} size="small" variant="text" key={label}>
