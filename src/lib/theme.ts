@@ -9,19 +9,18 @@ export const theme = createTheme({
     },
     MuiTypography: {
       defaultProps: {
-        fontWeight: 200,
+        fontWeight: 400,
+        fontFamily: 'system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif',
       },
     },
     MuiAppBar: {
       styleOverrides: {
-        root: {
-          
-        }
+        root: {},
+        
       },
-    }
+    },
   },
   palette: {
-  
     primary: {
       main: '#1D4170',
       dark: '#1d283a',
@@ -32,8 +31,14 @@ export const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: 'system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif',
-     
-  },
-  
+    h1: {
+      fontWeight: 700,
+    },
+    h2: {
+      fontWeight: 600,
+    },
+    body1: {
+      fontWeight: 400,
+    },
+  }
 })

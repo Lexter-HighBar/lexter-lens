@@ -1,5 +1,5 @@
 import { TextField, Typography } from '@mui/material'
-import { UseClerkStorage } from '../../hooks/UseClerkStorage'
+
 
 interface Step1Props {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
@@ -7,20 +7,18 @@ interface Step1Props {
 }
 
 const Step1 = ({ onChange, onIdChange }: Step1Props) => {
-  const { firstName, userName } = UseClerkStorage()
-
-  if (userName)
+ 
     return (
       <>
-        <Typography>Welcome, {firstName || ''}</Typography>
-        <Typography>Create a user name:</Typography>
+        <Typography>Welcome, </Typography>
+        <Typography>Let's create a user name:</Typography>
         <TextField
           required
           fullWidth
           margin="normal"
           name="userName"
           label="User Name"
-          defaultValue={userName}
+          defaultValue="Set a user name"
           onChange={onChange}
         />
 
@@ -29,7 +27,7 @@ const Step1 = ({ onChange, onIdChange }: Step1Props) => {
           type="number"
           fullWidth
           margin="normal"
-          name="Confirmation number"
+          name="Enter your confirmation number"
           label="lawyer"
           onChange={onIdChange}
         />

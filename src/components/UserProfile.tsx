@@ -28,7 +28,7 @@ const UserProfile = () => {
     message: '',
     severity: 'info' as 'info' | 'success' | 'error',
   })
-
+  console.log('user', user)
   const tagsArray = user?.unsafeMetadata?.tags as string[]
   useEffect(() => {
     if (tagsArray) {
