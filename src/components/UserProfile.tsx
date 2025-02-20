@@ -170,6 +170,7 @@ const UserProfile = () => {
             width: { xs: '100%', md: '300px' },
             textAlign: 'center',
             borderRight: { md: '1px solid rgba(0, 0, 0, 0.12)' },
+
             p: 3,
           }}
         >
@@ -230,14 +231,12 @@ const UserProfile = () => {
               selectedTags={selectedTags}
               setSelectedTags={setSelectedTags}
             />
-
           </Box>
           <Box sx={{ mb: 2 }}>
             <Typography variant="body1" gutterBottom>
               Select City Tags
             </Typography>
             <TagSelector
-
               variant="standard"
               selectedTags={selectedCities}
               setSelectedTags={setSelectedCities}
