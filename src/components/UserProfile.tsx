@@ -7,6 +7,7 @@ import {
   Box,
   Typography,
   IconButton,
+  TextField,
 } from '@mui/material'
 import { RiImageEditFill } from 'react-icons/ri'
 
@@ -18,6 +19,7 @@ import TagSelector from './tagsSelector'
 import TagsManager from './TagsManager'
 
 import { useLawyers } from '../hooks/useLawyers'
+import { UseClerkStorage } from '../hooks/UseClerkStorage'
 import { Lawyer } from '../lib/types'
 
 const UserProfile = () => {
@@ -78,6 +80,27 @@ const UserProfile = () => {
     }
     reader.readAsDataURL(file)
   }
+
+  interface UpdateUsername {
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  }
+  
+  const { userName: initialUserName } = UseClerkStorage()
+  const [userName, setUserName] = useState(initialUserName)
+
+  const onChange: UpdateUsername['onChange'] = (event) => {
+    const { value } = event.target
+    setUserName(value)
+    if (user) {
+      user.update({
+        unsafeMetadata: {
+          ...user.unsafeMetadata,
+          userName: value,
+        },
+      })
+    }
+  }
+  
 
   const lawyers = useLawyers({ page: 1, count: 100 }) // increased to 100 profile page just to have more lawyers
   const lawyerId = user?.unsafeMetadata?.lawyerId as number
@@ -240,6 +263,15 @@ const UserProfile = () => {
                 Username:{' '}
                 {(user?.unsafeMetadata?.userName as string) || 'not set yet'}
               </Typography>
+              <Typography>Change Your User Name:</Typography>
+                <TextField
+                  fullWidth
+                  margin="normal"
+                  name="userName"
+                  label="New User Name"
+                  defaultValue={userName}
+                  onChange={onChange}
+                />
               <Typography variant="body1">
                 {user?.firstName && `First Name: ${user.firstName}`}
               </Typography>
