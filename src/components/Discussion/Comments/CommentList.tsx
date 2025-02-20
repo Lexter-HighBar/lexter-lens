@@ -20,6 +20,8 @@ import {
 import AddCommentDialog from '../AddCommentDialog'
 import { useNavigate } from 'react-router'
 import VoteComponent from '../Votes/VoteComponent'
+import { useUser } from '@clerk/clerk-react'
+import { v4 as uuidv4 } from 'uuid'
 
 interface CommentListProps {
   question: Question
@@ -40,12 +42,12 @@ export const CommentList = ({
   const questionComments: Comment[] = Array.isArray(comments)
     ? comments.filter((comment) => comment.parentId === question.QuestionId)
     : []
-
+  const [anonymous, setAnonymous] = useState<boolean>(false)
   const navigate = useNavigate()
   const handleRedirect = () => {
     navigate(`/question/${question._id}`)
   }
-
+  const { user } = useUser()
   const handleCopyLink = () => {
     const link = window.location.href
     navigator.clipboard.writeText(link).then(() => {
@@ -75,9 +77,17 @@ export const CommentList = ({
       await createComment.mutateAsync({
         ...newComment.comment,
         parentId: currentQuestion?.QuestionId,
-        ownerId: currentQuestion?.ownerId,
-        userName: currentQuestion?.userName,
-        profilePicture: currentQuestion?.profilePicture,
+        ownerId: anonymous ? `anonymous-${uuidv4()}` : user?.id || '',
+        userName: anonymous
+          ? 'Anonymous'
+          : typeof user?.unsafeMetadata.userName === 'string'
+            ? user.unsafeMetadata.userName
+            : '',
+        profilePicture: anonymous
+          ? 'https://raw.githubusercontent.com/Lexter-HighBar/lexter-lens/refs/heads/main/assets/anonymous.png'
+          : typeof user?.imageUrl === 'string'
+            ? user.imageUrl
+            : '',
         createdOn: new Date().toISOString(),
       })
       handleCloseDialog()
@@ -95,8 +105,12 @@ export const CommentList = ({
       gap="1"
       width={'100%'}
     >
-      <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} >
-        <Box display={'flex'} justifyContent={'start'} >
+      <Box
+        display={'flex'}
+        justifyContent={'space-between'}
+        alignItems={'center'}
+      >
+        <Box display={'flex'} justifyContent={'start'}>
           <VoteComponent
             questionId={question.QuestionId}
             ownerId={question.ownerId}
@@ -122,45 +136,53 @@ export const CommentList = ({
           {questionComments.length > 0 && (
             <>
               <Divider orientation="vertical" flexItem />
-              <IconButton onClick={handleToggleComments}>
-                <Box display={'flex'} gap={1}>
-                  {showComments && questionComments.length > 0 ? (
-                    <IconButton
-                      size="small"
-                      type="button"
-                      onClick={handleToggleComments}
-                    >
-                      <Typography variant="subtitle2">Close</Typography>
-                    </IconButton>
-                  ) : (
-                    <>
-                      {' '}
-                      <MessageCircleMore size={25} />
-                      <Typography fontWeight={500} variant="subtitle2">
+              <Box>
+                <IconButton onClick={handleToggleComments}>
+                  <Box display={'flex'} gap={1}>
+                    {showComments && questionComments.length > 0 ? (
+                      <Box>
+                        <IconButton
+                          size="small"
+                          type="button"
+                          onClick={handleToggleComments}
+                        >
+                          <Typography variant="subtitle2">Close</Typography>
+                        </IconButton>
+                      </Box>
+                    ) : (
+                      <>
                         {' '}
-                        {questionComments.length}{' '}
-                      </Typography>
-                      <Typography
-                        sx={{
-                          display: { xs: 'none', md: 'flex' },
-                          fontWeight: '500',
-                        }}
-                        variant="subtitle2"
-                      >
-                        comments
-                      </Typography>{' '}
-                    </>
-                  )}
-                </Box>
-              </IconButton>
+                        <MessageCircleMore size={25} />
+                        <Typography fontWeight={500} variant="subtitle2">
+                          {' '}
+                          {questionComments.length}{' '}
+                        </Typography>
+                        <Typography
+                          sx={{
+                            display: { xs: 'none', md: 'flex' },
+                            fontWeight: '500',
+                          }}
+                          variant="subtitle2"
+                        >
+                          comments
+                        </Typography>{' '}
+                      </>
+                    )}
+                  </Box>
+                </IconButton>
+              </Box>
               {showShareLink ? (
-                <IconButton onClick={handleRedirect}>
-                  <ExternalLink size={25} />
-                </IconButton>
+                <Box>
+                  <IconButton onClick={handleRedirect}>
+                    <ExternalLink size={25} />
+                  </IconButton>
+                </Box>
               ) : (
-                <IconButton onClick={handleCopyLink}>
-                  <CopyIcon size={25} />
-                </IconButton>
+                <Box>
+                  <IconButton onClick={handleCopyLink}>
+                    <CopyIcon size={25} />
+                  </IconButton>
+                </Box>
               )}
             </>
           )}
@@ -174,13 +196,17 @@ export const CommentList = ({
         />
       )}
       {isDialogOpen && (
-        <AddCommentDialog
-          isOpen={isDialogOpen}
-          onClose={handleCloseDialog}
-          currentQuestion={question}
-          isEditing={false}
-          onSubmit={handleSubmitComment}
-        />
+        <>
+          <AddCommentDialog
+            anonymous={anonymous}
+            setAnonymous={setAnonymous}
+            isOpen={isDialogOpen}
+            onClose={handleCloseDialog}
+            currentQuestion={question}
+            isEditing={false}
+            onSubmit={handleSubmitComment}
+          />
+        </>
       )}
       <Snackbar
         open={openSnackBar}

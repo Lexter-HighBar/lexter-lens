@@ -7,7 +7,6 @@ import {CommentList} from './Comments/CommentList'
 
 interface Props {
   question: Question
-  onAddComment: () => void
 }
 
 const QuestionItem = ({ question }: Props) => {
