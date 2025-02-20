@@ -11,10 +11,14 @@ import {
 import { RiImageEditFill } from 'react-icons/ri'
 
 import Grid from '@mui/material/Grid2'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { Page } from './layout/Page'
 import TagSelector from './tagsSelector'
+import TagsManager from './TagsManager'
+
+import { useLawyers } from '../hooks/useLawyers'
+import { Lawyer } from '../lib/types'
 
 const UserProfile = () => {
   const { user } = useUser()
@@ -45,7 +49,7 @@ const UserProfile = () => {
 
   const handleAvatarChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+    ) => {
     const file = event.target.files?.[0]
     if (!file) return
 
@@ -74,6 +78,28 @@ const UserProfile = () => {
     }
     reader.readAsDataURL(file)
   }
+  
+  const lawyers = useLawyers ({ page: 1, count: 10 });
+  const lawyerId = user?.unsafeMetadata?.lawyerId as number
+  const [lawyerTags, setLawyerTags] = useState<{ id: number; name: string }[]>([])
+
+  useEffect(() => {
+    if (lawyers.data?.items) {
+      const lawyer = lawyers.data.items.find(
+        (lawyer: Lawyer) => lawyer.id === Number(lawyerId),
+      )
+      if (!lawyer) {
+        console.error(`No lawyer found with id ${lawyerId}`)
+      }
+      if (lawyer?.tags) {
+        setLawyerTags(
+          lawyer.tags.map((tag) => ({ id: tag.id, name: tag.name })),
+        )
+      }
+    }
+  }, [lawyerId, lawyers.data?.items])
+
+  
 
   const handleUpdateTags = async () => {
     setLoading(true)
@@ -214,8 +240,13 @@ const UserProfile = () => {
                 {user?.lastName && `Last Name: ${user.lastName}`}
               </Typography>
               <Typography variant="body1">
-                Email: {user.primaryEmailAddress?.emailAddress}
+                Email: {user?.primaryEmailAddress?.emailAddress}
               </Typography>
+              <TagsManager
+                defaultTags={lawyerTags.map((tag) => tag.name)}
+                title="Authority Tags"
+                tooltip="Authority tags are tags that you are most confident in. These tags will be used to create posts and questions that are most relevant to you."
+              />
             </Grid>
           </Grid>
         </Box>

@@ -47,7 +47,7 @@ const Step2: React.FC<Step2Props> = ({
         tooltip="Authority tags are tags that you are most confident in. These tags will be used to create posts and questions that are most relevant to you."
       />
       <Typography mt={2} p={1} variant="body1" sx={{ fontWeight: 'medium' }}>
-        Interst Tags
+        Interest Tags
       </Typography>
       <TagSelector
         selectedTags={
