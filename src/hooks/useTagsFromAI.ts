@@ -84,7 +84,6 @@ export const useFetchTagsFromAI = (text: string) => {
 
       // Try parsing the cleaned response
       const parsedResponse = JSON.parse(cleanedResponse)
-      console.log('Parsed Response:', parsedResponse)
 
       const validTags = parsedResponse || {}
       setValidTags(validTags)

@@ -7,7 +7,6 @@ import Leaderboard from "../components/Leaderboard"; // import Leaderboard
 
 const Home: React.FC = () => {
   const [isFirstSignIn, setIsFirstSignIn] = useState<boolean>(true);
-
   const handleTestClick = () => {
     setIsFirstSignIn(true);
   };

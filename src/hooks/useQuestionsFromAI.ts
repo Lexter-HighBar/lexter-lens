@@ -15,7 +15,6 @@ export const useFetchQuestionsFromAI = (id: number) => {
   const hasFetched = useRef(false)
 
   const fetchRelevantTags = useCallback(async () => {
-    console.log('lawyerData:', lawyerData)
     if (!lawyerData?.lawyer) {
       console.warn('Missing required data, skipping AI call.')
       return
@@ -26,7 +25,6 @@ export const useFetchQuestionsFromAI = (id: number) => {
 
     try {
       const lawyer = lawyerData.lawyer
-      console.log('Lawyer Data:', lawyer)
 
       const prompt = `You are provided with a lawyer's profile: "${lawyer}". Based on this profile and the related expertise tags: ${lawyer.tags}, 
       generate one insightful question that other professionals in the same field would find relevant and valuable. 
@@ -61,7 +59,6 @@ export const useFetchQuestionsFromAI = (id: number) => {
         .trim()
 
       const parsedResponse = JSON.parse(cleanedResponse || '{}')
-      console.log('Parsed Response:', parsedResponse)
 
       setSuggestedQuestions(parsedResponse?.Questions || {})
     } catch (err) {
