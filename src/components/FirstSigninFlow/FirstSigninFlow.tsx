@@ -31,18 +31,17 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
   const [selectedTags, setSelectedTags] = useState<string[]>([])
   const [confirmationNumber, setConfirmationNumber] = useState<number>()
   const { user } = useUser()
-
-
+  console.log(user)
+ console.log(confirmationNumber)
   // Local form state management
   const [formData, setFormData] = useState({
     isFirstSignIn: false,
-    lawyerId: confirmationNumber,
     email: user?.primaryEmailAddress?.emailAddress as string,
     firstName: user?.firstName as string,
     userName: user?.unsafeMetadata.userName as string,
     phone: user?.unsafeMetadata.phone as string,
   })
-
+console.log(formData)
   const { suggestedQuestions, loading, error } = useFetchQuestionsFromAI(
     confirmationNumber ?? 0,
   )
@@ -51,9 +50,11 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
-      lawyerId: formData.lawyerId,
+      lawyerId: confirmationNumber,
     }))
-  }, [formData.lawyerId ])
+    console.log(confirmationNumber)
+  }, [confirmationNumber ])
+  
   
 
   // Form data change handler
@@ -76,14 +77,14 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
             unsafeMetadata: {
               ...user.unsafeMetadata,
               isFirstSignIn: false,
-              firstName: formData.firstName,
               userName: formData.userName,
-              phone: formData.phone,
-              lawyerId: formData.lawyerId,
+              lawyerId: confirmationNumber,
               email: formData.email,
-              interestTags: selectedTags,
+              tags: selectedTags,
             },
           })
+          console.log('formData:', formData,"selectedTags:", selectedTags)
+             
         } catch (error) {
           console.error('Error updating user information:', error)
         }
@@ -166,7 +167,10 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
               onChange={handleFormDataChange}
               onIdChange={(event) =>
                 setConfirmationNumber(Number(event.target.value))
+            
               }
+              formUserName={formData.userName}
+            
             />{' '}
           </>
         )}
@@ -176,16 +180,17 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
               lawyerId={confirmationNumber}
               selectedTags={selectedTags}
               setSelectedTags={setSelectedTags}
+                     
             />
           </>
         )}
-        {step === 3 && suggestedQuestions && (
+        {step === 3 && suggestedQuestions && selectedTags.length > 0 && (
           <Step3
             tags={selectedTags}
             suggestedQuestions={suggestedQuestions}
             loading={loading}
             error={error}
-            handleInputChange={handleFormDataChange}
+ 
           />
         )}
         {renderNavigation()}

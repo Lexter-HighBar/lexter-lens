@@ -34,9 +34,11 @@ const Step2: React.FC<Step2Props> = ({
         setLawyerTags(
           lawyer.tags.map((tag) => ({ id: tag.id, name: tag.name })),
         )
+       
       }
     }
-  }, [lawyerId, lawyers.data?.items])
+  }, [lawyerId, lawyers.data?.items ])
+   
 
   return (
     
