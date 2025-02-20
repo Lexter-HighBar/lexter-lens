@@ -6,7 +6,9 @@ import {
   Alert,
   Box,
   Typography,
+  IconButton,
 } from '@mui/material'
+import { RiImageEditFill } from 'react-icons/ri'
 
 import Grid from '@mui/material/Grid2'
 import { useState, useEffect } from 'react'
@@ -133,7 +135,7 @@ const UserProfile = () => {
   const handleCloseAlert = () => {
     setAlert((prev) => ({ ...prev, open: false }))
   }
-
+  console.log('user', user)
   if (!user) {
     return (
       <Box
@@ -156,7 +158,7 @@ const UserProfile = () => {
       <Box
         sx={{
           display: 'flex',
-          
+          height: '80dvh',
           width: '100%',
           flexDirection: { xs: 'column', md: 'row' },
           p: 3,
@@ -164,14 +166,14 @@ const UserProfile = () => {
       >
         <Box
           sx={{
+           
             width: { xs: '100%', md: '300px' },
             textAlign: 'center',
             borderRight: { md: '1px solid rgba(0, 0, 0, 0.12)' },
-            
             p: 3,
           }}
         >
-          <Grid container direction="column" alignItems="center" spacing={2}>
+          <Grid container direction="column" alignItems="center" >
             <Grid>
               <img
                 src={avatar}
@@ -183,37 +185,32 @@ const UserProfile = () => {
                   objectFit: 'cover',
                 }}
               />
-            </Grid>
-            <Grid>
-              <Button
-                variant="contained"
-                component="label"
-                sx={{ mt: 1 }}
-                disabled={loading}
-              >
-                {loading ? (
-                  <CircularProgress size={24} />
-                ) : (
-                  'Upload New Picture'
-                )}
-                <input
-                  type="file"
-                  hidden
-                  accept="image/*"
-                  onChange={handleAvatarChange}
-                />
-              </Button>
+              <Box sx={{ transform: 'translate(40%, -100%)' }}>
+                <IconButton
+                  color="primary"
+                  component="label"
+                  htmlFor="avatar-input"
+                >
+                  <input
+                    id="avatar-input"
+                    type="file"
+                    style={{ display: 'none' }}
+                    onChange={handleAvatarChange}
+                  />
+                  <RiImageEditFill size={20} />
+                </IconButton>
+              </Box>
             </Grid>
 
             <Grid>
               <Typography variant="body1">
-                Username: {(user?.unsafeMetadata?.userName as string) || 'N/A'}
+                Username: {(user?.unsafeMetadata?.userName as string) || 'not set yet'}
               </Typography>
               <Typography variant="body1">
-                First Name: {user.firstName || 'N/A'}
+                {user?.firstName && `First Name: ${user.firstName}`}
               </Typography>
               <Typography variant="body1">
-                Last Name: {user.lastName || 'N/A'}
+                {user?.lastName && `Last Name: ${user.lastName}`}
               </Typography>
               <Typography variant="body1">
                 Email: {user.primaryEmailAddress?.emailAddress}
@@ -240,7 +237,8 @@ const UserProfile = () => {
               Select City Tags
             </Typography>
             <TagSelector
-             variant="standard"
+
+              variant="standard"
               selectedTags={selectedCities}
               setSelectedTags={setSelectedCities}
               cityType
