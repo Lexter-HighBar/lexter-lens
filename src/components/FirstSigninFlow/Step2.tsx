@@ -17,7 +17,7 @@ const Step2: React.FC<Step2Props> = ({
   selectedTags,
   setSelectedTags,
 }) => {
-  const lawyers = useLawyers({ page: 1, count: 10 })
+  const lawyers = useLawyers({ page: 1, count: 1000 })
   const [lawyerTags, setLawyerTags] = useState<{ id: number; name: string }[]>(
     [],
   )
