@@ -4,9 +4,14 @@ import { Page } from "../components/layout/Page";
 import InsightsSection from "../components/InsightSection";
 import FirstSigninFlow from "../components/FirstSigninFlow/FirstSigninFlow";
 import Leaderboard from "../components/Leaderboard"; // import Leaderboard
+import { useUser } from "@clerk/clerk-react";
 
 const Home: React.FC = () => {
-  const [isFirstSignIn, setIsFirstSignIn] = useState<boolean>(true);
+  const user = useUser()
+  const [isFirstSignIn, setIsFirstSignIn] = useState<boolean>(
+    Boolean(user.user?.unsafeMetadata.isFirstSignIn) 
+  )
+
   const handleTestClick = () => {
     setIsFirstSignIn(true);
   };

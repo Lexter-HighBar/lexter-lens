@@ -12,7 +12,7 @@ interface Step3Props {
   suggestedQuestions: SuggestedQuestions | null
   loading: boolean
   error: string | null
-  handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+
 }
 
 const Step3: React.FC<Step3Props> = ({
