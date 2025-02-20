@@ -11,34 +11,35 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
-      '/userdata/comments': {
-        target: 'https://lexter-server.onrender.com/api',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/userdata\/comments/, '/comments'),
-      },
-      '/userdata/questions': {
-        target: 'https://lexter-server.onrender.com/api',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/userdata\/questions/, '/questions'),
-      },
+    }
+    //   '/userdata/comments': {
+    //     target: 'https://lexter-server.onrender.com/api',
+    //     changeOrigin: true,
+    //     rewrite: (path) => path.replace(/^\/userdata\/comments/, '/comments'),
+    //   },
+    //   '/userdata/questions': {
+    //     target: 'https://lexter-server.onrender.com/api',
+    //     changeOrigin: true,
+    //     rewrite: (path) => path.replace(/^\/userdata\/questions/, '/questions'),
+    //   },
 
-      '/userdata/tags': {
-        target: 'https://lexter-server.onrender.com/api',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/userdata\/tags/, '/tags'),
-      },
+    //   '/userdata/tags': {
+    //     target: 'https://lexter-server.onrender.com/api',
+    //     changeOrigin: true,
+    //     rewrite: (path) => path.replace(/^\/userdata\/tags/, '/tags'),
+    //   },
 
-      '/userdata/cities': {
-        target: 'https://lexter-server.onrender.com/api',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/userdata\/cities/, '/cities'),
-      },
-      '/userdata/votes': {
-        target: 'https://lexter-server.onrender.com/api',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/userdata\/votes/, '/votes'),
-      },
-    },
+    //   '/userdata/cities': {
+    //     target: 'https://lexter-server.onrender.com/api',
+    //     changeOrigin: true,
+    //     rewrite: (path) => path.replace(/^\/userdata\/cities/, '/cities'),
+    //   },
+    //   '/userdata/votes': {
+    //     target: 'https://lexter-server.onrender.com/api',
+    //     changeOrigin: true,
+    //     rewrite: (path) => path.replace(/^\/userdata\/votes/, '/votes'),
+    //   },
+    // },
   },
   build: {
     rollupOptions: {

@@ -119,7 +119,6 @@ const FirstSigninFlow: React.FC<FirstSigninFlowProps> = ({
       </Button>
     </Box>
   )
-console.log('selectedTags', selectedTags)
   return (
     <Dialog  fullWidth open={isFirstSignIn} onClose={handleClose}>
       <Box

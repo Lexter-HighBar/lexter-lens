@@ -51,7 +51,6 @@ const QuestionResultList: React.FC<QuestionListProps> = ({
 }) => {
 
   return (
-    console.log(questions),
     <Dialog
     
       open={open}

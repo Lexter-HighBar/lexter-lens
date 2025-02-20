@@ -122,9 +122,11 @@ export const CommentList = ({
           {questionComments.length > 0 && (
             <>
               <Divider orientation="vertical" flexItem />
+              <Box>
               <IconButton onClick={handleToggleComments}>
                 <Box display={'flex'} gap={1}>
                   {showComments && questionComments.length > 0 ? (
+                    <Box>
                     <IconButton
                       size="small"
                       type="button"
@@ -132,6 +134,7 @@ export const CommentList = ({
                     >
                       <Typography variant="subtitle2">Close</Typography>
                     </IconButton>
+                    </Box>
                   ) : (
                     <>
                       {' '}
@@ -153,14 +156,17 @@ export const CommentList = ({
                   )}
                 </Box>
               </IconButton>
-              {showShareLink ? (
+              </Box>
+              {showShareLink ? (<Box>
                 <IconButton onClick={handleRedirect}>
                   <ExternalLink size={25} />
                 </IconButton>
-              ) : (
+                </Box>
+              ) : (<Box>
                 <IconButton onClick={handleCopyLink}>
                   <CopyIcon size={25} />
                 </IconButton>
+                </Box>
               )}
             </>
           )}

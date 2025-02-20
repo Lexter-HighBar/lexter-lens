@@ -8,7 +8,7 @@ interface Step1Props {
 
 const Step1 = ({ onChange, onIdChange }: Step1Props) => {
   const { firstName, userName } = UseClerkStorage()
-  console.log('firstName:', userName)
+
   if (userName)
     return (
       <>
