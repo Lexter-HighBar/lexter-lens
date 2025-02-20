@@ -3,9 +3,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const Leaderboard: React.FC = () => {
-  const [topQuestioners, setTopQuestioners] = useState([]);
-  const [topCommenters, setTopCommenters] = useState([]);
-  const [topRepliers, setTopRepliers] = useState([]);
+  interface User {
+    _id: string;
+    count: number;
+  }
+
+  const [topQuestioners, setTopQuestioners] = useState<User[]>([]);
+  const [topCommenters, setTopCommenters] = useState<User[]>([]);
+  const [topRepliers, setTopRepliers] = useState<User[]>([]);
 
   useEffect(() => {
     const fetchLeaderboardData = async () => {
