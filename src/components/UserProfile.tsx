@@ -7,18 +7,24 @@ import {
   Box,
   Typography,
   IconButton,
+  TextField,
 } from '@mui/material'
 import { RiImageEditFill } from 'react-icons/ri'
-
+import { UserRoundPen } from 'lucide-react'
 import Grid from '@mui/material/Grid2'
 import { useState, useEffect } from 'react'
 
 import { Page } from './layout/Page'
 import TagSelector from './tagsSelector'
+import TagsManager from './TagsManager'
+import { useLawyers } from '../hooks/useLawyers'
+import { Lawyer } from '../lib/types'
 
 const UserProfile = () => {
   const { user } = useUser()
-
+  const [lawyerTags, setLawyerTags] = useState<{ id: number; name: string }[]>(
+    [],
+  )
   const [avatar, setAvatar] = useState(user?.imageUrl || '')
   const [selectedTags, setSelectedTags] = useState<string[]>([])
   const [selectedCities, setSelectedCities] = useState<string[]>([])
@@ -28,8 +34,11 @@ const UserProfile = () => {
     message: '',
     severity: 'info' as 'info' | 'success' | 'error',
   })
-  console.log('user', user)
+  const lawyers = useLawyers({ page: 1, count: 200 })
+  const [username, setUsername] = useState(user?.unsafeMetadata?.userName || '')
   const tagsArray = user?.unsafeMetadata?.tags as string[]
+  const [loadingTags, setLoadingTags] = useState(true)
+  console.log('lodaingTags', loadingTags)
   useEffect(() => {
     if (tagsArray) {
       setSelectedTags(tagsArray)
@@ -42,6 +51,25 @@ const UserProfile = () => {
       setSelectedCities(citiesArray)
     }
   }, [citiesArray])
+  useEffect(() => {
+    if (lawyers.data?.items) {
+      setLoadingTags(true)
+      const lawyer = lawyers.data.items.find(
+        (lawyer: Lawyer) => lawyer.id === Number(user?.unsafeMetadata.lawyerId),
+        setLoadingTags(false),
+      )
+      if (!lawyer) {
+        console.error(
+          `No lawyer found with id ${user?.unsafeMetadata.lawyerId}`,
+        )
+      }
+      if (lawyer?.tags) {
+        setLawyerTags(
+          lawyer.tags.map((tag) => ({ id: tag.id, name: tag.name })),
+        )
+      }
+    }
+  }, [user?.unsafeMetadata.lawyerId, lawyers.data?.items])
 
   const handleAvatarChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -74,7 +102,12 @@ const UserProfile = () => {
     }
     reader.readAsDataURL(file)
   }
-
+  const handleUserNameChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const newUserName = event.target.value
+    setUsername(newUserName)
+  }
   const handleUpdateTags = async () => {
     setLoading(true)
     try {
@@ -83,7 +116,8 @@ const UserProfile = () => {
           unsafeMetadata: {
             ...user.unsafeMetadata,
             tags: selectedTags,
-          }
+            userName: username,
+          },
         })
         handleUpdateCities() //Out of time to blind the two functions call together for now // to fix later maybe split this function
       }
@@ -158,7 +192,6 @@ const UserProfile = () => {
       <Box
         sx={{
           display: 'flex',
-          height: '80dvh',
           width: '100%',
           flexDirection: { xs: 'column', md: 'row' },
           p: 3,
@@ -166,7 +199,6 @@ const UserProfile = () => {
       >
         <Box
           sx={{
-           
             width: { xs: '100%', md: '300px' },
             textAlign: 'center',
             borderRight: { md: '1px solid rgba(0, 0, 0, 0.12)' },
@@ -174,7 +206,7 @@ const UserProfile = () => {
             p: 3,
           }}
         >
-          <Grid container direction="column" alignItems="center" >
+          <Grid container direction="column" alignItems="center">
             <Grid>
               <img
                 src={avatar}
@@ -204,8 +236,8 @@ const UserProfile = () => {
             </Grid>
 
             <Grid>
-              <Typography variant="body1">
-                Username: {(user?.unsafeMetadata?.userName as string) || 'not set yet'}
+              <Typography variant="h6">
+                {(user?.unsafeMetadata?.userName as string) || 'not set yet'}
               </Typography>
               <Typography variant="body1">
                 {user?.firstName && `First Name: ${user.firstName}`}
@@ -213,14 +245,37 @@ const UserProfile = () => {
               <Typography variant="body1">
                 {user?.lastName && `Last Name: ${user.lastName}`}
               </Typography>
-              <Typography variant="body1">
-                Email: {user.primaryEmailAddress?.emailAddress}
+              <Typography variant="body2">
+                {user.primaryEmailAddress?.emailAddress}
               </Typography>
             </Grid>
+            <TagsManager
+            loading={loadingTags}
+              defaultTags={lawyerTags.map((tag) => tag.name)}
+              title="Authority Tags"
+              tooltip="Authority tags are tags that you are most confident in. These tags will be used to create posts and questions that are most relevant to you."
+            />
           </Grid>
         </Box>
 
         <Box sx={{ flex: 1, minWidth: 0, p: 3 }}>
+          <Box sx={{ mb: 6 }}>
+            <Typography variant="body1" gutterBottom>
+              {' '}
+              Update Username
+            </Typography>
+            <TextField
+              value={username}
+              onChange={handleUserNameChange}
+              variant="standard"
+              helperText="Update Username here"
+              InputProps={{
+                startAdornment: (
+                  <UserRoundPen size={20} style={{ marginRight: '8px' }} />
+                ),
+              }}
+            />
+          </Box>
           <Box sx={{ mb: 2 }}>
             <Typography variant="body1" gutterBottom>
               Select Expertise Tags

@@ -15,12 +15,11 @@ import {
 import SearchIcon from '@mui/icons-material/Search'
 import { Question } from '../../lib/types'
 import HighlightedText from './HighlightedText'
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from '@mui/icons-material/Close'
 
 import VotePreview from './VotePreview'
 import { Page } from '../layout/Page'
 import TagSelector from '../tagsSelector'
-
 
 interface QuestionListProps {
   open: boolean
@@ -47,31 +46,27 @@ const QuestionResultList: React.FC<QuestionListProps> = ({
   questions,
   selectedTags,
   handleTagClick,
-  isMobile
+  isMobile,
 }) => {
-
   return (
-    <Dialog
-    
-      open={open}
-      onClose={handleClose}
-      fullScreen = {isMobile}
-      fullWidth
-    >   
-      
+    <Dialog open={open} onClose={handleClose} fullScreen={isMobile} fullWidth>
       <DialogContent
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'end',
+          alignItems: 'center',
           coverflowY: 'hidden',
           scrollbarWidth: 'thin',
           overflowX: 'scroll',
           height: '80vh',
         }}
-      > 
-      <Box>
-    <CloseIcon sx={{position: 'absolute', top: 4, right: 4, cursor: 'pointer'}} onClick={handleClose} /></Box>
+      >
+        <Box>
+          <CloseIcon
+            sx={{ position: 'absolute', top: 4, right: 4, cursor: 'pointer' ,m: 1 }}
+            onClick={handleClose}
+          />
+        </Box>
         {/* Search Input in Modal */}
         <Box
           sx={{
@@ -80,7 +75,7 @@ const QuestionResultList: React.FC<QuestionListProps> = ({
             flexDirection: 'column',
             alignItems: 'start',
           }}
-        >  
+        >
           <Box sx={{ mt: -2, width: '100%' }}>
             <TagSelector
               variant="standard"
@@ -127,6 +122,7 @@ const QuestionResultList: React.FC<QuestionListProps> = ({
             <Typography color="error">Error: {error}</Typography>
           </Page>
         )}
+     
         {questions.length !== 0 && (
           <Typography m={1} variant="body2">
             {' '}
@@ -163,26 +159,36 @@ const QuestionResultList: React.FC<QuestionListProps> = ({
                     />
                   ))}
                   <Divider />
-                  <Box display={'flex'}  flexDirection={'column'} justifyContent={'space-between'}>
+                  <Box
+                    display={'flex'}
+                    flexDirection={'column'}
+                    justifyContent={'space-between'}
+                  >
                     <Box
                       display={'flex'}
                       flexDirection={'row'}
                       alignItems={'start'}
                       justifyContent={'space-between'}
                     >
-                      <Box maxHeight={25} overflow={'hidden'} display={'flex'} gap={1} alignItems={'center'}>
-                      <Typography variant="caption">
-                        <Typography  variant="caption" fontWeight={500}>
-                          {' '}
-                          {question.userName}
-                        </Typography>{' '}
-                        |{' '}
-                      </Typography>
+                      <Box
+                        maxHeight={25}
+                        overflow={'hidden'}
+                        display={'flex'}
+                        gap={1}
+                        alignItems={'center'}
+                      >
+                        <Typography variant="caption">
+                          <Typography variant="caption" fontWeight={500}>
+                            {' '}
+                            {question.userName}
+                          </Typography>{' '}
+                          |{' '}
+                        </Typography>
 
-                      <Typography variant="caption">
-                        {' '}
-                        {new Date(question.createdOn).toLocaleDateString()}
-                      </Typography>
+                        <Typography variant="caption">
+                          {' '}
+                          {new Date(question.createdOn).toLocaleDateString()}
+                        </Typography>
                       </Box>
 
                       <VotePreview
@@ -207,24 +213,16 @@ const QuestionResultList: React.FC<QuestionListProps> = ({
               </List>
             ))
           ) : (
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '25%',
-                width: '100%',
-              }}
-            >
+         
               <Typography>
-                Select a tag or type to search for questions...
+              
+                     No results, Select a tag or type to search for questions...
               </Typography>
-            </Box>
+           
           )}{' '}
         </Page>
       </DialogContent>
     </Dialog>
-
   )
 }
 

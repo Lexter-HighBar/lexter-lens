@@ -17,15 +17,18 @@ const Step2: React.FC<Step2Props> = ({
   selectedTags,
   setSelectedTags,
 }) => {
+  const [loading, setLoading] = useState(true)
   const lawyers = useLawyers({ page: 1, count: 200 })
-  const [lawyerTags, setLawyerTags] = useState<{ id: number; name: string }[]>(
+  const [lawyerTags,setLawyerTags] = useState<{ id: number; name: string }[]>(
     [],
   )
 
   useEffect(() => {
     if (lawyers.data?.items) {
+      setLoading(true)
       const lawyer = lawyers.data.items.find(
         (lawyer: Lawyer) => lawyer.id === Number(lawyerId),
+        setLoading(false),
       )
       if (!lawyer) {
         console.error(`No lawyer found with id ${lawyerId}`)
@@ -46,6 +49,7 @@ const Step2: React.FC<Step2Props> = ({
     {lawyerTags && lawyerTags.length > 0 ? (
       <>
         <TagsManager
+        loading={loading}
           defaultTags={lawyerTags.map((tag) => tag.name)}
           title="Authority Tags"
           tooltip="Authority tags are tags that you are most confident in. These tags will be used to create posts and questions that are most relevant to you."
