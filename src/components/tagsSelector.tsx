@@ -7,7 +7,7 @@ import {
 } from '@mui/material'
 import { useTags } from '../hooks/useTags'
 import { TextFieldVariants } from '@mui/material'
-import { useCities } from '../hooks/useCities'
+import { useCities } from '../hooks/useFirms'
 
 interface TagSelectorProps {
   selectedTags: string[]

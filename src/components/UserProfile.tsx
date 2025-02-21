@@ -28,6 +28,7 @@ const UserProfile = () => {
   const [avatar, setAvatar] = useState(user?.imageUrl || '')
   const [selectedTags, setSelectedTags] = useState<string[]>([])
   const [selectedCities, setSelectedCities] = useState<string[]>([])
+  const [selectedFirms, setSelectedFirms] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
   const [alert, setAlert] = useState({
     open: false,
@@ -70,6 +71,13 @@ const UserProfile = () => {
       }
     }
   }, [user?.unsafeMetadata.lawyerId, lawyers.data?.items])
+
+  const firmsArray = user?.unsafeMetadata?.firms as string[]
+  useEffect(() => {
+    if (firmsArray) {
+      setSelectedFirms(firmsArray)
+    }
+  }, [firmsArray])
 
   const handleAvatarChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -119,18 +127,20 @@ const UserProfile = () => {
             userName: username,
           },
         })
-        handleUpdateCities() //Out of time to blind the two functions call together for now // to fix later maybe split this function
+        //Out of time to blend the three functions - call together for now
+        handleUpdateCities()
+        handleUpdateFirms() 
       }
       setAlert({
         open: true,
-        message: 'Tags updated successfully',
+        message: 'Tags updated successfully.',
         severity: 'success',
       })
     } catch (error) {
       console.error(error)
       setAlert({
         open: true,
-        message: 'Failed to update tags',
+        message: 'Failed to update tags.',
         severity: 'error',
       })
     } finally {
@@ -151,14 +161,42 @@ const UserProfile = () => {
       }
       setAlert({
         open: true,
-        message: 'Tags updated successfully',
+        message: 'Tags updated successfully.',
         severity: 'success',
       })
     } catch (error) {
       console.error(error)
       setAlert({
         open: true,
-        message: 'Failed to update tags',
+        message: 'Failed to update tags.',
+        severity: 'error',
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleUpdateFirms = async () => {
+    setLoading(true)
+    try {
+      if (user) {
+        await user.update({
+          unsafeMetadata: {
+            ...user.unsafeMetadata,
+            firms: selectedFirms,
+          },
+        })
+      }
+      setAlert({
+        open: true,
+        message: 'Tags updated successfully.',
+        severity: 'success',
+      })
+    } catch (error) {
+      console.error(error)
+      setAlert({
+        open: true,
+        message: 'Failed to update tags.',
         severity: 'error',
       })
     } finally {
@@ -296,6 +334,17 @@ const UserProfile = () => {
               selectedTags={selectedCities}
               setSelectedTags={setSelectedCities}
               cityType
+            />
+          </Box>
+
+          <Box sx={{ mb: 2 }}>
+            <Typography variant="body1" gutterBottom>
+              Select Firm Tags
+            </Typography>
+            <TagSelector
+              variant="standard"
+              selectedTags={selectedFirms}
+              setSelectedTags={setSelectedFirms}
             />
 
             <Button
