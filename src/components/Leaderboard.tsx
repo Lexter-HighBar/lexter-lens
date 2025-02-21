@@ -1,6 +1,12 @@
-import { Typography, List, ListItem, ListItemText, Paper } from "@mui/material";
+import { Typography, List, ListItem, ListItemText, Paper, Box } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
+
+const medalIcons = [
+  "🥇", // Gold
+  "🥈", // Silver
+  "🥉", // Bronze
+];
 
 const Leaderboard: React.FC = () => {
   interface User {
@@ -28,46 +34,35 @@ const Leaderboard: React.FC = () => {
     fetchLeaderboardData();
   }, []);
 
-  return (
-    <Paper sx={{ padding: 2 }}>
-      <Typography variant="h4" gutterBottom sx={{ fontWeight: "bold", textAlign: "center" }}>
-        Leaderboard
+  const renderSection = (title: string, data: User[]) => (
+    <Box sx={{ mb: 3, p: 2, borderRadius: 2, backgroundColor: "#2A3A4A" }}>
+      <Typography variant="h6" sx={{ fontWeight: "bold", color: "#FFD700", mb: 1 }}>
+        {title}
       </Typography>
       <List>
-        <ListItem>
-          <ListItemText
-            primary="Top 3 Who Asked the Most Questions"
-            primaryTypographyProps={{ variant: "h6", fontWeight: "bold" }}
-          />
-        </ListItem>
-        {topQuestioners.map((user, index) => (
-          <ListItem key={index}>
-            <ListItemText primary={`${index + 1}. ${user._id} (${user.count} questions)`} />
-          </ListItem>
-        ))}
-        <ListItem>
-          <ListItemText
-            primary="Top 3 Who Made the Most Comments"
-            primaryTypographyProps={{ variant: "h6", fontWeight: "bold" }}
-          />
-        </ListItem>
-        {topCommenters.map((user, index) => (
-          <ListItem key={index}>
-            <ListItemText primary={`${index + 1}. ${user._id} (${user.count} comments)`} />
-          </ListItem>
-        ))}
-        <ListItem>
-          <ListItemText
-            primary="Top 3 Who Made the Most Replies"
-            primaryTypographyProps={{ variant: "h6", fontWeight: "bold" }}
-          />
-        </ListItem>
-        {topRepliers.map((user, index) => (
-          <ListItem key={index}>
-            <ListItemText primary={`${index + 1}. ${user._id} (${user.count} replies)`} />
+        {data.map((user, index) => (
+          <ListItem key={index} sx={{ display: "flex", justifyContent: "space-between" }}>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              {index < 3 && (
+                <Typography variant="h5" sx={{ marginRight: 2 }}>{medalIcons[index]}</Typography>
+              )}
+              <ListItemText primary={user._id} />
+            </Box>
+            <Typography variant="body1" sx={{ fontWeight: "bold" }}>{user.count}</Typography>
           </ListItem>
         ))}
       </List>
+    </Box>
+  );
+
+  return (
+    <Paper sx={{ padding: 3, borderRadius: 2, backgroundColor: "#1D4171", color: "white" }}>
+      <Typography variant="h4" gutterBottom sx={{ fontWeight: "bold", textAlign: "center", color: "#00C2FF" }}>
+        LEADERBOARD
+      </Typography>
+      {renderSection("Top 3 Who Asked the Most Questions", topQuestioners)}
+      {renderSection("Top 3 Who Made the Most Comments", topCommenters)}
+      {renderSection("Top 3 Who Made the Most Replies", topRepliers)}
     </Paper>
   );
 };
