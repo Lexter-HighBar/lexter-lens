@@ -21,10 +21,10 @@ const Leaderboard: React.FC = () => {
   useEffect(() => {
     const fetchLeaderboardData = async () => {
       try {
-        const questionersResponse = await axios.get("http://localhost:5000/api/questions/top-questioners");
+        const questionersResponse = await axios.get("https://lexter-server.onrender.com/api/questions/top-questioners");
         setTopQuestioners(questionersResponse.data);
 
-        const commentsResponse = await axios.get("http://localhost:5000/api/comments/top-commenters-repliers");
+        const commentsResponse = await axios.get("https://lexter-server.onrender.com/api/comments/top-commenters-repliers");
         setTopCommenters(commentsResponse.data.topCommenters);
         setTopRepliers(commentsResponse.data.topRepliers);
       } catch (error) {
@@ -35,8 +35,8 @@ const Leaderboard: React.FC = () => {
   }, []);
 
   const renderSection = (title: string, data: User[]) => (
-    <Box sx={{ mb: 3, p: 2, borderRadius: 2, backgroundColor: "#2A3A4A" }}>
-      <Typography variant="h6" sx={{ fontWeight: "bold", color: "#FFD700", mb: 1 }}>
+    <Box sx={{ mb: 3, p: 2}}>
+      <Typography variant="h6" >
         {title}
       </Typography>
       <List>
@@ -48,7 +48,7 @@ const Leaderboard: React.FC = () => {
               )}
               <ListItemText primary={user._id} />
             </Box>
-            <Typography variant="body1" sx={{ fontWeight: "bold" }}>{user.count}</Typography>
+            <Typography variant="body1" >{user.count}</Typography>
           </ListItem>
         ))}
       </List>
@@ -56,8 +56,8 @@ const Leaderboard: React.FC = () => {
   );
 
   return (
-    <Paper sx={{ padding: 3, borderRadius: 2, backgroundColor: "#1D4171", color: "white" }}>
-      <Typography variant="h4" gutterBottom sx={{ fontWeight: "bold", textAlign: "center", color: "#00C2FF" }}>
+    <Paper sx={{ padding: 3 }}>
+      <Typography variant="h2" gutterBottom color="primary" >
         LEADERBOARD
       </Typography>
       {renderSection("Top 3 Who Asked the Most Questions", topQuestioners)}
