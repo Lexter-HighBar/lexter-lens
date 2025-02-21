@@ -8,7 +8,7 @@ import {
 import { useTags } from '../hooks/useTags'
 import { Page } from './layout/Page'
 import { TextFieldVariants } from '@mui/material'
-import { useCities } from '../hooks/useCities'
+import { useCities } from '../hooks/useFirms'
 
 interface TagSelectorProps {
   selectedTags: string[]

@@ -1,7 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Comment, UseCommentsParams } from '../lib/types';
+import { Comment } from '../lib/types';
 import { useContext } from 'react';
 import { UserdataApiContext } from '../lib/contexts/UserdataApiContext';
+
+export type UseCommentsParams = {
+  id?: string
+}
 
 export const useComments = (params: UseCommentsParams | null = {}) => {
   const { id } = params || {};
