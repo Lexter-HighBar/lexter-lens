@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, MenuItem, Select, FormControl } from '@mui/material';
+import { Box, Menu, MenuItem, IconButton } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 
 const filterOptions = [
@@ -14,28 +14,33 @@ interface FilterProps {
 
 const FilterComponent = ({ onFilterChange }: FilterProps) => {
   const [selectedFilter, setSelectedFilter] = useState('new');
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  
+  const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-  const handleFilterChange = (event: any) => {
-    const newFilter = event.target.value;
-    setSelectedFilter(newFilter);
-    onFilterChange(newFilter);
+  const handleCloseMenu = (newFilter?: string) => {
+    setAnchorEl(null);
+    if (newFilter) {
+      setSelectedFilter(newFilter);
+      onFilterChange(newFilter);
+    }
   };
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', width: '100%', marginBottom: '10px' }}>
-      <FormControl sx={{ width: '200px', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>
-        <FilterListIcon sx={{ marginRight: '10px' }} />
-        <Select value={selectedFilter} onChange={handleFilterChange} displayEmpty sx={{ width: '200px' }}>
-          <MenuItem disabled value="">
-            <em>Filter</em>
+      <IconButton onClick={handleOpenMenu}>
+        <FilterListIcon />
+      </IconButton>
+
+      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => handleCloseMenu()}>
+        {filterOptions.map((option) => (
+          <MenuItem key={option.value} onClick={() => handleCloseMenu(option.value)}>
+            {option.label}
           </MenuItem>
-          {filterOptions.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+        ))}
+      </Menu>
     </Box>
   );
 };
