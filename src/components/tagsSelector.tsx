@@ -6,7 +6,6 @@ import {
   Typography,
 } from '@mui/material'
 import { useTags } from '../hooks/useTags'
-import { Page } from './layout/Page'
 import { TextFieldVariants } from '@mui/material'
 import { useCities } from '../hooks/useCities'
 
@@ -60,7 +59,7 @@ const TagSelector = ({
   // Check for loading
   if (loading) {
     return (
-      <Page>
+    
         <Box
           sx={{
             width: '100%',
@@ -73,7 +72,7 @@ const TagSelector = ({
           <CircularProgress />
           <Typography variant="caption">Loading tags...</Typography>
         </Box>
-      </Page>
+    
     )
   }
 
