@@ -52,7 +52,9 @@ const Step2: React.FC<Step2Props> = ({
         loading={loading}
           defaultTags={lawyerTags.map((tag) => tag.name)}
           title="Authority Tags"
-          tooltip="Authority tags are tags that you are most confident in. These tags will be used to create posts and questions that are most relevant to you."
+          tooltip="Authority tags are assigned based on your expertise and experience and 
+              are managed by the Lexter Lens admin. These tags help ensure you receive posts 
+              most relevant to your knowledge and skills."
         />
         <Typography mt={2} p={1} variant="body1" sx={{ fontWeight: 'medium' }}>
           Interst Tags

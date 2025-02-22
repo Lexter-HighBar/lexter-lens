@@ -94,7 +94,7 @@ const QuestionResultList: React.FC<QuestionListProps> = ({
             <TextField
               variant="standard"
               sx={{ ml: 3, flex: 1 }}
-              placeholder="Or type to search for questions..."
+              placeholder="Or type to search..."
               inputProps={{ 'aria-label': 'search' }}
               value={query}
               onChange={handleSearch}
@@ -215,8 +215,7 @@ const QuestionResultList: React.FC<QuestionListProps> = ({
           ) : (
          
               <Typography>
-              
-                     No results, Select a tag or type to search for questions...
+                Select a tag or type to search.
               </Typography>
            
           )}{' '}

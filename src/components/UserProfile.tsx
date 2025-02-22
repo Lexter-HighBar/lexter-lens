@@ -8,11 +8,13 @@ import {
   Typography,
   IconButton,
   TextField,
+  Tooltip,
 } from '@mui/material'
 import { RiImageEditFill } from 'react-icons/ri'
 import { UserRoundPen } from 'lucide-react'
 import Grid from '@mui/material/Grid2'
 import { useState, useEffect } from 'react'
+import { Info } from 'lucide-react'
 
 import { Page } from './layout/Page'
 import TagSelector from './tagsSelector'
@@ -94,7 +96,7 @@ const UserProfile = () => {
         await user?.setProfileImage({ file })
         setAlert({
           open: true,
-          message: 'Profile picture updated successfully!',
+          message: 'Image updated successfully.',
           severity: 'success',
         })
       } catch (error) {
@@ -129,18 +131,18 @@ const UserProfile = () => {
         })
         //Out of time to blend the three functions - call together for now
         handleUpdateCities()
-        handleUpdateFirms() 
+        handleUpdateFirms()
       }
       setAlert({
         open: true,
-        message: 'Tags updated successfully.',
+        message: 'Updated successfully.',
         severity: 'success',
       })
     } catch (error) {
       console.error(error)
       setAlert({
         open: true,
-        message: 'Failed to update tags.',
+        message: 'Failed to update.',
         severity: 'error',
       })
     } finally {
@@ -161,14 +163,14 @@ const UserProfile = () => {
       }
       setAlert({
         open: true,
-        message: 'Tags updated successfully.',
+        message: 'Updated successfully.',
         severity: 'success',
       })
     } catch (error) {
       console.error(error)
       setAlert({
         open: true,
-        message: 'Failed to update tags.',
+        message: 'Failed to update.',
         severity: 'error',
       })
     } finally {
@@ -189,14 +191,14 @@ const UserProfile = () => {
       }
       setAlert({
         open: true,
-        message: 'Tags updated successfully.',
+        message: 'Updated successfully.',
         severity: 'success',
       })
     } catch (error) {
       console.error(error)
       setAlert({
         open: true,
-        message: 'Failed to update tags.',
+        message: 'Failed to update.',
         severity: 'error',
       })
     } finally {
@@ -243,7 +245,7 @@ const UserProfile = () => {
 
             p: 3,
           }}
-        >
+          >
           <Grid container direction="column" alignItems="center">
             <Grid>
               <img
@@ -275,7 +277,7 @@ const UserProfile = () => {
 
             <Grid>
               <Typography variant="h6">
-                {(user?.unsafeMetadata?.userName as string) || 'not set yet'}
+                {(user?.unsafeMetadata?.userName as string) || 'Not set yet.'}
               </Typography>
               <Typography variant="body1">
                 {user?.firstName && `First Name: ${user.firstName}`}
@@ -287,12 +289,16 @@ const UserProfile = () => {
                 {user.primaryEmailAddress?.emailAddress}
               </Typography>
             </Grid>
+            <Grid sx={{ mt: 6 }}>
             <TagsManager
-            loading={loadingTags}
+              loading={loadingTags}
               defaultTags={lawyerTags.map((tag) => tag.name)}
               title="Authority Tags"
-              tooltip="Authority tags are tags that you are most confident in. These tags will be used to create posts and questions that are most relevant to you."
+              tooltip="Authority tags are assigned based on your expertise and experience and 
+              are managed by the Lexter Lens admin. These tags help ensure you receive posts 
+              most relevant to your knowledge and skills."
             />
+            </Grid>
           </Grid>
         </Box>
 
@@ -300,13 +306,12 @@ const UserProfile = () => {
           <Box sx={{ mb: 6 }}>
             <Typography variant="body1" gutterBottom>
               {' '}
-              Update Username
+              Update Your Username:
             </Typography>
             <TextField
               value={username}
               onChange={handleUserNameChange}
               variant="standard"
-              helperText="Update Username here"
               InputProps={{
                 startAdornment: (
                   <UserRoundPen size={20} style={{ marginRight: '8px' }} />
@@ -314,20 +319,29 @@ const UserProfile = () => {
               }}
             />
           </Box>
-          <Box sx={{ mb: 2 }}>
-            <Typography variant="body1" gutterBottom>
-              Select Expertise Tags
-            </Typography>
 
-            <TagSelector
-              variant="standard"
-              selectedTags={selectedTags}
-              setSelectedTags={setSelectedTags}
-            />
+          <Box sx={{ mb: 2, display: 'flex', alignItems: 'center' }}>
+            <Typography variant="h6" gutterBottom sx={{ mr: 1, fontWeight: "bold" }}>
+              Interest Tags
+            </Typography>
+            <Tooltip title="In addition to authority tags, interest tags help curate 
+            posts most relevant to you. Please select your interest tags below.">
+              <Info size={20} />
+            </Tooltip>
           </Box>
+
+          <Typography variant="body1" gutterBottom>
+            Select Expertise Tags:
+          </Typography>
+
+          <TagSelector
+            variant="standard"
+            selectedTags={selectedTags}
+            setSelectedTags={setSelectedTags}
+          />
           <Box sx={{ mb: 2 }}>
             <Typography variant="body1" gutterBottom>
-              Select City Tags
+              Select City Tags:
             </Typography>
             <TagSelector
               variant="standard"
@@ -339,7 +353,7 @@ const UserProfile = () => {
 
           <Box sx={{ mb: 2 }}>
             <Typography variant="body1" gutterBottom>
-              Select Firm Tags
+              Select Firm Tags:
             </Typography>
             <TagSelector
               variant="standard"
@@ -353,7 +367,7 @@ const UserProfile = () => {
               disabled={loading}
               sx={{ mt: 2 }}
             >
-              {loading ? <CircularProgress size={24} /> : 'Update Tags'}
+              {loading ? <CircularProgress size={24} /> : 'Update'}
             </Button>
           </Box>
         </Box>
