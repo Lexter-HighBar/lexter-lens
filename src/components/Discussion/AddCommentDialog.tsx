@@ -96,6 +96,7 @@ const AddCommentDialog = ({
           </Select>
         </FormControl>
         <TextField
+          multiline
           fullWidth
           variant="outlined"
           label="Content"

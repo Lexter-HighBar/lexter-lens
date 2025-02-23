@@ -208,6 +208,7 @@ export const CommentList = ({
           />
         </>
       )}
+      
       <Snackbar
         open={openSnackBar}
         autoHideDuration={2000}
