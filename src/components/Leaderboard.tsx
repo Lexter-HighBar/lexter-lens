@@ -57,8 +57,8 @@ const Leaderboard: React.FC = () => {
 
   return (
     <Paper sx={{ padding: 3 }}>
-      <Typography variant="h2" gutterBottom color="primary" >
-        LEADERBOARD
+      <Typography variant="h4" gutterBottom color="primary" >
+        Leaderboard
       </Typography>
       {renderSection("Top 3 Who Asked the Most Questions", topQuestioners)}
       {renderSection("Top 3 Who Made the Most Comments", topCommenters)}
