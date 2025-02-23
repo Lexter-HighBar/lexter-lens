@@ -15,7 +15,6 @@ export const useFetchQuestionsFromAI = (id: number) => {
   const hasFetched = useRef(false)
 
   const fetchRelevantTags = useCallback(async () => {
-    console.log('lawyerData:', lawyerData)
     if (!lawyerData?.lawyer) {
       console.warn('Missing required data, skipping AI call.')
       return
@@ -26,30 +25,66 @@ export const useFetchQuestionsFromAI = (id: number) => {
 
     try {
       const lawyer = lawyerData.lawyer
-      console.log('Lawyer Data:', lawyer)
-
-
-      const prompt = `You are provided with a lawyer's profile: "${lawyer}". Based on this profile and the related expertise tags: ${lawyer.tags}, 
-      generate one short, relevant question that other professionals in the same field would find valuable and relatable. 
-      Focus on industry trends, work-life balance, challenges in the profession, or common experiences lawyers face. 
-      Make sure the question is conversational and practical, similar to what you might see in professional forums or communities. 
-      Here are some examples of the style and tone of questions to inspire the output:
-      - "Anyone noticing changes in client expectations post-pandemic?"
-      - "How are you managing work-life balance with remote court sessions?"
-      - "What strategies are you using to stay updated with recent regulatory changes?"
-      - "Is it just me, or has billing become more challenging lately?"
-      - "Any tips on dealing with difficult partners or supervisors?"
-      Avoid overly generic questions or personal inquiries. 
-      Never includes brackets in the queastion like in this example question should be a conplete question without brackets:
-      How are you all adapting your practice to the evolving landscape of [mention a relevant legal area if possible, otherwise omit] technology and client communication preferences?
-
-
-      Format the output as follows:
+      const prompt = `You are provided with a lawyer's profile: "${lawyer}". 
+      Based on this profile and the related expertise tags: ${lawyer.tags}, generate one insightful question that other professionals in the same field would find relevant and valuable.  
+      
+      ### **Guidelines for the Question:**
+      - The question should focus on **industry trends, work-life balance, and organizational culture**.
+      - Avoid personal questions or inquiries about the lawyer’s individual experiences.
+      - The question should be practical and discussion-worthy within the legal profession.
+      - Ensure the question is **open-ended**, encouraging thoughtful responses.
+      
+      ### **Expected JSON Output Format:**
+      \`\`\`json
       {
         "Questions": {
-          "question1": "First question"
+          "question1": "Generated question here."
         }
-      }`;
+      }
+      \`\`\`
+      
+      ### **Examples of Well-Structured Questions:**
+      
+      #### **Example 1: Corporate Law & M&A**
+      **Input:**  
+      _Lawyer profile with expertise in Corporate Law, Mergers & Acquisitions (M&A)._
+      
+      **Generated Question:**
+      \`\`\`json
+      {
+        "Questions": {
+          "question1": "How do corporate lawyers navigate the increasing regulatory scrutiny in M&A deals while ensuring efficiency and compliance for their clients?"
+        }
+      }
+      \`\`\`
+      
+      #### **Example 2: Criminal Defense**
+      **Input:**  
+      _Lawyer profile with expertise in Criminal Defense._
+      
+      **Generated Question:**
+      \`\`\`json
+      {
+        "Questions": {
+          "question1": "With advancements in forensic technology, how should criminal defense attorneys adapt their strategies to challenge DNA evidence more effectively in court?"
+        }
+      }
+      \`\`\`
+      
+      #### **Example 3: Employment Law**
+      **Input:**  
+      _Lawyer profile with expertise in Employment Law._
+      
+      **Generated Question:**
+      \`\`\`json
+      {
+        "Questions": {
+          "question1": "How should employment lawyers advise clients on remote work policies to mitigate legal risks while maintaining workforce flexibility?"
+        }
+      }
+      \`\`\`
+      
+      These examples serve as references for generating insightful questions that align with the lawyer’s expertise. Generate a question following this structure.`;
       
 
       const response = await model.generateContent({
@@ -73,7 +108,6 @@ export const useFetchQuestionsFromAI = (id: number) => {
         .trim()
 
       const parsedResponse = JSON.parse(cleanedResponse || '{}')
-      console.log('Parsed Response:', parsedResponse)
 
       setSuggestedQuestions(parsedResponse?.Questions || {})
     } catch (err) {

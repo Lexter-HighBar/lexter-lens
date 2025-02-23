@@ -85,7 +85,7 @@ export default function SearchBar() {
         >
           <InputBase
             sx={{ ml: 3 }}
-            placeholder="Search..."
+            placeholder="Search"
             inputProps={{ 'aria-label': 'search questions' }}
             readOnly
             onKeyPress={handleKeyPress}

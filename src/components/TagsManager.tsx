@@ -1,64 +1,65 @@
-import { Box, Typography, Tooltip, Chip } from '@mui/material'
+import { Box, Typography, Tooltip, Chip, CircularProgress } from '@mui/material'
+import { Info } from 'lucide-react'
+
 interface TagsManagerProps {
   defaultTags: string[]
-  selectedDefaultTags?: string[]
-  onDefaultTagClick?: (tag: string) => void
+  selectedTags?: string[]
+  onTagClick?: (tag: string) => void
   title?: string
   disabled?: boolean
   tooltip?: string
+  loading: boolean
 }
+
 const TagsManager: React.FC<TagsManagerProps> = ({
   defaultTags,
-  selectedDefaultTags,
-  onDefaultTagClick,
+  selectedTags,
+  onTagClick,
   title,
   disabled,
   tooltip,
+  loading,
 }) => {
   return (
-    <>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          mb: 2,
-        }}
-      >
-        <Typography variant="body1" sx={{ fontWeight: 'medium' }}>
-          {title}
-        </Typography>
-        {tooltip && tooltip.length > 0 && (
-
-        <Tooltip title={tooltip}>
-          <Typography variant="body1">LEARN MORE</Typography>
-        </Tooltip>
-        )}
-      </Box>
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-        {defaultTags.map((tag) => (
-          <Chip
-            disabled={disabled}
-            key={tag}
-            label={tag}
-            onClick={() => onDefaultTagClick && onDefaultTagClick(tag)}
-            sx={{
-              backgroundColor: selectedDefaultTags?.includes(tag)
-                ? 'primary.main'
-                : 'grey.200',
-              color: selectedDefaultTags?.includes(tag)
-                ? 'white'
-                : 'text.primary',
-              '&:hover': {
-                backgroundColor: selectedDefaultTags?.includes(tag)
-                  ? 'primary.dark'
-                  : 'grey.300',
-              },
-            }}
-          />
-        ))}
-      </Box>
-    </>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      {loading ? (
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Typography variant="body1">{title}</Typography>
+            {tooltip && (
+              <Tooltip title={tooltip}>
+                <Info size={20} />
+              </Tooltip>
+            )}
+          </Box>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+            {defaultTags.map((tag) => (
+              <Chip
+                key={tag}
+                label={tag}
+                onClick={() => onTagClick?.(tag)}
+                disabled={disabled}
+                variant="outlined"
+                size="small"
+                sx={{
+                  backgroundColor: selectedTags?.includes(tag) ? 'primary.main' : 'grey.200',
+                  color: selectedTags?.includes(tag) ? 'white' : 'text.primary',
+                  '&:hover': {
+                    backgroundColor: selectedTags?.includes(tag) ? 'primary.dark' : 'grey.300',
+                  },
+                }}
+              />
+            ))}
+          </Box>
+        </>
+      )}
+    </Box>
   )
 }
+
 export default TagsManager
+

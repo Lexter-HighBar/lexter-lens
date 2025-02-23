@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { useQuestions } from '../../hooks/useQuestions'
 import {
   TextField,
@@ -12,6 +11,9 @@ import {
   InputBase,
   Divider,
   Box,
+  Select,
+  FormControl,
+  MenuItem,
 } from '@mui/material'
 import { v4 as uuidv4 } from 'uuid'
 import { Flex } from '@radix-ui/themes'
@@ -20,6 +22,7 @@ import { useUser } from '@clerk/clerk-react'
 import { Question } from '../../lib/types'
 import { isMobile } from 'react-device-detect'
 import ChipGenerator from '../ChipGenerateur'
+import { useState } from 'react'
 
 const CreateQuestion = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -33,10 +36,9 @@ const CreateQuestion = () => {
     tags: [],
   })
   const [error, setError] = useState<string | null>(null)
-
+  const [anonymous, setAnonymous] = useState(false)
   const api = useQuestions() // Access API context
   const { user } = useUser()
-
 
   const handleCreateQuestion = async () => {
     const { content, tags } = newQuestion
@@ -54,12 +56,17 @@ const CreateQuestion = () => {
       // Create the new question object
       const questionPayload: Question = {
         QuestionId: uuidv4(),
-        ownerId: user?.id || '',
-        userName:
-          typeof user?.unsafeMetadata.userName === 'string'
+        ownerId: anonymous ? `anonymous-${uuidv4()}` : user?.id || '',
+        userName: anonymous
+          ? 'Anonymous'
+          : typeof user?.unsafeMetadata.userName === 'string'
             ? user.unsafeMetadata.userName
             : '',
-        profilePicture: typeof user?.imageUrl === 'string' ? user.imageUrl : '',
+        profilePicture: anonymous
+          ? 'https://raw.githubusercontent.com/Lexter-HighBar/lexter-lens/refs/heads/main/assets/anonymous.png'
+          : typeof user?.imageUrl === 'string'
+            ? user.imageUrl
+            : '',
         createdOn: new Date().toISOString(),
         content: content,
         tags: tags.map((tag: string) => tag.trim()), // Ensure tags are trimmed
@@ -88,7 +95,6 @@ const CreateQuestion = () => {
     }
   }
 
-
   return (
     <>
       <Flex gap="1" align="center">
@@ -116,7 +122,6 @@ const CreateQuestion = () => {
               fullWidth
               placeholder="Question in mind ...?"
               inputProps={{ 'aria-label': 'Question in mind ...?' }}
-           
             />
           </Box>
         </Box>
@@ -128,7 +133,34 @@ const CreateQuestion = () => {
         open={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
       >
-        <DialogTitle>New Question</DialogTitle>
+        {/* Anonymouse logic  */}
+        <DialogTitle>
+          Ask a Question as
+          <FormControl fullWidth variant="standard">
+            <img
+              src={
+                anonymous
+                  ? 'https://raw.githubusercontent.com/Lexter-HighBar/lexter-lens/refs/heads/main/assets/anonymous.png'
+                  : user?.imageUrl || ''
+              }
+              alt="Profile Picture"
+              style={{ width: '50px', height: 'auto', borderRadius: '50%' }}
+            />
+
+            <Select
+              value={anonymous ? 'Anonymous' : 'Me'}
+              onChange={(event) => {
+                setAnonymous(event.target.value === 'Anonymous')
+              }}
+            >
+              <MenuItem value="Anonymous">Anonymous</MenuItem>
+              <MenuItem value="Me">
+                {String(user?.unsafeMetadata?.userName) || 'Unknown User'}
+              </MenuItem>
+            </Select>
+          </FormControl>
+        </DialogTitle>
+
         <DialogContent>
           <TextField
             fullWidth
@@ -145,7 +177,6 @@ const CreateQuestion = () => {
           <ChipGenerator
             inputText={newQuestion.content}
             onTagChange={(tags) => setNewQuestion({ ...newQuestion, tags })}
-         
           />
 
           {error && (

@@ -1,35 +1,36 @@
 import { useQuery } from '@tanstack/react-query'
-import { Tag, UseTagsParams } from '../lib/types'
+import { Tag } from '../lib/types'
+import { useUserContext } from '../lib/hooks/UserContext'
 
-import { useContext } from 'react';
-import { UserdataApiContext } from '../lib/contexts/UserdataApiContext';
-
+export type UseTagsParams = {
+  id?: string
+}
 
 export const useTags = (params: UseTagsParams | null = {}) => {
-  const { id } = params || {};
-  const api = useContext(UserdataApiContext);
+  const { id } = params || {}
+  const api = useUserContext()
 
-  // Define the query function based on whether an ID is provided
   const { data, isLoading, error } = useQuery<Tag | Tag[]>({
     queryKey: id ? ['tag', id] : ['tags'], // Unique key for caching based on ID
-    queryFn: () => {
+    queryFn: async () => {
       if (!api) {
-        return Promise.reject(new Error('API is not available'))
+        throw new Error('API is not available')
       }
 
       if (id) {
         // Fetch a single tag if an ID is provided
-        return api.get<Tag>(`/tags/${id}`)
+        return await api.get<Tag>(`/tags/${id}`)
       } else {
         // Fetch all tags if no ID is provided
-        return api.get<Tag[]>('/tags')
+        return await api.get<Tag[]>('/tags')
       }
     },
+    enabled: !!api,
   })
 
   return {
-    tags: data || (id ? null : []), // Return null if a specific tag is not found
+    tags: Array.isArray(data) ? data : data ? [data] : [], // Always return an array
     loading: isLoading,
-    error: error,
+    error,
   }
 }

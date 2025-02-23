@@ -5,14 +5,14 @@ import { useQuestions } from '../../hooks/useQuestions'
 import { v4 as uuidv4 } from 'uuid'
 import { useUser } from '@clerk/clerk-react'
 import { useComments } from '../../hooks/useComments'
-import anonymous from '../../../assets/anonymous.png'
+
 
 interface Step3Props {
   tags: string[]
   suggestedQuestions: SuggestedQuestions | null
   loading: boolean
   error: string | null
-  handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+
 }
 
 const Step3: React.FC<Step3Props> = ({
@@ -71,7 +71,7 @@ const Step3: React.FC<Step3Props> = ({
         QuestionId: uuidv4(),
         ownerId: 'anonymousId',
         userName: `'Anonymous'`,
-        profilePicture: anonymous,
+        profilePicture: 'https://raw.githubusercontent.com/Lexter-HighBar/lexter-lens/refs/heads/main/assets/anonymous.png',
         createdOn: new Date().toISOString(),
         content: suggestedQuestions?.question1 || '',
         tags: tags.map((tag: string) => tag.trim()),
