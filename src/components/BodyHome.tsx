@@ -32,7 +32,7 @@ const BodyHome: React.FC = () => {
           color="secondary"
           onClick={() => navigate("/discussion")}
         >
-          Join the Discussion
+        <Typography noWrap variant="body1">Join the Discussion</Typography>
         </Button>
       </Box>
 
