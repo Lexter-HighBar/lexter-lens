@@ -25,7 +25,7 @@ interface ResponsiveAppBarProps {
 function ResponsiveAppBar({ children }: ResponsiveAppBarProps) {
   return (
     <AppBar position="sticky">
-      <Container maxWidth="xl">
+      <Container maxWidth={false} sx={{ maxWidth: "1300px", mx: "auto" }}>
         <Toolbar sx={{ justifyContent: 'flex-end', flexDirection: { xs: 'row', md: 'row' } }}>
           {/* Display logo and navigation menu on medium and larger screens */}
           <Box

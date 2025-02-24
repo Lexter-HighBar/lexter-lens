@@ -2,21 +2,20 @@ import {
   Box,
   Typography,
   Button,
+  IconButton,
   useTheme,
   useMediaQuery,
   Fab,
   Drawer,
 } from '@mui/material'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import FirstSigninFlow from '../components/FirstSigninFlow/FirstSigninFlow'
 import { useUser } from '@clerk/clerk-react'
 import { useSearchQuery } from '../hooks/useSearchQuery'
 import { Page } from '../components/layout/Page'
-
-import { FaChalkboardTeacher } from 'react-icons/fa'
+import { ChevronLeft, Close } from '@mui/icons-material'
 import Leaderboard from '../components/Leaderboard'
 import BodyHome from '../components/BodyHome'
-import { X } from 'lucide-react'
 import InsightSection from '../components/InsightSection'
 
 const Home: React.FC = () => {
@@ -31,6 +30,7 @@ const Home: React.FC = () => {
 
   const { questions, setParams } = useSearchQuery()
   const userTags = user.user?.unsafeMetadata.tags as string | undefined
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null)
   const [openDrawer, setOpenDrawer] = useState(
     open !== null && open !== undefined,
   ) // initialize openDrawer to true if open is not null or undefined
@@ -43,24 +43,48 @@ const Home: React.FC = () => {
     setParams({ tags: userTags })
   }, []) // eslint-disable-line
 
+  const scroll = useCallback(
+    (direction: 'left' | 'right') => {
+      if (scrollContainerRef.current) {
+        const scrollAmount = isMobile ? 150 : 320
+        const currentScrollPosition = scrollContainerRef.current.scrollLeft
+        const newScrollPosition =
+          direction === 'left'
+            ? currentScrollPosition - scrollAmount
+            : currentScrollPosition + scrollAmount
+        scrollContainerRef.current.scrollTo({
+          left: newScrollPosition,
+          behavior: 'smooth',
+        })
+      } else {
+        console.error('scrollContainerRef is not attached')
+      }
+    },
+    [isMobile, scrollContainerRef],
+  )
+
+  useEffect(() => {
+    const autoScroll = setInterval(
+      () => {
+        scroll('right')
+      },
+      isMobile ? 5000 : 3000,
+    )
+    return () => clearInterval(autoScroll)
+  }, [isMobile, scroll])
+
   return (
     <>
       {!openDrawer && (
         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Fab
-            sx={{
-              bgcolor: 'secondary',
-              position: 'fixed',
-              top: 130,
-              right: 30,
-              display: { xs: 'none', md: 'flex' },
-            }} // to avoid overlap if the changes of the screen happens after rendering the component
+            sx={{ position: 'fixed', top: 130, right: 30 }}
             variant="extended"
             size="medium"
             onClick={toggleDrawer(true)}
           >
-            <FaChalkboardTeacher size={20}  />
-            <Typography m={1} variant="caption">Leaderboard</Typography>
+            <ChevronLeft style={{ marginRight: 4 }} />
+            Leaderboard
           </Fab>
         </Box>
       )}
@@ -69,36 +93,48 @@ const Home: React.FC = () => {
         <Box sx={{ width: '100%', height: '100%' }}>
           <BodyHome />
         </Box>
-        <Box sx={{ mt: 4, paddingX: isMobile ? 1 : 4 }}>
-          <FirstSigninFlow
-            isFirstSignIn={isFirstSignIn}
-            setIsFirstSignIn={setIsFirstSignIn}
-          />
-        </Box>
-        <InsightSection questions={questions} />
+        <Box sx={{ mt: 4, paddingX: isMobile ? 1 : 4 }} />
+        <FirstSigninFlow
+          isFirstSignIn={isFirstSignIn}
+          setIsFirstSignIn={setIsFirstSignIn}
+        />
         <Button onClick={handleTestClick} sx={{ mb: 4 }}>
           Quickstart Test
         </Button>
+
+        {/* Masonry Insight Cards */}
+        <InsightSection questions={questions} />
+
         {/* desktop mode Leaderboard */}
-        {!isMobile && (  
-        <Drawer  variant='persistent' sx={{ backgroundColor: 'primary.dark' }} open={openDrawer} onClose={toggleDrawer(false)} anchor="right">
-          <Box
-            component="div"
-            p={2}
-            display="flex"
-            justifyContent="space-between"
+        {!isMobile && (
+          <Drawer
+            variant="persistent"
             sx={{ backgroundColor: 'primary.dark' }}
+            open={openDrawer}
+            onClose={toggleDrawer(false)}
+            anchor="right"
           >
-            <X
-              style={{ cursor: 'pointer', color: 'white' }}
-              onClick={toggleDrawer(false)}
-            />
-            <Typography variant="h2" gutterBottom color="primary.contrastText">
-              Leaderboard
-            </Typography>
-          </Box>
-          <Leaderboard />
-        </Drawer>)}
+            <Box
+              component="div"
+              p={2}
+              display="flex"
+              justifyContent="space-between"
+              sx={{ backgroundColor: 'primary.dark' }}
+            >
+              <IconButton onClick={toggleDrawer(false)} sx={{ color: 'white' }}>
+                <Close />
+              </IconButton>
+              <Typography
+                variant="h2"
+                gutterBottom
+                color="primary.contrastText"
+              >
+                Leaderboard
+              </Typography>
+            </Box>
+            <Leaderboard />
+          </Drawer>
+        )}
       </Page>
     </>
   )

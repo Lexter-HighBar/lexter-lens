@@ -30,13 +30,6 @@ const Step1 = ({ onChange, onIdChange, formUserName }: Step1Props) => {
         label="Confirmation number"
         onChange={onIdChange}
       />
-
-      <Typography>Privacy Policies</Typography>
-      <ul>
-        <li>Bullet point 1</li>
-        <li>Bullet point 2</li>
-        <li>Bullet point 3</li>
-      </ul>
     </>
   )
 }

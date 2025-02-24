@@ -5,8 +5,8 @@ export const Page = styled(Flex)({
   flexDirection: 'column',
   alignItems: 'center',
   height: '100vh',
-  width: '100%',  //
-  maxWidth: '1200px',
+  width: '100%',  
+  maxWidth: '1300px',
   margin: '0 auto',
   marginTop:10,
  

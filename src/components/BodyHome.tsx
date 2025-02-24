@@ -1,45 +1,65 @@
-import React from 'react'
-import { Box, Typography, Button } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
-import backgroundImg from '../../assets/golexter-web-pattern.png'
-import heroImg from '../../assets/golexter_smiling_lawyer_male_shape.png'
+import React from "react";
+import { Box, Typography, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+
+import Forum from '@mui/icons-material/Forum';
 
 const BodyHome: React.FC = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
     <Box
       sx={{
-        display: 'flex',
-        justifyContent: 'space-between', // Align text on the left and image on the right
-        alignItems: 'center', // Vertically center the content
-        backgroundImage: { backgroundImg },
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed',
-        padding: '0 .5rem', // Adds some padding for spacing
-       overflow: 'hidden',
-       width: '100%',
+        width: "100%",
+        minHeight: "70vh",
+        display: "flex",
+        flexDirection: { xs: "column", md: "row" }, // Stack content on mobile
+        justifyContent: "center", // Center content for both mobile & desktop
+        alignItems: "center",
+        backgroundImage: "url('/assets/golexter-web-pattern.png')",
+        backgroundSize: "contain", // Keeps pattern proportional
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed",
+        padding: { xs: "40px 20px", md: "0 40px" },
+        textAlign: { xs: "center", md: "left" },
       }}
     >
-      <Box sx={{ flex: 1 }}>
+      <Box sx={{ flex: 1, maxWidth: { xs: "100%", md: "50%" } }}>
         <Typography
-          variant="h1"
-          sx={{ color: 'primary.main', fontWeight: 'bold', mb: 2 }}
+          variant="h3"
+          sx={{
+            color: "primary.main",
+            fontWeight: "bold",
+            mb: 2,
+            fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
+          }}
         >
           Welcome to Lexter Lens
         </Typography>
-        <Typography variant="h5" sx={{ color: 'primary.dark', mb: 4 }}>
+        <Typography
+          variant="h6"
+          sx={{
+            color: "primary.dark",
+            mb: 4,
+            fontSize: { xs: "1rem", sm: "1.25rem", md: "1.5rem" },
+          }}
+        >
           Driving a new era in legal career decisions.
         </Typography>
         <Button
-          size="large"
           variant="contained"
           color="secondary"
-          onClick={() => navigate('/discussion')}
-          
+          onClick={() => navigate("/discussion")}
+          sx={{
+            color: "primary.main",
+            fontWeight: "bold",
+            textTransform: "none",
+            fontSize: { xs: "0.875rem", md: "1rem" },
+            padding: { xs: "8px 16px", md: "12px 24px" },
+          }}
+          startIcon={<Forum />}
         >
-
-          <Typography noWrap variant="body1">Join the Discussion</Typography>
+          Join the Discussion
         </Button>
       </Box>
 
@@ -47,21 +67,24 @@ const BodyHome: React.FC = () => {
       <Box
         sx={{
           flex: 1,
-          textAlign: 'right',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          position: 'relative',
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          mt: { xs: 4, md: 0 },
         }}
       >
         <img
-          src={heroImg}
+          src={"/assets/golexter_smiling_lawyer_male_shape.png"}
           alt="Feature"
-          style={{ maxWidth: '50dvw', maxHeight: '50dvh' }}
+          style={{
+            width: "90%",
+            maxWidth: "500px", // Prevents it from being too big
+            height: "auto",
+          }}
         />
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default BodyHome
+export default BodyHome;
