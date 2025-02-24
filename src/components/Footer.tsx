@@ -40,7 +40,7 @@ const Footer: React.FC = () => {
           {/* Navigation Links */}
           {links.map((text, index) => (
             <Grid key={index}>
-              <Link href="#" sx={linkStyle}>
+              <Link href={`/${text.toLowerCase()}`} sx={linkStyle}>
                 {text}
               </Link>
             </Grid>
