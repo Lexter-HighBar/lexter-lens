@@ -49,6 +49,7 @@ const Home: React.FC = () => {
         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Fab
             sx={{
+              bgcolor: 'secondary.main',
               position: 'fixed',
               top: 130,
               right: 30,
@@ -75,17 +76,28 @@ const Home: React.FC = () => {
           />
         </Box>
         <InsightSection questions={questions} />
-        {/* desktop mode Leaderboard */}
-        { !isMobile && (
-        <Drawer open={openDrawer} onClose={toggleDrawer(false)} anchor="right">
-          <Box p={2}>
-            <X onClick={toggleDrawer(false)} />
-          </Box>
-          <Leaderboard />
-        </Drawer>)}
         <Button onClick={handleTestClick} sx={{ mb: 4 }}>
           Quickstart Test
         </Button>
+        {/* desktop mode Leaderboard */}
+        <Drawer  variant='persistent' sx={{ backgroundColor: 'primary.dark' }} open={openDrawer} onClose={toggleDrawer(false)} anchor="right">
+          <Box
+            component="div"
+            p={2}
+            display="flex"
+            justifyContent="space-between"
+            sx={{ backgroundColor: 'primary.dark' }}
+          >
+            <X
+              style={{ cursor: 'pointer', color: 'white' }}
+              onClick={toggleDrawer(false)}
+            />
+            <Typography variant="h2" gutterBottom color="primary.contrastText">
+              Leaderboard
+            </Typography>
+          </Box>
+          <Leaderboard />
+        </Drawer>
       </Page>
     </>
   )
