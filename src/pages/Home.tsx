@@ -49,7 +49,7 @@ const Home: React.FC = () => {
         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Fab
             sx={{
-              bgcolor: 'secondary.main',
+              bgcolor: 'secondary',
               position: 'fixed',
               top: 130,
               right: 30,
@@ -59,8 +59,8 @@ const Home: React.FC = () => {
             size="medium"
             onClick={toggleDrawer(true)}
           >
-            <FaChalkboardTeacher size={20} style={{ marginRight: 4 }} />
-            <Typography variant="caption">Leaderboard</Typography>
+            <FaChalkboardTeacher size={20}  />
+            <Typography m={1} variant="caption">Leaderboard</Typography>
           </Fab>
         </Box>
       )}

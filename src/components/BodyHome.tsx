@@ -17,9 +17,11 @@ const BodyHome: React.FC = () => {
         backgroundPosition: 'center',
         backgroundAttachment: 'fixed',
         padding: '0 .5rem', // Adds some padding for spacing
+       overflow: 'hidden',
+       width: '100%',
       }}
     >
-      <Box sx={{ flex: 1, textAlign: 'left' }}>
+      <Box sx={{ flex: 1 }}>
         <Typography
           variant="h1"
           sx={{ color: 'primary.main', fontWeight: 'bold', mb: 2 }}
