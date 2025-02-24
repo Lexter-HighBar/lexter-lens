@@ -2,21 +2,22 @@ import {
   Box,
   Typography,
   Button,
-  IconButton,
   useTheme,
   useMediaQuery,
   Fab,
   Drawer,
 } from '@mui/material'
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import FirstSigninFlow from '../components/FirstSigninFlow/FirstSigninFlow'
 import { useUser } from '@clerk/clerk-react'
 import { useSearchQuery } from '../hooks/useSearchQuery'
 import { Page } from '../components/layout/Page'
-import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material'
-import { FaChevronLeft } from 'react-icons/fa'
+
+import { FaChalkboardTeacher } from 'react-icons/fa'
 import Leaderboard from '../components/Leaderboard'
 import BodyHome from '../components/BodyHome'
+import { X } from 'lucide-react'
+import InsightSection from '../components/InsightSection'
 
 const Home: React.FC = () => {
   const user = useUser()
@@ -30,7 +31,6 @@ const Home: React.FC = () => {
 
   const { questions, setParams } = useSearchQuery()
   const userTags = user.user?.unsafeMetadata.tags as string | undefined
-  const scrollContainerRef = useRef<HTMLDivElement | null>(null)
   const [openDrawer, setOpenDrawer] = useState(
     open !== null && open !== undefined,
   ) // initialize openDrawer to true if open is not null or undefined
@@ -43,54 +43,30 @@ const Home: React.FC = () => {
     setParams({ tags: userTags })
   }, []) // eslint-disable-line
 
-  const scroll = useCallback(
-    (direction: 'left' | 'right') => {
-      if (scrollContainerRef.current) {
-        const scrollAmount = isMobile ? 150 : 320
-        const currentScrollPosition = scrollContainerRef.current.scrollLeft
-        const newScrollPosition =
-          direction === 'left'
-            ? currentScrollPosition - scrollAmount
-            : currentScrollPosition + scrollAmount
-        scrollContainerRef.current.scrollTo({
-          left: newScrollPosition,
-          behavior: 'smooth',
-        })
-      } else {
-        console.error('scrollContainerRef is not attached')
-      }
-    },
-    [isMobile, scrollContainerRef],
-  )
-
-  useEffect(() => {
-    const autoScroll = setInterval(
-      () => {
-        scroll('right')
-      },
-      isMobile ? 5000 : 3000,
-    )
-    return () => clearInterval(autoScroll)
-  }, [isMobile, scroll])
-
   return (
     <>
       {!openDrawer && (
         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Fab
-            sx={{ position: 'fixed', top: 130, right: 30 }}
+            sx={{
+              bgcolor: 'secondary',
+              position: 'fixed',
+              top: 130,
+              right: 30,
+              display: { xs: 'none', md: 'flex' },
+            }} // to avoid overlap if the changes of the screen happens after rendering the component
             variant="extended"
-            size="medium"            
+            size="medium"
             onClick={toggleDrawer(true)}
           >
-            <FaChevronLeft style={{ marginRight: 4 }}/>
-            Leaderboard
+            <FaChalkboardTeacher size={20}  />
+            <Typography m={1} variant="caption">Leaderboard</Typography>
           </Fab>
         </Box>
       )}
 
       <Page sx={{ height: '100%', padding: 2 }}>
-        <Box sx={{ width: '100%', height: '100%',}}>
+        <Box sx={{ width: '100%', height: '100%' }}>
           <BodyHome />
         </Box>
         <Box sx={{ mt: 4, paddingX: isMobile ? 1 : 4 }}>
@@ -98,68 +74,31 @@ const Home: React.FC = () => {
             isFirstSignIn={isFirstSignIn}
             setIsFirstSignIn={setIsFirstSignIn}
           />
-          <Button onClick={handleTestClick} sx={{ mb: 4 }}>
-            Quickstart Test
-          </Button>
-
-          <Typography variant="h6" gutterBottom>
-            Insights Based on Your Interests
-          </Typography>
-
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 10 }}>
-            {!isMobile && (
-              <IconButton onClick={() => scroll('left')}>
-                <ArrowBackIos />
-              </IconButton>
-            )}
-
-            <Box
-              ref={scrollContainerRef}
-              sx={{
-                display: 'flex',
-                overflowX: 'auto',
-                scrollBehavior: 'smooth',
-                gap: 2,
-                padding: 2,
-                width: '100%',
-                maxWidth: isMobile ? '100%' : 750,
-                '&::-webkit-scrollbar': { display: 'none' }, // Hide scrollbar
-              }}
-            >
-              {questions.length > 0 ? (
-                questions.map((q) => (
-                  <Box
-                    key={q.QuestionId}
-                    sx={{
-                      minWidth: isMobile ? 100 : 400, // Adjust width for mobile
-                      padding: 2,
-                      backgroundColor: 'primary.contrastText',
-                      borderRadius: 2,
-                      boxShadow: 1,
-                    }}
-                  >
-                    <Typography variant="h6">{q.userName}</Typography>
-                    <Typography variant="body2" color="textSecondary">
-                      {q.content}
-                    </Typography>
-                  </Box>
-                ))
-              ) : (
-                <Typography>No questions found based on your tags.</Typography>
-              )}
-            </Box>
-
-            {!isMobile && (
-              <IconButton onClick={() => scroll('right')}>
-                <ArrowForwardIos />
-              </IconButton>
-            )}
-          </Box>
-        </Box>{' '}
+        </Box>
+        <InsightSection questions={questions} />
+        <Button onClick={handleTestClick} sx={{ mb: 4 }}>
+          Quickstart Test
+        </Button>
         {/* desktop mode Leaderboard */}
-        <Drawer open={openDrawer} onClose={toggleDrawer(false)} anchor="right">
+        {!isMobile && (  
+        <Drawer  variant='persistent' sx={{ backgroundColor: 'primary.dark' }} open={openDrawer} onClose={toggleDrawer(false)} anchor="right">
+          <Box
+            component="div"
+            p={2}
+            display="flex"
+            justifyContent="space-between"
+            sx={{ backgroundColor: 'primary.dark' }}
+          >
+            <X
+              style={{ cursor: 'pointer', color: 'white' }}
+              onClick={toggleDrawer(false)}
+            />
+            <Typography variant="h2" gutterBottom color="primary.contrastText">
+              Leaderboard
+            </Typography>
+          </Box>
           <Leaderboard />
-        </Drawer>
+        </Drawer>)}
       </Page>
     </>
   )
