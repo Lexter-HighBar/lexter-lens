@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import logoDark from '../../assets/logoDark.svg'
-import { Box, Link, Container } from '@mui/material'
+import { Box, Link, Container, Divider } from '@mui/material'
 import Grid from '@mui/material/Grid2'
 import LinkedInIcon from '@mui/icons-material/LinkedIn'
 import PrivacyPolicy from './PrivacyPolicy'
@@ -11,7 +11,7 @@ const linkStyle = {
   transition: 'color 0.3s ease',
   '&:hover': { color: 'secondary.main' },
   cursor: 'pointer',
-  textDecoration: 'none'
+  textDecoration: 'none',
 }
 
 const Footer: React.FC = () => {
@@ -21,7 +21,8 @@ const Footer: React.FC = () => {
 
   return (
     <Box sx={{ bgcolor: 'background.paper', p: 6 }}>
-      <Container>
+      <Container maxWidth={false} sx={{ maxWidth: "1300px", mx: "auto", px: 3 }}>
+      <Divider sx={{ mb: 4 }} />
         {/* Main Links Section */}
         <Grid
           container
@@ -31,7 +32,7 @@ const Footer: React.FC = () => {
             justifyContent: 'left',
             alignItems: 'center',
           }}
-        >
+          >
           {/* Logo */}
           <Grid>
             <img src={logoDark} alt="Lexter Logo" />

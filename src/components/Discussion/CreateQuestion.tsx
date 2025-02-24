@@ -98,7 +98,7 @@ const CreateQuestion = () => {
   return (
     <>
       <Flex gap="1" align="center">
-        <Box sx={{ width: '80vw', maxWidth: '750px' }}>
+        <Box sx={{ width: '70vw', maxWidth: '700px' }}>
           <Box
             onClick={() => setIsDialogOpen(true)}
             component="form"
@@ -120,8 +120,10 @@ const CreateQuestion = () => {
             </IconButton>
             <InputBase
               fullWidth
-              placeholder="Question in mind ...?"
-              inputProps={{ 'aria-label': 'Question in mind ...?' }}
+              placeholder="Something in mind? Type it here..."
+              inputProps={{
+                'aria-label': 'Something in mind? Type it here...',
+              }}
             />
           </Box>
         </Box>
@@ -132,10 +134,10 @@ const CreateQuestion = () => {
         fullScreen={isMobile}
         open={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
-      >
+        >
         {/* Anonymouse logic  */}
         <DialogTitle>
-          Ask a Question as
+          Post as
           <FormControl fullWidth variant="standard">
             <img
               src={
@@ -165,7 +167,7 @@ const CreateQuestion = () => {
           <TextField
             fullWidth
             margin="normal"
-            label="Question"
+            label="Type here..."
             multiline
             rows={4}
             value={newQuestion.content}

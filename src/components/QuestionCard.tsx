@@ -14,8 +14,6 @@ const QuestionCard = ({ question }: { question: Question }) => {
           backgroundColor: 'primary.contrastText',
           borderRadius: 2,
           boxShadow: 1,
-          borderColor: 'primary.main',
-          borderStyle: 'solid',
           cursor: 'pointer',
           gap: 2
         }}
@@ -26,13 +24,13 @@ const QuestionCard = ({ question }: { question: Question }) => {
       
         <Typography variant="subtitle2">
             <strong>Tags: </strong> {question.tags.join(', ')}<br />
-          <strong>Asked by: </strong> {question.userName}
+          <strong>By: </strong> {question.userName}
         </Typography>
       
     <Box sx={{ display: "flex", justifyContent: "space-between" }}>    <Typography variant="caption">
           <strong>On: </strong> {formatCreatedOnDate(new Date(question.createdOn))}
         </Typography>
-        <Button variant="text" onClick={() => navigate(`/question/${question._id}`)}> See more </Button>
+        <Button variant="text" onClick={() => navigate(`/question/${question._id}`)}> See More </Button>
         </Box>
       </Box>
     )

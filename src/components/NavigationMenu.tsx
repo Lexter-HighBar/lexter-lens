@@ -80,7 +80,7 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({ pages }) => {
 
           <Divider />
 
-          {/* Leaderboard menu botton */}
+          {/* Leaderboard menu button */}
           <MenuItem
             onClick={() => {
               handleCloseNavMenu()
