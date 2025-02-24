@@ -80,6 +80,7 @@ const Home: React.FC = () => {
           Quickstart Test
         </Button>
         {/* desktop mode Leaderboard */}
+        {!isMobile && (  
         <Drawer  variant='persistent' sx={{ backgroundColor: 'primary.dark' }} open={openDrawer} onClose={toggleDrawer(false)} anchor="right">
           <Box
             component="div"
@@ -97,7 +98,7 @@ const Home: React.FC = () => {
             </Typography>
           </Box>
           <Leaderboard />
-        </Drawer>
+        </Drawer>)}
       </Page>
     </>
   )
