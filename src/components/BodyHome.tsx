@@ -1,6 +1,8 @@
 import React from "react";
 import { Box, Typography, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import webPattern from '../../assets/golexter-web-pattern.png'
+import smilingLawyer from '../../assets/golexter_smiling_lawyer_male_shape.png'
 
 import Forum from '@mui/icons-material/Forum';
 
@@ -16,7 +18,7 @@ const BodyHome: React.FC = () => {
         flexDirection: { xs: "column", md: "row" }, // Stack content on mobile
         justifyContent: "center", // Center content for both mobile & desktop
         alignItems: "center",
-        backgroundImage: "url('/assets/golexter-web-pattern.png')",
+        backgroundImage: "url('"+webPattern+"')",
         backgroundSize: "contain", // Keeps pattern proportional
         backgroundPosition: "center",
         backgroundAttachment: "fixed",
@@ -74,8 +76,8 @@ const BodyHome: React.FC = () => {
         }}
       >
         <img
-          src={"/assets/golexter_smiling_lawyer_male_shape.png"}
-          alt="Feature"
+          src={smilingLawyer} 
+          alt="Smiling Lawyer Feature Image"
           style={{
             width: "90%",
             maxWidth: "500px", // Prevents it from being too big
