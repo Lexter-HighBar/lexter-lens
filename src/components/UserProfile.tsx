@@ -340,15 +340,15 @@ const UserProfile = () => {
             setSelectedTags={setSelectedTags}
           />
           <Box sx={{ mb: 2 }}>
-            <Typography variant="body1" gutterBottom>
-              Select City Tags:
-            </Typography>
-            <TagSelector
-              variant="standard"
-              selectedTags={selectedCities}
-              setSelectedTags={setSelectedCities}
-              cityType
-            />
+          <Typography variant="body1" gutterBottom>
+            Select City Tags:
+          </Typography>
+          <TagSelector
+            variant="standard"
+            selectedTags={selectedCities}
+            setSelectedTags={setSelectedCities}
+            cityType
+          />
           </Box>
 
           <Box sx={{ mb: 2 }}>
@@ -359,6 +359,7 @@ const UserProfile = () => {
               variant="standard"
               selectedTags={selectedFirms}
               setSelectedTags={setSelectedFirms}
+              firmType={true}
             />
 
             <Button

@@ -7,7 +7,7 @@ export type UseFirmsParams = {
   id?: string
 }
 
-export const useCities = (params?: UseFirmsParams) => {
+export const useFirms = (params?: UseFirmsParams) => {
   const { id } = params || {}
   const api = useUserContext()
 
@@ -24,7 +24,7 @@ export const useCities = (params?: UseFirmsParams) => {
   })
 
   return {
-    cities: Array.isArray(data) ? data : data ? [data] : [], // ✅ Always return an array
+    firms: Array.isArray(data) ? data : data ? [data] : [], // Always return an array
     loading: isLoading,
     error,
   }

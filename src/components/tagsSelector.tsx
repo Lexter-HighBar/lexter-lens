@@ -7,13 +7,15 @@ import {
 } from '@mui/material'
 import { useTags } from '../hooks/useTags'
 import { TextFieldVariants } from '@mui/material'
-import { useCities } from '../hooks/useFirms'
+import { useCities } from '../hooks/useCities'
+import { useFirms } from '../hooks/useFirms'
 
 interface TagSelectorProps {
   selectedTags: string[]
   setSelectedTags: (tags: string[]) => void
   variant?: string
   cityType?: boolean
+  firmType?: boolean
 }
 
 const TagSelector = ({
@@ -21,8 +23,11 @@ const TagSelector = ({
   setSelectedTags,
   variant,
   cityType,
+  firmType
 }: TagSelectorProps) => {
   const { cities } = useCities()
+  const { firms } = useFirms()
+  console.log(firms);
   const { tags, loading, error } = useTags()
 
   // Check for variant
@@ -44,11 +49,6 @@ const TagSelector = ({
       ) as string[],
     )
   }
-
-  // Remove tag function if needed to show selected tags
-  //   const handleDelete = (tagToDelete: string) => {
-  //     setSelectedTags(selectedTags.filter((tag) => tag !== tagToDelete));
-  //   };
 
   // Check for errors
   if (error) {
@@ -90,7 +90,11 @@ const TagSelector = ({
 
         fullWidth
         multiple
-        options={cityType ? cities.map((city) => city.city) : tags.map((tag) => tag.name)}
+        options ={ cityType 
+        ? cities.map(city => city.city) 
+        : firmType 
+          ? firms.map(firm => firm.firm_name) 
+          : tags.map(tag => tag.name)}
         value={selectedTags}
         onChange={handleSelect}
         getOptionLabel={(option) => option} // Add this prop
