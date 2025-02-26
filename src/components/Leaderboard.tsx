@@ -57,7 +57,7 @@ const Leaderboard: React.FC = () => {
 
   return (
     <Paper sx={{ padding: 3 }}>
-      {renderSection("Top 3 Who Asked the Most Questions", topQuestioners)}
+      {renderSection("Top 3 Who Made the Most Posts", topQuestioners)}
       {renderSection("Top 3 Who Made the Most Comments", topCommenters)}
       {renderSection("Top 3 Who Made the Most Replies", topRepliers)}
     </Paper>
