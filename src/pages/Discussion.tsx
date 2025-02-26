@@ -3,10 +3,9 @@ import QuestionsList from '../components/Discussion/QuestionsList';
 import { Question } from '../lib/types';
 import { useQuestions } from '../hooks/useQuestions';
 import CreateQuestion from '../components/Discussion/CreateQuestion';
-import FilterComponent from '../components/Discussion/FilterComponent';
+import { useState } from 'react';
 import { Box, Fab, Drawer, IconButton, Typography } from '@mui/material';
 import { ChevronLeft, Close } from '@mui/icons-material';
-import { useState } from 'react';
 import Leaderboard from '../components/Leaderboard';
 
 // Discussion page component
@@ -16,12 +15,6 @@ export const Discussion = () => {
   
   // Manage selected filter state
   const [filter, setFilter] = useState('new');
-
-  // Handle filter change from the dropdown menu
-  const handleFilterChange = (newFilter: string) => {
-    setFilter(newFilter);
-  };
- 
 
   // State for Leaderboard Drawer
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -67,12 +60,7 @@ export const Discussion = () => {
       </Drawer>
 
       <Page sx={{ height: '100%', overflowY: 'auto', overflowX: 'hidden' }}>
-        <Box>
-          <CreateQuestion />
-          {/* Filter dropdown component */}
-          <FilterComponent onFilterChange={handleFilterChange} />
-        </Box>
-
+        <CreateQuestion setFilter={setFilter} />
         {/* Pass filter state to the questions list */}
         <QuestionsList questions={questions as Question[]} filter={filter} />
       </Page>
@@ -81,4 +69,3 @@ export const Discussion = () => {
 };
 
 export default Discussion;
-
