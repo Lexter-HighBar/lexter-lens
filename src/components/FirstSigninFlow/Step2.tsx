@@ -54,11 +54,12 @@ const Step2: React.FC<Step2Props> = ({
               are managed by the Lexter Lens admin. These tags help ensure you receive posts 
               most relevant to your knowledge and skills."
           />
-          
+
           <Box display="flex" alignItems="center" gap={1} sx={{ mt: 4 }}>
             <Typography variant="body1">Interest Tags</Typography>
             <Tooltip
-              title="In addition to authority tags, interest tags help curate posts most relevant to you. Please select your interest tags below."
+              title="In addition to authority tags, interest tags help curate posts most relevant 
+              to you. Please select your interest tags below."
               placement="right"
             >
               <Info size={20} />
