@@ -4,7 +4,8 @@ import TagsManager from '../TagsManager'
 import { Lawyer } from '../../lib/types'
 
 import TagSelector from '../tagsSelector'
-import { CircularProgress, Typography } from '@mui/material'
+import { CircularProgress, Typography, Tooltip, Box } from '@mui/material'
+import { Info } from 'lucide-react'
 
 interface Step2Props {
   lawyerId: number
@@ -19,7 +20,7 @@ const Step2: React.FC<Step2Props> = ({
 }) => {
   const [loading, setLoading] = useState(true)
   const lawyers = useLawyers({ page: 1, count: 200 })
-  const [lawyerTags,setLawyerTags] = useState<{ id: number; name: string }[]>(
+  const [lawyerTags, setLawyerTags] = useState<{ id: number; name: string }[]>(
     [],
   )
 
@@ -37,42 +38,46 @@ const Step2: React.FC<Step2Props> = ({
         setLawyerTags(
           lawyer.tags.map((tag) => ({ id: tag.id, name: tag.name })),
         )
-       
       }
     }
-  }, [lawyerId, lawyers.data?.items ])
-   
+  }, [lawyerId, lawyers.data?.items])
 
   return (
-    
     <>
-    {lawyerTags && lawyerTags.length > 0 ? (
-      <>
-        <TagsManager
-        loading={loading}
-          defaultTags={lawyerTags.map((tag) => tag.name)}
-          title="Authority Tags"
-          tooltip="Authority tags are assigned based on your expertise and experience and 
+      {lawyerTags && lawyerTags.length > 0 ? (
+        <>
+          <TagsManager
+            loading={loading}
+            defaultTags={lawyerTags.map((tag) => tag.name)}
+            title="Authority Tags"
+            tooltip="Authority tags are assigned based on your expertise and experience and 
               are managed by the Lexter Lens admin. These tags help ensure you receive posts 
               most relevant to your knowledge and skills."
-        />
-        <Typography mt={2} p={1} variant="body1" sx={{ fontWeight: 'medium' }}>
-          Interst Tags
-        </Typography>
-        
-        <TagSelector
-          selectedTags={
-            selectedTags && selectedTags.length > 0
-              ? selectedTags
-              : lawyerTags.map((tag) => tag.name)
-          }
-          setSelectedTags={setSelectedTags}
-        />
-      </>
-    ) : (
-      <CircularProgress />
-    )}
-  </>
+          />
+          
+          <Box display="flex" alignItems="center" gap={1} sx={{ mt: 4 }}>
+            <Typography variant="body1">Interest Tags</Typography>
+            <Tooltip
+              title="In addition to authority tags, interest tags help curate posts most relevant to you. Please select your interest tags below."
+              placement="right"
+            >
+              <Info size={20} />
+            </Tooltip>
+          </Box>
+
+          <TagSelector
+            selectedTags={
+              selectedTags && selectedTags.length > 0
+                ? selectedTags
+                : lawyerTags.map((tag) => tag.name)
+            }
+            setSelectedTags={setSelectedTags}
+          />
+        </>
+      ) : (
+        <CircularProgress />
+      )}
+    </>
   )
 }
 export default Step2
