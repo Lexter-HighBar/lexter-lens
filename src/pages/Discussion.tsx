@@ -21,6 +21,7 @@ export const Discussion = () => {
   const handleFilterChange = (newFilter: string) => {
     setFilter(newFilter);
   };
+ 
 
   // State for Leaderboard Drawer
   const [openDrawer, setOpenDrawer] = useState(false);

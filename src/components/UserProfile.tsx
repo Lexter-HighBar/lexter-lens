@@ -127,64 +127,7 @@ const UserProfile = () => {
             ...user.unsafeMetadata,
             tags: selectedTags,
             userName: username,
-          },
-        })
-        //Out of time to blend the three functions - call together for now
-        handleUpdateCities()
-        handleUpdateFirms()
-      }
-      setAlert({
-        open: true,
-        message: 'Updated successfully.',
-        severity: 'success',
-      })
-    } catch (error) {
-      console.error(error)
-      setAlert({
-        open: true,
-        message: 'Failed to update.',
-        severity: 'error',
-      })
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const handleUpdateCities = async () => {
-    setLoading(true)
-    try {
-      if (user) {
-        await user.update({
-          unsafeMetadata: {
-            ...user.unsafeMetadata,
             cities: selectedCities,
-          },
-        })
-      }
-      setAlert({
-        open: true,
-        message: 'Updated successfully.',
-        severity: 'success',
-      })
-    } catch (error) {
-      console.error(error)
-      setAlert({
-        open: true,
-        message: 'Failed to update.',
-        severity: 'error',
-      })
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const handleUpdateFirms = async () => {
-    setLoading(true)
-    try {
-      if (user) {
-        await user.update({
-          unsafeMetadata: {
-            ...user.unsafeMetadata,
             firms: selectedFirms,
           },
         })
@@ -205,7 +148,6 @@ const UserProfile = () => {
       setLoading(false)
     }
   }
-
   const handleCloseAlert = () => {
     setAlert((prev) => ({ ...prev, open: false }))
   }

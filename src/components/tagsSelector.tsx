@@ -23,11 +23,11 @@ const TagSelector = ({
   setSelectedTags,
   variant,
   cityType,
-  firmType
+  firmType,
 }: TagSelectorProps) => {
   const { cities } = useCities()
   const { firms } = useFirms()
-  console.log(firms);
+  console.log(firms)
   const { tags, loading, error } = useTags()
 
   // Check for variant
@@ -59,20 +59,18 @@ const TagSelector = ({
   // Check for loading
   if (loading) {
     return (
-    
-        <Box
-          sx={{
-            width: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            flexDirection: 'column',
-            gap: 2,
-          }}
-        >
-          <CircularProgress />
-          <Typography variant="caption">Loading tags...</Typography>
-        </Box>
-    
+      <Box
+        sx={{
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          flexDirection: 'column',
+          gap: 2,
+        }}
+      >
+        <CircularProgress />
+        <Typography variant="caption">Loading tags...</Typography>
+      </Box>
     )
   }
 
@@ -83,18 +81,18 @@ const TagSelector = ({
   }
 
   return (
-    <Box sx={{ p: 2 }}>
+    <Box sx={{ p: 2, maxWidth: '500px' }}>
       {/* Autocomplete Input */}
       <Autocomplete
         //delete icon
-
-        fullWidth
         multiple
-        options ={ cityType 
-        ? cities.map(city => city.city) 
-        : firmType 
-          ? firms.map(firm => firm.firm_name) 
-          : tags.map(tag => tag.name)}
+        options={
+          cityType
+            ? cities.map((city) => city.city)
+            : firmType
+              ? firms.map((firm) => firm.firm_name)
+              : tags.map((tag) => tag.name)
+        }
         value={selectedTags}
         onChange={handleSelect}
         getOptionLabel={(option) => option} // Add this prop
