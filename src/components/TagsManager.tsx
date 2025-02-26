@@ -28,7 +28,7 @@ const TagsManager: React.FC<TagsManagerProps> = ({
         </Box>
       ) : (
         <>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' , gap: 1}}>
             <Typography variant="body1">{title}</Typography>
             {tooltip && (
               <Tooltip title={tooltip}>

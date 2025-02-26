@@ -16,15 +16,19 @@ import {
   MenuItem,
 } from '@mui/material'
 import { v4 as uuidv4 } from 'uuid'
-import { Flex } from '@radix-ui/themes'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import { useUser } from '@clerk/clerk-react'
 import { Question } from '../../lib/types'
 import { isMobile } from 'react-device-detect'
 import ChipGenerator from '../ChipGenerateur'
 import { useState } from 'react'
+import FilterComponent from './FilterComponent'
 
-const CreateQuestion = () => {
+interface CreateQuestionProps {
+  setFilter: (filter: string) => void
+}
+
+const CreateQuestion: React.FC<CreateQuestionProps> = ({ setFilter }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [newQuestion, setNewQuestion] = useState<Question>({
     QuestionId: '',
@@ -39,7 +43,9 @@ const CreateQuestion = () => {
   const [anonymous, setAnonymous] = useState(false)
   const api = useQuestions() // Access API context
   const { user } = useUser()
-
+  const handleFilterChange = (newFilter: string) => {
+    setFilter(newFilter)
+  }
   const handleCreateQuestion = async () => {
     const { content, tags } = newQuestion
 
@@ -97,20 +103,20 @@ const CreateQuestion = () => {
 
   return (
     <>
-      <Flex gap="1" align="center">
-        <Box sx={{ width: '70vw', maxWidth: '700px' }}>
+     
+        <Box maxWidth={785} width={'89dvw'} m={1} sx={{ display: 'flex', alignItems: 'center' }}>
           <Box
-            onClick={() => setIsDialogOpen(true)}
             component="form"
             sx={{
-              p: '2px 4px',
               display: 'flex',
               alignItems: 'center',
               border: '1px solid #ced4da',
               borderRadius: 4,
             }}
+           width={'100%'}
           >
             <IconButton
+              onClick={() => setIsDialogOpen(true)}
               color="primary"
               sx={{ p: '10px' }}
               aria-label="directions"
@@ -119,22 +125,24 @@ const CreateQuestion = () => {
               <Divider sx={{ height: 30, mx: 2 }} orientation="vertical" />
             </IconButton>
             <InputBase
+              onClick={() => setIsDialogOpen(true)}
               fullWidth
               placeholder="Something in mind? Type it here..."
               inputProps={{
                 'aria-label': 'Something in mind? Type it here...',
               }}
             />
+            <FilterComponent onFilterChange={handleFilterChange} />
           </Box>
         </Box>
-      </Flex>
+
 
       <Dialog
         fullWidth
         fullScreen={isMobile}
         open={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
-        >
+      >
         {/* Anonymouse logic  */}
         <DialogTitle>
           Post as

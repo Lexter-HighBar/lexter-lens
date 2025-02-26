@@ -91,6 +91,9 @@ const Home: React.FC = () => {
 
       <Page sx={{ height: '100%', padding: 2 }}>
         <Box sx={{ width: '100%', height: '100%' }}>
+           <Button onClick={handleTestClick} >
+          Quickstart Test
+        </Button>
           <BodyHome />
         </Box>
         <Box sx={{ mt: 4, paddingX: isMobile ? 1 : 4 }} />
@@ -98,11 +101,10 @@ const Home: React.FC = () => {
           isFirstSignIn={isFirstSignIn}
           setIsFirstSignIn={setIsFirstSignIn}
         />
-        <Button onClick={handleTestClick} sx={{ mb: 4 }}>
-          Quickstart Test
-        </Button>
+       
 
         {/* Masonry Insight Cards */}
+
         <InsightSection questions={questions} />
 
         {/* desktop mode Leaderboard */}
